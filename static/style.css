@@ -1,0 +1,415 @@
+@font-face {
+  font-family: 'Bruce Forever';
+  src: url('fonts/BruceForeverRegular.ttf');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url("fonts/Montserrat/static/Montserrat-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat Bold';
+  src: url("fonts/Montserrat/static/Montserrat-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat Italic';
+  src: url("fonts/Montserrat/static/Montserrat-Italic.ttf");
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Montserrat Bold Italic';
+  src: url("fonts/Montserrat/static/Montserrat-BoldItalic.ttf");
+  font-weight: bold;
+  font-style: italic;
+}
+
+body {
+   background: linear-gradient(to right, #1b2127, #1b2127, #0000ad);
+  color: white;
+  background-size: 100%;
+  font-weight 700;
+  margin-left: 30px;
+}
+.container__example-tab {
+  position: relative;
+  display: flex;
+}
+.overlay__example-tab {
+  position: absolute;
+  display: flex;
+}
+.tab-tester {
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Center items vertically */
+}
+.square {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+.book_text {
+  font-family: Arial;
+  color: white;
+  position: absolute;
+  bottom: 0px;
+  left: 0%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.book_icon {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+  background: transparent;
+}
+.book_icon:hover {
+  transform: translateY(-10px);
+}
+.book_icon:hover .book_text {
+  opacity: 1;
+}
+.overlay__example-tab:hover .book_icon {
+  transform: translateY(-10px);
+}
+
+.overlay__example-tab:hover .book_text {
+  opacity: 1;
+}
+.new_tab {
+  align-items: center; 
+  justify-content: center; 
+  height: 20px; width: 20px; 
+  display: inline-flex; 
+  background-color: #131B23; 
+  border: none;
+  border-radius: 5px; color: #333; 
+  font-size: 14px; 
+  text-align: left; 
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+.new_tab:hover {
+  background-color: var(--hover-color);
+}
+.new_tab::after {
+  opacity: 0.7;
+}
+.close-button {
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.close-button::before,
+.close-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background-color: #fff;
+  transform-origin: center;
+  transition: background-color 0.3s;
+}
+
+.close-button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.close-button:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+.close-button:hover::before,
+.close-button:hover::after {
+  background-color: #fff;
+}
+.audio__keysound-gui-info {
+  background-color: none;
+  color: #131B23;
+}
+.input__main-mod-info {
+  font-family: 'Bruce Forever';
+  background: linear-gradient(to right, #2c363f, #0000ad);
+  border-color: grey;
+  color: #d0cdcd;
+  width: 54%;
+}
+.input__main-mod-info::placeholder {
+  font-size: 12px;
+}
+.input__main-mod-desc {
+  font-family: 'Bruce Forever';
+  background: linear-gradient(to right, #2c363f, #0000ad);
+  border: 2px solid;
+  border-top-color: #2c2c2c;
+  border-left-color: #2c2c2c;
+  border-right-color: grey;
+  border-bottom-color: grey;
+  resize: none;
+  font-size: 12px;
+  color: #d0cdcd;
+  height: 250px;
+  width: 500px;
+}
+.downlink__title {
+  font-family: 'Bruce Forever';
+  color: white;
+}
+.downlink__desc {
+  font-family: 'Bruce Forever';
+  color: #d0cdcd;
+}
+.downlink__button {
+  font-family: 'Bruce Forever'; 
+  background: linear-gradient(to right, #2c363f, #0000ad); 
+  color: #d0cdcd;
+  border-color: grey;
+  cursor: pointer;
+}
+.text__main-desc {
+  font-family: 'Bruce Forever';
+  font-size: 12px;
+  width: 1000px;
+}
+.text__main-input-types {
+  font-family: 'Bruce Forever';
+  font-size: 12px;
+  color: none;
+}
+.text__main-input-names {
+  font-family: 'Bruce Forever';
+  color: white;
+  font-size: 9px;
+}
+input[type="file"] {
+  cursor: pointer;
+  text-indent: -87px;
+  background: linear-gradient(to right, #2c363f, #0000ad);
+  margin-top: 5px;
+  width: 55%;
+  font-family: 'Bruce forever';
+}
+.main__header {
+  list-style-type: none;
+  text-decoration: none;
+  background-color: #242D37;
+  width: 100%;
+  position: fixed;
+  margin-left: -30px;
+  margin-right: -8px;
+  z-index: 9999;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  border-bottom: 1px solid black;
+}
+.main__header-navigation {
+  list-style-type: none;
+  text-decoration: none;
+}
+.main__header-ul {
+  list-style-type: none;
+  text-decoration: none;
+}
+.main__header-ul a {
+  text-decoration: none;
+}
+.modButton {
+  position: relative;
+  top: 6px;
+  left: 30%;
+  height: 45px;
+  width: 150px;
+  background-color: #002aff;
+  color: white;
+  font-family: 'Montserrat';
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.modButton:hover {
+  background-color: #0000cc;
+}
+
+/*Footer info*/
+.main__footer {
+  list-style-type: none;
+  text-decoration: none;
+  background-color: #242D37;
+  width: 100% + 8px;
+  height: 300px;
+  position: relative;
+  margin-left: -30px;
+  margin-right: -8px;
+  border-top: 1px solid black;
+}
+
+.footer___links {
+  color: #6b6b6b;
+  text-decoration: none;
+  font-family: 'Montserrat Bold'
+}
+
+/*Socials*/
+
+.fa {
+  position: relative;
+  left: 10px;
+  top: -6px;
+  padding: 5px;
+  font-size: 7.5px;
+  width: 15px;
+  text-align: center;
+  text-decoration: none;
+}
+.fa:hover {
+  opacity: 0.7;
+}
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+/*Dropdown info*/
+.dropdown {
+  position: relative;
+  top: 6px;
+  z-index: 10000;
+  font-family: 'Montserrat'
+}    
+.dropdown_screen-blur {
+  height: 100%;
+  width: 100%;
+  margin-left: -8px;
+  margin-right: -8px;
+  margin-top: -16px;
+  margin-bottom: -16px;
+  background-color: black;
+  opacity: 0;
+}
+.dropdown .dropdown-title {
+  top: 6px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.dropdown a {
+  color: #d0cdcd;
+  text-align: center;
+}
+.dropdown-active, dropdown:hover dropdown {
+  background: #828282;
+  border-radius: 3px;
+}
+.dropdown-menu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+.dropdown-menu ul {
+  list-style: none;
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+  background-color: #242D37;
+  border: solid 1px black;
+  position: absolute;
+  height: 300px;
+  width: 200px;
+  top: 100%;
+  left: 0px;
+  opacity: 1;
+}
+.dropdown-subtitle {
+  height: 40px;
+  cursor: pointer;
+  margin-left: -40px;
+}
+.dropdown-subtitle .sub-spacer {
+  position: relative;
+  top: 10px;
+}
+.sub-spacer {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 40px;
+}
+.dropdown-submenu {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+.dropdown-subtitle:hover {
+  background-color: #212831;
+}
+.dropdown-subtitle:hover .dropdown-submenu {
+  opacity: 1;
+  color: #d0cdcd;
+  display: block;
+  background-color: #212831;
+  border: solid 1px black;
+  border-left: #242D37;
+  z-index: 999;
+  position: absolute;
+  height: 300px;
+  width: 200px;
+  top: -1px;
+  left: 200px;
+}
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: var(--invisible-width);
+  height: 2px;
+  background-color: transparent;
+  border-top: 1px solid #242D37;
+  list-style: none;
+}
+.dropdown:hover .dropdown_screen-blur {
+  opacity: 0.4;
+}
+.dropdown:hover {
+  border: 1px solid black;
+  border-bottom-color: #242D37;
+}
+
+.dropdown-menu li {
+  display: block;
+}
+.container {
+  display: flex;
+  align-items: flex-start; /* Align items at the top */
+}
+.left-content {
+  flex: 1;
+  margin-left: 50px;
+  margin-right: 100px;
+}
+.right-content {
+  margin-right: 500px;
+}
+html {
+  height: 100%;
+  width: 100%;
+}
