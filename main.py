@@ -13,7 +13,7 @@ downLink = str(randStr(10))
 
 TEST_FOLDER = f'mods/{downLink}'
 
-mURL = "https://opera.makeamod.com"
+mURL = "127.0.0.1:8080"
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -299,7 +299,16 @@ def testMod():
 
   else:
 
-    return render_template(f"{downLink}-test.html")
+    return render_template(f"{downLink}-test.html", key=downLink)
+  
+@app.route(f"/test-mod/<mod>", methods=['GET', 'POST'])
+def testOtherMod(mod):
+  if request.method == "POST":
+    pass
+
+  else:
+
+    return render_template(f"{mod}-test.html", key=mod)
 
 @app.route('/close_tab', methods=['POST'])
 def close_tab():
@@ -323,6 +332,14 @@ def privacy_tab():
 @app.route('/create', methods=["GET"])
 def createPage():
   return redirect('https://home.makeamod.com/create')
+
+@app.route('/mods/<modID>/manifest.json', methods=["GET"])
+def getManifest(modID):
+   return send_file(f"mods/{modID}/manifest.json")
+
+@app.route('/mods/<modID>/<folder>/<file>', methods=["GET"])
+def getFiles(modID, folder, file):
+   return send_file(f"mods/{modID}/{folder}/{file}")
   
 if __name__ == '__main__':
     if not os.path.exists(UPLOAD_FOLDER):
