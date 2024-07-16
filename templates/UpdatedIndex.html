@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7224168871546775"
+     crossorigin="anonymous"></script>
+    <link rel="icon" href="static/icon.png" type="image/png">
+    <title>New Main Page</title>
+    <meta name="description" content="Make Opera GX mods with ease!">
+    <link rel="stylesheet" href="static/style.css">
+    <meta property="og:title" content="New Main Page">
+    <meta property="og:description" content="Make Opera GX mods with ease!">
+    <meta property="og:image" content="/static/embed/Website Banner.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://opera.makeamod.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      window.addEventListener("DOMContentLoaded", function() {
+        let lph = document.getElementById("lph");
+        if (lph.value === '') {
+          lph.value = 352; // Set the default value to 5
+        }
+        let lps = document.getElementById("lps");
+        if (lps.value === '') {
+          lps.value = 90; // Set the default value to 5
+        }
+        let lpl = document.getElementById("lpl");
+        if (lpl.value === '') {
+          lpl.value = 54; // Set the default value to 5
+        }
+        let lah = document.getElementById("lah");
+        if (lah.value === '') {
+          lah.value = 254; // Set the default value to 5
+        }
+        let las = document.getElementById("las");
+        if (las.value === '') {
+          las.value = 35; // Set the default value to 5
+        }
+        let lal = document.getElementById("lal");
+        if (lal.value === '') {
+          lal.value = 12; // Set the default value to 5
+        }
+        let dph = document.getElementById("dph");
+        if (dph.value === '') {
+          dph.value = 352; // Set the default value to 5
+        }
+        let dps = document.getElementById("dps");
+        if (dps.value === '') {
+          dps.value = 90; // Set the default value to 5
+        }
+        let dpl = document.getElementById("dpl");
+        if (dpl.value === '') {
+          dpl.value = 54; // Set the default value to 5
+        }
+        let dah = document.getElementById("dah");
+        if (dah.value === '') {
+          dah.value = 254; // Set the default value to 5
+        }
+        let das = document.getElementById("das");
+        if (das.value === '') {
+          das.value = 35; // Set the default value to 5
+        }
+        let dal = document.getElementById("dal");
+        if (dal.value === '') {
+          dal.value = 12; // Set the default value to 5
+        }
+      });
+    </script>
+</head>
+  <body>
+    <script>
+    function headers() {
+    fetch('/static/header-footer.html') // Replace 'path/to/other/file.html' with the actual path to your other HTML file.
+      .then(response => response.text())
+      .then(html => {
+        // Create a temporary container element to hold the fetched content.
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = html;
+  
+        // Find the element you want to clone inside the temporary container.
+        const sourceElement = tempContainer.querySelector('#header');
+  
+        if (sourceElement) {
+          // Clone the element and its children.
+          const clonedElement = sourceElement.cloneNode(true);
+  
+          // Insert the cloned element into the destination element.
+          const destinationElement = document.getElementById('pageHeader');
+          destinationElement.appendChild(clonedElement);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching the file:', error);
+      });
+    };
+    
+    function footers() {
+    fetch('/static/header-footer.html') // Replace 'path/to/other/file.html' with the actual path to your other HTML file.
+      .then(response => response.text())
+      .then(html => {
+        // Create a temporary container element to hold the fetched content.
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = html;
+  
+        // Find the element you want to clone inside the temporary container.
+        const sourceElement = tempContainer.querySelector('#footer');
+  
+        if (sourceElement) {
+          // Clone the element and its children.
+          const clonedElement = sourceElement.cloneNode(true);
+  
+          // Insert the cloned element into the destination element.
+          const destinationElement = document.getElementById('pageFooter');
+          destinationElement.appendChild(clonedElement);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching the file:', error);
+      });
+    };
+
+    headers();
+    footers();
+    
+    </script>
+    <div id="pageHeader"></div>
+    <div style="position:  relative; margin-top: 82px;"></div>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="catContainer">
+            <div class="catList">
+                <ul>
+                    <li>
+                        <div style="margin: 5%;"><br></div>
+                        <div style="color: rgb(0, 89, 255); font-size: 20px;;">Categories</div>
+                        <div style="margin: 5%;"><br></div>
+                        <div class="catHolder">
+                            <div class="category" onclick="displayBox('KeyboardSounds', this)">
+                                <div class="textBox">Keyboard Sounds</div>
+                            </div>
+                        </div>
+                        <div style="margin: 5%;"><br></div>
+                        <div class="category" onclick="displayBox('BackgroundMusic', this)">
+                            <div class="textBox">Background Music</div>
+                        </div>
+                        <div style="margin: 5%;"><br></div>
+                        <div class="category" onclick="displayBox('BrowserSounds', this)">
+                            <div class="textBox">Browser Sounds</div>
+                        </div>
+                        <div style="margin: 5%;"><br></div>
+                        <div class="category" onclick="displayBox('Wallpapers', this)">
+                            <div class="textBox">Wallpapers</div>
+                        </div>
+                        <div style="margin: 5%;"><br></div>
+                        <div class="category" onclick="displayBox('ModInfo', this)">
+                            <div class="textBox" style="display: flex;">Mod Info <div style="color: red; margin-left: 8px;">(REQUIRED)</div></div>
+                        </div>
+                        <div style="margin-top: 20%;"><br></div>
+                        <input class="downlink__button" style="margin-right: 20px;" type="submit" value="Download Mod" name="generateMod"> <button class="downlink__button" type="submit" value="Test Mod" name="testButton">Test Mod</button>
+                        <div style="margin-top: 30%;"><br></div>
+                        <br>
+                        <br>
+                    </li>
+                </ul>
+            </div>
+            <div style="width: 80%; display: flex; justify-content: center; align-items: center;" id="modBox">
+                <div style="color: white; font-size: 50px;">Select a category to start modding!</div>
+            </div>
+        </div>
+    </form>
+    <script>
+        let activeCategory = null;
+
+        function displayBox(category, element) {
+            var content = document.getElementById('modBox');
+
+            if (activeCategory === element) {
+                content.innerHTML = '<div class="message" style="color: white; font-size: 50px;">Select a category to start modding!</div>';
+                element.classList.remove('active');
+                activeCategory = null;
+            } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/static/categories.html', true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = xhr.responseText;
+                        var newContent = tempDiv.querySelector('#' + category);
+                        content.innerHTML = newContent ? newContent.innerHTML : '<div class="message">No content available</div>';
+                    }
+                };
+                xhr.send();
+
+                if (activeCategory) {
+                    activeCategory.classList.remove('active');
+                }
+                element.classList.add('active');
+                activeCategory = element;
+            }
+        }
+    </script>
+    <div id="pageFooter"></div>
+  </body>
+</html>
