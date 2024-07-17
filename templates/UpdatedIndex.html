@@ -166,36 +166,155 @@
             </div>
         </div>
     </form>
+
+    <!-- The Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <label for="fileTypeSelect">Choose a file type:</label>
+            <select id="fileTypeSelect" onchange="handleFileTypeChange()">
+                <option value="">Select...</option>
+                <option value="a">a</option>
+                <option value="b">b</option>
+                <option value="c">c</option>
+                <option value="d">d</option>
+                <option value="e">e</option>
+            </select>
+            <input type="file" id="fileInput" disabled>
+            <button type="button" id="uploadBtn" onclick="uploadFile()" disabled>Upload</button>
+        </div>
+    </div>
+
     <script>
-        let activeCategory = null;
+      let activeCategory = null;
+      let categoryFiles = {
+          KeyboardSounds: [],
+          BackgroundMusic: [],
+          BrowserSounds: [],
+          Wallpapers: [],
+          ModInfo: []
+      };
+      let currentCategory = '';
+      let modal = document.getElementById("myModal");
+      let modalOverlay = document.getElementById("modalOverlay");
+      let fileInput = document.getElementById("fileInput");
+      let uploadBtn = document.getElementById("uploadBtn");
 
-        function displayBox(category, element) {
-            var content = document.getElementById('modBox');
+      function displayBox(category, element) {
+          // Prevent changing categories when modal is open
+          if (modal.style.display === "block") return;
 
-            if (activeCategory === element) {
-                content.innerHTML = '<div class="message" style="color: white; font-size: 50px;">Select a category to start modding!</div>';
-                element.classList.remove('active');
-                activeCategory = null;
-            } else {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '/static/categories.html', true);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = xhr.responseText;
-                        var newContent = tempDiv.querySelector('#' + category);
-                        content.innerHTML = newContent ? newContent.innerHTML : '<div class="message">No content available</div>';
-                    }
-                };
-                xhr.send();
+          var content = document.getElementById('modBox');
+          currentCategory = category;
 
-                if (activeCategory) {
-                    activeCategory.classList.remove('active');
-                }
-                element.classList.add('active');
-                activeCategory = element;
-            }
-        }
+          if (activeCategory === element) {
+              content.innerHTML = '<div class="message" style="color: white; font-size: 50px;">Select a category to start modding!</div>';
+              element.classList.remove('active');
+              activeCategory = null;
+          } else {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', '/static/categories.html', true);
+              xhr.onreadystatechange = function () {
+                  if (xhr.readyState === 4 && xhr.status === 200) {
+                      var tempDiv = document.createElement('div');
+                      tempDiv.innerHTML = xhr.responseText;
+                      var newContent = tempDiv.querySelector('#' + category);
+                      content.innerHTML = newContent ? newContent.innerHTML : '<div class="message">No content available</div>';
+                      displayUploadedFiles(category);  // Display files for the selected category
+                  }
+              };
+              xhr.send();
+
+              if (activeCategory) {
+                  activeCategory.classList.remove('active');
+              }
+              element.classList.add('active');
+              activeCategory = element;
+          }
+      }
+
+      function displayUploadedFiles(category) {
+          const uploadsDiv = document.getElementById(`${category}Uploads`);
+          uploadsDiv.innerHTML = '';
+
+          categoryFiles[category].forEach((file, index) => {
+              const fileDiv = document.createElement('div');
+              fileDiv.innerHTML = `<span>${file.name}</span> <button type="button" onclick="removeFile('${category}', ${index})">Remove</button>`;
+              uploadsDiv.appendChild(fileDiv);
+          });
+      }
+
+      function addFileInput(category) {
+          currentCategory = category;
+          modal.style.display = "block";
+          modalOverlay.style.display = "block";
+      }
+
+      function handleFileTypeChange() {
+          const select = document.getElementById('fileTypeSelect');
+          const fileType = select.value;
+
+          fileInput.value = ''; // Clear previous file input
+          fileInput.disabled = false;
+          uploadBtn.disabled = false;
+
+          if (currentCategory === 'KeyboardSounds' && fileType === 'a') {
+              fileInput.accept = '.wav';
+          } else if ((currentCategory === 'BackgroundMusic' || currentCategory === 'BrowserSounds') && fileType === 'a') {
+              fileInput.accept = '.mp3';
+          } else if (currentCategory === 'Wallpapers') {
+              if (fileType === 'a' || fileType === 'c') {
+                  fileInput.accept = '.png';
+              } else if (fileType === 'b' || fileType === 'd') {
+                  fileInput.accept = '.webm';
+              }
+          } else if (currentCategory === 'ModInfo') {
+              if (fileType === 'a') {
+                  fileInput.accept = '.txt';
+              } else if (fileType === 'b') {
+                  fileInput.accept = '.png';
+              }
+          } else {
+              fileInput.disabled = true;
+              uploadBtn.disabled = true;
+          }
+      }
+
+      function uploadFile() {
+          const file = fileInput.files[0];
+          if (file) {
+              categoryFiles[currentCategory].push(file);
+              displayUploadedFiles(currentCategory);
+              closeModal();
+          }
+      }
+
+      function removeFile(category, index) {
+          categoryFiles[category].splice(index, 1);
+          displayUploadedFiles(category);
+      }
+
+      function closeModal() {
+          modal.style.display = "none";
+          modalOverlay.style.display = "none";
+          document.getElementById('fileTypeSelect').value = '';
+          fileInput.value = '';
+          fileInput.disabled = true;
+          uploadBtn.disabled = true;
+      }
+
+      // Close the modal when the user clicks on <span> (x)
+      document.querySelector('.close').onclick = closeModal;
+
+      // Close the modal when the user clicks anywhere outside of the modal content
+      window.onclick = function(event) {
+          if (event.target === modalOverlay) {
+              closeModal();
+          }
+      }
     </script>
     <div id="pageFooter"></div>
   </body>
