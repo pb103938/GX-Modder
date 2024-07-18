@@ -66,7 +66,7 @@
       });
     </script>
 </head>
-  <body>
+  <body style="background: rgb(28, 29, 36);">
     <script>
     function headers() {
     fetch('/static/header-footer.html') // Replace 'path/to/other/file.html' with the actual path to your other HTML file.
@@ -174,17 +174,30 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <label for="fileTypeSelect">Choose a file type:</label>
-            <select id="fileTypeSelect" onchange="handleFileTypeChange()">
-                <option value="">Select...</option>
-                <option value="a">a</option>
-                <option value="b">b</option>
-                <option value="c">c</option>
-                <option value="d">d</option>
-                <option value="e">e</option>
-            </select>
-            <input type="file" id="fileInput" disabled>
-            <button type="button" id="uploadBtn" onclick="uploadFile()" disabled>Upload</button>
+            <div class="container">
+              <div class="left-content" style="min-width: 30%;">
+                <label for="fileTypeSelect">Choose a file:</label>
+                <select id="fileTypeSelect" onchange="handleFileTypeChange()">
+                    <option value="">Select...</option>
+                    <option value="a">a</option>
+                    <option value="b">b</option>
+                    <option value="c">c</option>
+                    <option value="d">d</option>
+                    <option value="e">e</option>
+                </select>
+                <br>
+                <div class="modal-text">
+                  This will determine which file you upload.
+                </div>
+              </div>
+              <div>
+                <input type="file" id="fileInput" disabled>
+              </div>
+            </div>
+            <div class="modal-buttons">
+              <button class="modal-button" type="button" id="closeButton">Close</button>
+              <button class="modal-button" type="button" id="uploadBtn" onclick="uploadFile()" disabled>Upload</button>
+            </div>
         </div>
     </div>
 
@@ -202,14 +215,36 @@
       let modalOverlay = document.getElementById("modalOverlay");
       let fileInput = document.getElementById("fileInput");
       let uploadBtn = document.getElementById("uploadBtn");
-
+  
+      // Define category-specific file type options
+      const categoryFileTypeOptions = {
+          KeyboardSounds: [
+              { value: 'wav', label: 'WAV (.wav)' },
+              { value: 'mp3', label: 'MP3 (.mp3)' }
+          ],
+          BackgroundMusic: [
+              { value: 'mp3', label: 'MP3 (.mp3)' }
+          ],
+          BrowserSounds: [
+              { value: 'mp3', label: 'MP3 (.mp3)' }
+          ],
+          Wallpapers: [
+              { value: 'png', label: 'PNG (.png)' },
+              { value: 'webm', label: 'WEBM (.webm)' }
+          ],
+          ModInfo: [
+              { value: 'txt', label: 'Text File (.txt)' },
+              { value: 'png', label: 'PNG (.png)' }
+          ]
+      };
+  
       function displayBox(category, element) {
           // Prevent changing categories when modal is open
           if (modal.style.display === "block") return;
-
+  
           var content = document.getElementById('modBox');
           currentCategory = category;
-
+  
           if (activeCategory === element) {
               content.innerHTML = '<div class="message" style="color: white; font-size: 50px;">Select a category to start modding!</div>';
               element.classList.remove('active');
@@ -227,7 +262,7 @@
                   }
               };
               xhr.send();
-
+  
               if (activeCategory) {
                   activeCategory.classList.remove('active');
               }
@@ -235,54 +270,52 @@
               activeCategory = element;
           }
       }
-
+  
       function displayUploadedFiles(category) {
           const uploadsDiv = document.getElementById(`${category}Uploads`);
           uploadsDiv.innerHTML = '';
-
+  
           categoryFiles[category].forEach((file, index) => {
               const fileDiv = document.createElement('div');
               fileDiv.innerHTML = `<span>${file.name}</span> <button type="button" onclick="removeFile('${category}', ${index})">Remove</button>`;
               uploadsDiv.appendChild(fileDiv);
           });
       }
-
+  
       function addFileInput(category) {
           currentCategory = category;
           modal.style.display = "block";
           modalOverlay.style.display = "block";
-      }
-
-      function handleFileTypeChange() {
+  
+          // Update the dropdown options based on the category
           const select = document.getElementById('fileTypeSelect');
-          const fileType = select.value;
+          select.innerHTML = '<option value="">Select...</option>';
+          categoryFileTypeOptions[category].forEach(option => {
+              select.innerHTML += `<option value="${option.value}">${option.label}</option>`;
+          });
+  
+          // Reset file input and upload button
+          fileInput.value = '';
+          fileInput.disabled = true;
+          uploadBtn.disabled = true;
+      }
+  
+      function handleFileTypeChange() {
+        const select = document.getElementById('fileTypeSelect');
+        const fileType = select.value;
 
-          fileInput.value = ''; // Clear previous file input
-          fileInput.disabled = false;
-          uploadBtn.disabled = false;
-
-          if (currentCategory === 'KeyboardSounds' && fileType === 'a') {
-              fileInput.accept = '.wav';
-          } else if ((currentCategory === 'BackgroundMusic' || currentCategory === 'BrowserSounds') && fileType === 'a') {
-              fileInput.accept = '.mp3';
-          } else if (currentCategory === 'Wallpapers') {
-              if (fileType === 'a' || fileType === 'c') {
-                  fileInput.accept = '.png';
-              } else if (fileType === 'b' || fileType === 'd') {
-                  fileInput.accept = '.webm';
-              }
-          } else if (currentCategory === 'ModInfo') {
-              if (fileType === 'a') {
-                  fileInput.accept = '.txt';
-              } else if (fileType === 'b') {
-                  fileInput.accept = '.png';
-              }
-          } else {
-              fileInput.disabled = true;
-              uploadBtn.disabled = true;
-          }
+        if (fileType === '') {
+            fileInput.value = ''; // Clear previous file input
+            fileInput.disabled = true;
+            uploadBtn.disabled = true;
+        } else {
+            fileInput.disabled = false;
+            uploadBtn.disabled = false;
+            fileInput.accept = '.' + fileType;
+        }
       }
 
+  
       function uploadFile() {
           const file = fileInput.files[0];
           if (file) {
@@ -291,12 +324,12 @@
               closeModal();
           }
       }
-
+  
       function removeFile(category, index) {
           categoryFiles[category].splice(index, 1);
           displayUploadedFiles(category);
       }
-
+  
       function closeModal() {
           modal.style.display = "none";
           modalOverlay.style.display = "none";
@@ -305,10 +338,11 @@
           fileInput.disabled = true;
           uploadBtn.disabled = true;
       }
-
+  
       // Close the modal when the user clicks on <span> (x)
       document.querySelector('.close').onclick = closeModal;
-
+      document.getElementById('closeButton').onclick = closeModal;
+  
       // Close the modal when the user clicks anywhere outside of the modal content
       window.onclick = function(event) {
           if (event.target === modalOverlay) {

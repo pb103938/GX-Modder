@@ -59,12 +59,16 @@ body {
   pointer-events: none; /* Prevents interaction with the background */
 }
 .modal-content {
-  background-color: #fefefe;
+  font-family: 'Audiowide';
+  background-color: #2a2d3b;
   margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
+  border: 1px solid #000000;
+  border-radius: 25px;
   width: 80%;
-  max-width: 400px;
+  max-width: 750px;
+  height: 80%;
+  max-height: 375px;
   pointer-events: auto; /* Enables interaction with the modal content */
 }
 .close {
@@ -72,6 +76,7 @@ body {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  font-family: serif;
 }
 .close:hover,
 .close:focus {
@@ -88,6 +93,41 @@ body {
 .modal-content button[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.modal-text {
+  font-family: 'Montserrat';
+  color: #3d3d3d;
+}
+.modal-buttons {
+  margin-top: 28%;
+  margin-left: 70%;
+  display: flex;
+}
+.modal-button {
+  font-family: 'Montserrat';
+  font-weight: bold;
+  margin: 10px;
+  height: 40px;
+  width: 100px;
+  font-size: 16px;
+  border: none;
+}
+.modal-button:hover {
+  transition: all 0.3s;
+}
+#closeButton {
+  background: none;
+  color: #4e4e4e;
+}
+#closeButton:hover {
+  background-color: gray;
+}
+#uploadBtn {
+  background-color: #002aff;
+  color: white;
+}
+#uploadBtn:hover {
+  background-color: #0077ff;
 }
 
 /*Begin Updated Index Classes*/
