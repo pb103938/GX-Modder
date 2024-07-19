@@ -133,23 +133,23 @@
                         <div id="catName" style="color: rgb(0, 89, 255); font-size: 20px;">Categories</div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('KeyboardSounds', this)">
-                            <div class="textBox">Keyboard Sounds</div>
+                            <div class="textBox">Keyboard Sounds <div id="KeyboardSoundsCount" class="numBox" maxCt="10">0/10</div></div>
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('BackgroundMusic', this)">
-                            <div class="textBox">Background Music</div>
+                            <div class="textBox">Background Music <div id="BackgroundMusicCount" class="numBox" maxCt="5">0/5</div></div>
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('BrowserSounds', this)">
-                            <div class="textBox">Browser Sounds</div>
+                            <div class="textBox">Browser Sounds <div id="BrowserSoundsCount" class="numBox" maxCt="12">0/12</div></div>
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('Wallpapers', this)">
-                            <div class="textBox">Wallpapers</div>
+                            <div class="textBox">Wallpapers <div id="WallpapersCount" class="numBox" maxCt="4">0/4</div></div>
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('ModInfo', this)">
-                            <div class="textBox" style="display: flex;">Mod Info <div style="color: red; margin-left: 8px;">(REQUIRED)</div></div>
+                            <div class="textBox"><div style="display: flex;">Mod Info <div style="color: red; margin-left: 8px;">(REQUIRED)</div></div><div id="ModInfoCount" class="numBox" maxCt="2">0/2</div></div>
                         </div>
                         <div style="margin-top: 20%;"><br></div>
                         <input class="downlink__button" style="margin-right: 20px;" type="submit" value="Download Mod" name="generateMod"> <button class="downlink__button" type="submit" value="Test Mod" name="testButton">Test Mod</button>
@@ -175,7 +175,7 @@
             <span class="close">&times;</span>
             <div class="container">
               <div class="left-content" style="min-width: 30%;">
-                <label for="fileTypeSelect">Choose a file:</label>
+                <label for="fileTypeSelect">Choose a key:</label>
                 <select id="fileTypeSelect" onchange="handleFileTypeChange()">
                     <option value="">Select...</option>
                     <option value="a">a</option>
@@ -186,11 +186,14 @@
                 </select>
                 <br>
                 <div class="modal-text">
-                  This will determine which file you upload.
+                  This will determine which key you press to trigger the sound.
                 </div>
               </div>
               <div>
+                Upload a file:<br>
                 <input type="file" id="fileInput" disabled>
+                <br><br>
+                <div class="modal-text" id="fileDesc"></div>
               </div>
             </div>
             <div class="modal-buttons">
@@ -209,46 +212,54 @@
           Wallpapers: [],
           ModInfo: []
       };
+      let categoryCount = {
+        KeyboardSounds: 0,
+        BackgroundMusic: 0,
+        BrowserSounds: 0,
+        Wallpapers: 0,
+        ModInfo: 0
+      }
       let currentCategory = '';
       let modal = document.getElementById("myModal");
       let modalOverlay = document.getElementById("modalOverlay");
       let fileInput = document.getElementById("fileInput");
+      let fileDesc = document.getElementById("fileDesc");
       let uploadBtn = document.getElementById("uploadBtn");
   
       // Define category-specific file type options
       const categoryFileTypeOptions = {
           KeyboardSounds: [
-              { value: 'wav', label: 'Backspace Key' },
-              { value: 'wav', label: 'Enter (Return) Key' },
-              { value: 'wav', label: 'Space Key' },
-              { value: 'wav', label: 'Other Key' },
+              { value: 'wav', label: 'Backspace Key', desc: 'This sound will play whenever you press Backspace.'},
+              { value: 'wav', label: 'Enter (Return) Key', desc: 'This sound will play whenever you press Enter (Return).'},
+              { value: 'wav', label: 'Space Key', desc: 'This sound will play whenever you press Space.'},
+              { value: 'wav', label: 'Other Key', desc: 'This sound will play whenever you press any key other than Backspace, Space, or Enter (Return).'}
           ],
           BackgroundMusic: [
               { value: 'mp3', label: 'Background Song' }
           ],
           BrowserSounds: [
-              { value: 'mp3', label: 'Click' },
-              { value: 'mp3', label: 'Close Tab' },
-              { value: 'mp3', label: 'Feature Switch Off' },
-              { value: 'mp3', label: 'Feature Switch On' },
-              { value: 'mp3', label: 'Hover' },
-              { value: 'mp3', label: 'Important Click' },
-              { value: 'mp3', label: 'Level Upgrade' },
-              { value: 'mp3', label: 'Limiter Off' },
-              { value: 'mp3', label: 'Limiter On' },
-              { value: 'mp3', label: 'New Tab' },
-              { value: 'mp3', label: 'Switch' },
-              { value: 'mp3', label: 'Tab Slash' }
+              { value: 'mp3', label: 'Click', desc: "This sound wll play whenever you click on something."},
+              { value: 'mp3', label: 'Close Tab', desc: "This sound will play whenever you close a tab."},
+              { value: 'mp3', label: 'Feature Switch Off', desc: "This sound will play whenever you turn off a feature switch."},
+              { value: 'mp3', label: 'Feature Switch On', desc: "This sound will play whenever you turn on a feature switch."},
+              { value: 'mp3', label: 'Hover', desc: "This sound will play whenever you hover over a shortcut on the Speed Dial."},
+              { value: 'mp3', label: 'Important Click', desc: "This sound will play whenever you do an important click."},
+              { value: 'mp3', label: 'Level Upgrade', desc: "This sound will play whenever a level upgrades."},
+              { value: 'mp3', label: 'Limiter Off', desc: "This sound will play whenever you turn off a limiter."},
+              { value: 'mp3', label: 'Limiter On', desc: "This sound will play whenever you turn on a limiter."},
+              { value: 'mp3', label: 'New Tab', desc: "This sound will play whenever you open a new tab."},
+              { value: 'mp3', label: 'Switch', desc: "This sound will play whenever you enable or disable a switch."},
+              { value: 'mp3', label: 'Tab Slash', desc: "This sound will play whenever you slash a tab."}
           ],
           Wallpapers: [
-              { value: 'png', label: 'Static Light Wallpaper' },
-              { value: 'png', label: 'Static Dark Wallpaper' },
-              { value: 'webm', label: 'Dynamic Light Wallpaper' },
-              { value: 'webm', label: 'Dynamic Dark Wallpaper' }
+              { value: 'png', label: 'Static Light Wallpaper', desc: "This is the wallpaper image that will show in light mode."},
+              { value: 'png', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
+              { value: 'webm', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
+              { value: 'webm', label: 'Dynamic Dark Wallpaper', desc: "This is the wallpaper video that will show in dark mode."}
           ],
           ModInfo: [
-              { value: 'txt', label: 'License' },
-              { value: 'png', label: 'Icon (512x512)' }
+              { value: 'txt', label: 'License', desc: "This is the license which verifies you are allowed to use the content in this mod."},
+              { value: 'png', label: 'Icon (512x512)', desc: "This is the mod's icon."}
           ]
       };
   
@@ -351,7 +362,7 @@
           const select = document.getElementById('fileTypeSelect');
           select.innerHTML = '<option value="">Select...</option>';
           categoryFileTypeOptions[category].forEach(option => {
-              select.innerHTML += `<option value="${option.value}">${option.label}</option>`;
+              select.innerHTML += `<option desc="${option.desc}" value="${option.value}">${option.label}</option>`;
           });
   
           // Reset file input and upload button
@@ -363,14 +374,17 @@
       function handleFileTypeChange() {
         const select = document.getElementById('fileTypeSelect');
         const fileType = select.value;
+        const fDesc = select.options[select.selectedIndex].getAttribute('desc');
 
         if (fileType === '') {
             fileInput.value = ''; // Clear previous file input
             fileInput.disabled = true;
             uploadBtn.disabled = true;
+            fileDesc.innerHTML = '';
         } else {
             fileInput.disabled = false;
             uploadBtn.disabled = false;
+            fileDesc.innerHTML = fDesc;
             fileInput.accept = '.' + fileType;
         }
       }
@@ -382,12 +396,18 @@
               categoryFiles[currentCategory].push(file);
               displayUploadedFiles(currentCategory);
               closeModal();
+              categoryCount[currentCategory] += 1;
+              const ct = document.getElementById(`${currentCategory}Count`);
+              ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
           }
       }
   
       function removeFile(category, index) {
           categoryFiles[category].splice(index, 1);
+          categoryCount[currentCategory] -= 1;
           displayUploadedFiles(category);
+          const ct = document.getElementById(`${currentCategory}Count`);
+          ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
       }
   
       function closeModal() {

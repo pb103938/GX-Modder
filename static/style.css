@@ -109,10 +109,10 @@ body {
 }
 .modal-text {
   font-family: 'Montserrat';
-  color: #3d3d3d;
+  color: #ffffff;
 }
 .modal-buttons {
-  margin-top: 28%;
+  margin-top: 25%;
   margin-left: 70%;
   display: flex;
 }
@@ -199,11 +199,15 @@ body {
 }
 
 .addButton {
-  height: 10%;
-  width: 200px;
-  min-width: 100px;
+  margin-right: 20px;
+  min-height: 64px;
+  height: 128px;
+  min-width: 125px;
+  width: 250px;
+  max-width: 300px;
   color: white;
-  border: 1px solid blue;
+  border: none;
+  border-radius: 15px;
   background-color: #0077ff;
   font-family: 'Montserrat Bold';
   font-weight: bold;
@@ -229,7 +233,7 @@ body {
   min-width: 125px;
   width: 250px;
   max-width: 300px;
-  background-image: url('images/files/fileBackground.webp');
+  background-image: url('images/files/fileBackground.svg');
   background-size: cover;
   font-family: 'Montserrat Bold';
   font-weight: bold;
@@ -246,9 +250,13 @@ body {
   cursor: pointer;
 }
 
-.fileContainer button:hover {
+.fileContainer button svg {
+  fill: rgb(185, 0, 0);
+}
+
+.fileContainer button:hover svg {
   transition: all 0.3s;
-  color: red;
+  fill: red;
 }
 
 .fileAudio {
@@ -297,8 +305,12 @@ audio::-webkit-media-controls-time-remaining-display {
   align-items: center;
 }
 
-.category .textBox {
+.textBox {
   margin-left: 17%;
+}
+
+.numBox {
+  color: #2e2e2e;
 }
 
 .category:hover {
