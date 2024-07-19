@@ -84,11 +84,24 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
-.modal-content select,
-.modal-content input[type="file"],
+.modal-content input[type="file"] {
+  background: #333;
+  border: 1px solid #4d4d4d;
+  border-radius: 5px;
+  margin-top: 10px;
+}
 .modal-content button {
+  border-radius: 5px;
   margin-top: 10px;
   display: block;
+}
+.modal-content select {
+  margin-top: 10px;
+  display: block;
+  font-family: 'Montserrat Bold';
+  color: white;
+  background-color: #333;
+  border-radius: 5px;
 }
 .modal-content button[disabled] {
   opacity: 0.5;
@@ -121,6 +134,7 @@ body {
 }
 #closeButton:hover {
   background-color: gray;
+  color: white;
 }
 #uploadBtn {
   background-color: #002aff;
@@ -128,6 +142,9 @@ body {
 }
 #uploadBtn:hover {
   background-color: #0077ff;
+}
+#uploadBtn[disabled]:hover {
+  background-color: #002aff;
 }
 
 /*Begin Updated Index Classes*/
@@ -164,8 +181,105 @@ body {
   background-color: #4f5964;
 }
 
+.modBoxDef {
+  width: 80%; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.modBox {
+  width: 80%; 
+  display: flex;
+  margin: 2%;
+}
+
 .dispBox {
+  display: flex;
+}
+
+.addButton {
+  height: 10%;
+  width: 200px;
+  min-width: 100px;
+  color: white;
+  border: 1px solid blue;
+  background-color: #0077ff;
+  font-family: 'Montserrat Bold';
+  font-weight: bold;
+}
+
+.addButton:hover {
+  transition: all 0.3s;
+  background-color: #0051ff;
+}
+
+.uploadContent {
+  display: flex;
+  min-width: 1%;
+}
+
+.fileContainer {
   display: block;
+  justify-content: center;
+  text-align: center;
+  margin-right: 20px;
+  height: 10%;
+  min-width: 100px;
+  width: 200px;
+  max-width: 300px;
+  background-color: #0000ad;
+  font-family: 'Montserrat Bold';
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.fileContainer button {
+  margin-top: 5px;
+  font-family: 'Montserrat Bold';
+  font-weight: bold;
+  background-color: #303033;
+  color: #d8d8d8;
+  border: none;
+}
+
+.fileContainer button:hover {
+  transition: all 0.3s;
+  color: red;
+  background-color: #464649;
+}
+
+.fileAudio {
+  margin-top: 10px;
+  height: 16px;
+  width: 180px;
+}
+
+.fileAudio::-webkit-media-controls-panel {
+  background-color: #0000ad;
+}
+
+.fileAudio::-webkit-media-controls-enclosure {
+  background-color: #0000ad;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-volume-slider,
+audio::-webkit-media-controls-timeline {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg);
+}
+
+audio::-webkit-media-controls-mute-button {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg);
+}
+
+audio::-webkit-media-controls-options-button {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg);
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  display: none;
 }
 
 .category {

@@ -130,12 +130,10 @@
                 <ul>
                     <li>
                         <div style="margin: 5%;"><br></div>
-                        <div style="color: rgb(0, 89, 255); font-size: 20px;;">Categories</div>
+                        <div id="catName" style="color: rgb(0, 89, 255); font-size: 20px;">Categories</div>
                         <div style="margin: 5%;"><br></div>
-                        <div class="catHolder">
-                            <div class="category" onclick="displayBox('KeyboardSounds', this)">
-                                <div class="textBox">Keyboard Sounds</div>
-                            </div>
+                        <div class="category" onclick="displayBox('KeyboardSounds', this)">
+                            <div class="textBox">Keyboard Sounds</div>
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('BackgroundMusic', this)">
@@ -161,8 +159,9 @@
                     </li>
                 </ul>
             </div>
-            <div style="width: 80%; display: flex; justify-content: center; align-items: center;" id="modBox">
-                <div style="color: white; font-size: 50px;">Select a category to start modding!</div>
+            <div class="modBoxDef" id="modBox">
+              <div class="uploadContent" id="UploadContent"></div>
+              <div style="color: white; font-size: 50px;">Select a category to start modding!</div>
             </div>
         </div>
     </form>
@@ -219,22 +218,37 @@
       // Define category-specific file type options
       const categoryFileTypeOptions = {
           KeyboardSounds: [
-              { value: 'wav', label: 'WAV (.wav)' },
-              { value: 'mp3', label: 'MP3 (.mp3)' }
+              { value: 'wav', label: 'Backspace Key' },
+              { value: 'wav', label: 'Enter (Return) Key' },
+              { value: 'wav', label: 'Space Key' },
+              { value: 'wav', label: 'Other Key' },
           ],
           BackgroundMusic: [
-              { value: 'mp3', label: 'MP3 (.mp3)' }
+              { value: 'mp3', label: 'Background Song' }
           ],
           BrowserSounds: [
-              { value: 'mp3', label: 'MP3 (.mp3)' }
+              { value: 'mp3', label: 'Click' },
+              { value: 'mp3', label: 'Close Tab' },
+              { value: 'mp3', label: 'Feature Switch Off' },
+              { value: 'mp3', label: 'Feature Switch On' },
+              { value: 'mp3', label: 'Hover' },
+              { value: 'mp3', label: 'Important Click' },
+              { value: 'mp3', label: 'Level Upgrade' },
+              { value: 'mp3', label: 'Limiter Off' },
+              { value: 'mp3', label: 'Limiter On' },
+              { value: 'mp3', label: 'New Tab' },
+              { value: 'mp3', label: 'Switch' },
+              { value: 'mp3', label: 'Tab Slash' }
           ],
           Wallpapers: [
-              { value: 'png', label: 'PNG (.png)' },
-              { value: 'webm', label: 'WEBM (.webm)' }
+              { value: 'png', label: 'Static Light Wallpaper' },
+              { value: 'png', label: 'Static Dark Wallpaper' },
+              { value: 'webm', label: 'Dynamic Light Wallpaper' },
+              { value: 'webm', label: 'Dynamic Dark Wallpaper' }
           ],
           ModInfo: [
-              { value: 'txt', label: 'Text File (.txt)' },
-              { value: 'png', label: 'PNG (.png)' }
+              { value: 'txt', label: 'License' },
+              { value: 'png', label: 'Icon (512x512)' }
           ]
       };
   
@@ -243,13 +257,21 @@
           if (modal.style.display === "block") return;
   
           var content = document.getElementById('modBox');
+          var catName = document.getElementById('catName');
+          var fullCat = cateName(category);
           currentCategory = category;
   
           if (activeCategory === element) {
               content.innerHTML = '<div class="message" style="color: white; font-size: 50px;">Select a category to start modding!</div>';
+              catName.innerHTML = 'Categories';
+              catName.style.fontSize = "20px";
               element.classList.remove('active');
               activeCategory = null;
+               content.className = "modBoxDef"
           } else {
+              content.className = "modBox"
+              catName.innerHTML = `Category: ${fullCat}`;
+              catName.style.fontSize = "18px";
               var xhr = new XMLHttpRequest();
               xhr.open('GET', '/static/categories.html', true);
               xhr.onreadystatechange = function () {
@@ -272,15 +294,38 @@
       }
   
       function displayUploadedFiles(category) {
-          const uploadsDiv = document.getElementById(`${category}Uploads`);
-          uploadsDiv.innerHTML = '';
-  
-          categoryFiles[category].forEach((file, index) => {
-              const fileDiv = document.createElement('div');
-              fileDiv.innerHTML = `<span>${file.name}</span> <button type="button" onclick="removeFile('${category}', ${index})">Remove</button>`;
-              uploadsDiv.appendChild(fileDiv);
-          });
+        const uploadsDiv = document.getElementById(`${category}Uploads`);
+        uploadsDiv.innerHTML = '';
+
+        categoryFiles[category].forEach((file, index) => {
+            const fileDiv = document.createElement('div');
+            fileDiv.classList.add('fileContainer');
+            
+            // Create a file name and remove button
+            let fileContent = `<span>${file.name}</span> <br> <button type="button" onclick="removeFile('${category}', ${index})">Remove</button>`;
+
+            // Check if the file is an audio file
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            if (fileExtension === 'mp3' || fileExtension === 'wav') {
+                // Create an audio element
+                const audioElement = document.createElement('audio');
+                audioElement.classList.add('fileAudio')
+                audioElement.controls = true;
+
+                // Create a URL for the file and set it as the source of the audio element
+                const fileURL = URL.createObjectURL(file);
+                audioElement.src = fileURL;
+
+                // Append the audio element to the file content
+                fileContent += '<br>';
+                fileDiv.appendChild(audioElement);
+            }
+
+            fileDiv.innerHTML += fileContent;
+            uploadsDiv.appendChild(fileDiv);
+        });
       }
+
   
       function addFileInput(category) {
           currentCategory = category;
@@ -337,6 +382,23 @@
           fileInput.value = '';
           fileInput.disabled = true;
           uploadBtn.disabled = true;
+      }
+
+      function cateName(category) {
+        if (category === 'KeyboardSounds') {
+          return 'Keyboard Sounds';
+        }
+        else if (category === 'BackgroundMusic') {
+          return 'Background Music';
+        }
+        if (category === 'BrowserSounds') {
+          return 'Browser Sounds';
+        }
+        if (category === 'ModInfo') {
+          return 'Mod Info';
+        }
+
+        else {return category;}
       }
   
       // Close the modal when the user clicks on <span> (x)
