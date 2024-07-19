@@ -224,43 +224,46 @@ body {
   justify-content: center;
   text-align: center;
   margin-right: 20px;
-  height: 10%;
-  min-width: 100px;
-  width: 200px;
+  min-height: 64px;
+  height: 128px;
+  min-width: 125px;
+  width: 250px;
   max-width: 300px;
-  background-color: #0000ad;
+  background-image: url('images/files/fileBackground.webp');
+  background-size: cover;
   font-family: 'Montserrat Bold';
   font-weight: bold;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 .fileContainer button {
   margin-top: 5px;
   font-family: 'Montserrat Bold';
   font-weight: bold;
-  background-color: #303033;
+  background: none;
   color: #d8d8d8;
   border: none;
+  cursor: pointer;
 }
 
 .fileContainer button:hover {
   transition: all 0.3s;
   color: red;
-  background-color: #464649;
 }
 
 .fileAudio {
-  margin-top: 10px;
+  margin-top: 18px;
+  margin-left: 5px;
   height: 16px;
-  width: 180px;
+  width: 200px;
 }
 
 .fileAudio::-webkit-media-controls-panel {
-  background-color: #0000ad;
+  background: none;
 }
 
 .fileAudio::-webkit-media-controls-enclosure {
-  background-color: #0000ad;
+  background: none;
 }
 
 audio::-webkit-media-controls-play-button,
@@ -280,6 +283,10 @@ audio::-webkit-media-controls-options-button {
 audio::-webkit-media-controls-current-time-display,
 audio::-webkit-media-controls-time-remaining-display {
   display: none;
+}
+
+.fileInfo {
+  margin-top: 25px;
 }
 
 .category {
