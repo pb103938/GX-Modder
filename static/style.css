@@ -195,7 +195,7 @@ body {
 }
 
 .dispBox {
-  display: flex;
+  display: block;
 }
 
 .addButton {
@@ -221,6 +221,7 @@ body {
 .uploadContent {
   display: flex;
   min-width: 1%;
+  margin-bottom: 40px;
 }
 
 .fileContainer {

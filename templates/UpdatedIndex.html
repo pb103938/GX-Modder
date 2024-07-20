@@ -175,7 +175,7 @@
             <span class="close">&times;</span>
             <div class="container">
               <div class="left-content" style="min-width: 30%;">
-                <label for="fileTypeSelect">Choose a key:</label>
+                <label for="fileTypeSelect">Choose a value:</label>
                 <select id="fileTypeSelect" onchange="handleFileTypeChange()">
                     <option value="">Select...</option>
                     <option value="a">a</option>
@@ -186,7 +186,8 @@
                 </select>
                 <br>
                 <div class="modal-text">
-                  This will determine which key you press to trigger the sound.
+                  This will determine what the file will do. The file's name will also be changed to correspond with what it will represent. 
+                  If you upload multiple files for the same function, those following the first one will have a number after their name.
                 </div>
               </div>
               <div>
@@ -219,6 +220,13 @@
         Wallpapers: 0,
         ModInfo: 0
       }
+      let categoryContainer = {
+        KeyboardSounds: 2,
+        BackgroundMusic: 1,
+        BrowserSounds: 3,
+        Wallpapers: 1,
+        ModInfo: 1
+      }
       let currentCategory = '';
       let modal = document.getElementById("myModal");
       let modalOverlay = document.getElementById("modalOverlay");
@@ -229,37 +237,37 @@
       // Define category-specific file type options
       const categoryFileTypeOptions = {
           KeyboardSounds: [
-              { value: 'wav', label: 'Backspace Key', desc: 'This sound will play whenever you press Backspace.'},
-              { value: 'wav', label: 'Enter (Return) Key', desc: 'This sound will play whenever you press Enter (Return).'},
-              { value: 'wav', label: 'Space Key', desc: 'This sound will play whenever you press Space.'},
-              { value: 'wav', label: 'Other Key', desc: 'This sound will play whenever you press any key other than Backspace, Space, or Enter (Return).'}
+              { value: 'wav', name: 'backspace', label: 'Backspace Key', desc: 'This sound will play whenever you press Backspace.'},
+              { value: 'wav', name: 'enter', label: 'Enter (Return) Key', desc: 'This sound will play whenever you press Enter (Return).'},
+              { value: 'wav', name: 'space', label: 'Space Key', desc: 'This sound will play whenever you press Space.'},
+              { value: 'wav', name: 'letter', label: 'Other Key', desc: 'This sound will play whenever you press any key other than Backspace, Space, or Enter (Return).'}
           ],
           BackgroundMusic: [
-              { value: 'mp3', label: 'Background Song' }
+              { value: 'mp3', name: 'song', label: 'Background Song', desc: 'This song will play in the background as you browse.'}
           ],
           BrowserSounds: [
-              { value: 'mp3', label: 'Click', desc: "This sound wll play whenever you click on something."},
-              { value: 'mp3', label: 'Close Tab', desc: "This sound will play whenever you close a tab."},
-              { value: 'mp3', label: 'Feature Switch Off', desc: "This sound will play whenever you turn off a feature switch."},
-              { value: 'mp3', label: 'Feature Switch On', desc: "This sound will play whenever you turn on a feature switch."},
-              { value: 'mp3', label: 'Hover', desc: "This sound will play whenever you hover over a shortcut on the Speed Dial."},
-              { value: 'mp3', label: 'Important Click', desc: "This sound will play whenever you do an important click."},
-              { value: 'mp3', label: 'Level Upgrade', desc: "This sound will play whenever a level upgrades."},
-              { value: 'mp3', label: 'Limiter Off', desc: "This sound will play whenever you turn off a limiter."},
-              { value: 'mp3', label: 'Limiter On', desc: "This sound will play whenever you turn on a limiter."},
-              { value: 'mp3', label: 'New Tab', desc: "This sound will play whenever you open a new tab."},
-              { value: 'mp3', label: 'Switch', desc: "This sound will play whenever you enable or disable a switch."},
-              { value: 'mp3', label: 'Tab Slash', desc: "This sound will play whenever you slash a tab."}
+              { value: 'mp3', name: 'click', label: 'Click', desc: "This sound wll play whenever you click on something."},
+              { value: 'mp3', name: 'close-tab', label: 'Close Tab', desc: "This sound will play whenever you close a tab."},
+              { value: 'mp3', name: 'feature-switch-off', label: 'Feature Switch Off', desc: "This sound will play whenever you turn off a feature switch."},
+              { value: 'mp3', name: 'feature-switch-on', label: 'Feature Switch On', desc: "This sound will play whenever you turn on a feature switch."},
+              { value: 'mp3', name: 'hover', label: 'Hover', desc: "This sound will play whenever you hover over a shortcut on the Speed Dial."},
+              { value: 'mp3', name: 'important-click', label: 'Important Click', desc: "This sound will play whenever you do an important click."},
+              { value: 'mp3', name: 'level-upgrade', label: 'Level Upgrade', desc: "This sound will play whenever a level upgrades."},
+              { value: 'mp3', name: 'limiter-off', label: 'Limiter Off', desc: "This sound will play whenever you turn off a limiter."},
+              { value: 'mp3', name: 'limiter-on', label: 'Limiter On', desc: "This sound will play whenever you turn on a limiter."},
+              { value: 'mp3', name: 'new-tab', label: 'New Tab', desc: "This sound will play whenever you open a new tab."},
+              { value: 'mp3', name: 'switch', label: 'Switch', desc: "This sound will play whenever you enable or disable a switch."},
+              { value: 'mp3', name: 'tab-slash', label: 'Tab Slash', desc: "This sound will play whenever you slash a tab."}
           ],
           Wallpapers: [
-              { value: 'png', label: 'Static Light Wallpaper', desc: "This is the wallpaper image that will show in light mode."},
-              { value: 'png', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
-              { value: 'webm', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
-              { value: 'webm', label: 'Dynamic Dark Wallpaper', desc: "This is the wallpaper video that will show in dark mode."}
+              { value: 'png', name: 'light-image', label: 'Static Light Wallpaper', desc: "This is the wallpaper image that will show in light mode."},
+              { value: 'png', name: 'light-video', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
+              { value: 'webm', name: 'dark-image', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
+              { value: 'webm', name: 'dark-video', label: 'Dynamic Dark Wallpaper', desc: "This is the wallpaper video that will show in dark mode."}
           ],
           ModInfo: [
-              { value: 'txt', label: 'License', desc: "This is the license which verifies you are allowed to use the content in this mod."},
-              { value: 'png', label: 'Icon (512x512)', desc: "This is the mod's icon."}
+              { value: 'txt', name: 'license', label: 'License', desc: "This is the license which verifies you are allowed to use the content in this mod."},
+              { value: 'png', name: 'icon', label: 'Icon (512x512)', desc: "This is the mod's icon."}
           ]
       };
   
@@ -305,10 +313,27 @@
       }
   
       function displayUploadedFiles(category) {
-        const uploadsDiv = document.getElementById(`${category}Uploads`);
-        uploadsDiv.innerHTML = '';
+        var num = 0;
+        var col = 1;
+        var uploadsDiv;
+        for (let i = 0; i < categoryContainer[category]; i++) {
+          uploadsDiv = document.getElementById(`${category}Uploads${i + 1}`);
+          console.log(`${category}Uploads${i + 1}`);
+          uploadsDiv.innerHTML = '';
+        }
 
         categoryFiles[category].forEach((file, index) => {
+            num += 1;
+            if (num > 10) {
+              col = 3;
+            }
+            else if (num < 11 && num > 5) {
+              col = 2;
+            }
+            else {
+              col = 1;
+            }
+            uploadsDiv = document.getElementById(`${category}Uploads${col}`);
             const fileDiv = document.createElement('div');
             fileDiv.classList.add('fileContainer');
             
@@ -350,6 +375,16 @@
             fileDiv.innerHTML += fileContent;
             uploadsDiv.appendChild(fileDiv);
         });
+        if (num > 9) {
+          col = 3;
+        }
+        else if (num < 10 && num > 4) {
+          col = 2;
+        }
+        else {
+          col = 1;
+        }
+        document.getElementById(`${category}Uploads${col}`).innerHTML += `<button type="button" class="addButton" onclick="addFileInput('${category}')">+ <br> Add File</button>`;
       }
 
   
@@ -362,7 +397,7 @@
           const select = document.getElementById('fileTypeSelect');
           select.innerHTML = '<option value="">Select...</option>';
           categoryFileTypeOptions[category].forEach(option => {
-              select.innerHTML += `<option desc="${option.desc}" value="${option.value}">${option.label}</option>`;
+              select.innerHTML += `<option name="${option.name}" desc="${option.desc}" value="${option.value}">${option.label}</option>`;
           });
   
           // Reset file input and upload button
@@ -391,23 +426,44 @@
 
   
       function uploadFile() {
-          const file = fileInput.files[0];
-          if (file) {
-              categoryFiles[currentCategory].push(file);
-              displayUploadedFiles(currentCategory);
-              closeModal();
-              categoryCount[currentCategory] += 1;
-              const ct = document.getElementById(`${currentCategory}Count`);
-              ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
-          }
+        const file = fileInput.files[0];
+        const select = document.getElementById('fileTypeSelect');
+        if (file) {
+            const newFileName = getFileInfo(select, file.name); // Generate the new file name
+            const newFile = new File([file], newFileName, { type: file.type });
+
+            categoryFiles[currentCategory].push(newFile);
+            displayUploadedFiles(currentCategory);
+            closeModal();
+            categoryCount[currentCategory] += 1;
+            const ct = document.getElementById(`${currentCategory}Count`);
+            ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
+        }
+      }
+
+      function getFileInfo(select, originalName) {
+        const choice = select.options[select.selectedIndex].getAttribute('name');
+        let baseName = choice || originalName.split('.')[0];
+        const fileExtension = originalName.split('.').pop();
+
+        let newFileName = `${baseName}.${fileExtension}`;
+        let counter = 1;
+
+        // Check if the new file name already exists in the current category
+        while (categoryFiles[currentCategory].some(file => file.name === newFileName)) {
+            newFileName = `${baseName} (${counter}).${fileExtension}`;
+            counter++;
+        }
+
+        return newFileName;
       }
   
       function removeFile(category, index) {
           categoryFiles[category].splice(index, 1);
-          categoryCount[currentCategory] -= 1;
+          categoryCount[category] -= 1;
           displayUploadedFiles(category);
-          const ct = document.getElementById(`${currentCategory}Count`);
-          ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
+          const ct = document.getElementById(`${category}Count`);
+          ct.innerHTML = `${categoryCount[category]}/${ct.getAttribute('maxCt')}`;
       }
   
       function closeModal() {
@@ -415,6 +471,7 @@
           modalOverlay.style.display = "none";
           document.getElementById('fileTypeSelect').value = '';
           fileInput.value = '';
+          fileDesc.innerHTML = '';
           fileInput.disabled = true;
           uploadBtn.disabled = true;
       }
