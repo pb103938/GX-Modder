@@ -1,0 +1,30 @@
+State Windows 10
+
+
+Firewall: 
+ - turned on from Control Panel, more intuitive/effective to turn it on from Windows Defender App
+
+Forensics Questions:
+ - fq 1:
+    - Topic: 
+
+ - fq 2:
+    - Topic: 
+
+ - fq3:
+    - Topic: KeyLogger
+
+Software Updates:
+ - Chrome:
+    - Worked first time? (Y/n): n
+    - If it doesn't work the first time, then some task schedulers and permissions need to be checked OR it needs to be reinstalled.
+       - Task Schedulers:
+	  - GoogleUpdate<TASK_NAME>
+       - Permissions:
+	  - 
+       - To reinstall:
+	  - Go to https://www.google.com/chrome/bsem/download/en_us/ and click Download Chrome
+
+Powershell:
+ - get-childitem: 
+    - Used 'get-childitem -R', when they could have used, for example, 'get-childitem -R -Fi *.jpeg' to search for only jpegs.

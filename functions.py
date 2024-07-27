@@ -1,4 +1,5 @@
 import os
+import zipfile
 
 def getFolder(category):
 
@@ -25,53 +26,187 @@ def config_list(lst: list, category: str) -> dict:
     if category == "sound":
 
         for i in lst:
+
+            cat = ""
+
             if "click" in i:
-                try:
-                    mani["CLICK"]
-
-                except:
-                    mani["CLICK"] = []
-
-                mani["CLICK"].append(i)
+                cat = "CLICK"
 
             elif "feature-switch-off" in i:
-                try:
-                    mani["FEATURE_SWITCH_OFF"]
-
-                except:
-                    mani["FEATURE_SWITCH_OFF"] = []
-
-                mani["FEATURE_SWITCH_OFF"].append(i)
+                cat = "FEATURE_SWITCH_OFF"
 
             elif "feature-switch-on" in i:
-                try:
-                    mani["FEATURE_SWITCH_ON"]
-
-                except:
-                    mani["FEATURE_SWITCH_ON"] = []
-
-                mani["FEATURE_SWITCH_ON"].append(i)
+                cat = "FEATURE_SWITCH_ON"
 
             elif "hover" in i:
-                try:
-                    mani["HOVER"]
-
-                except:
-                    mani["HOVER"] = []
-
-                mani["HOVER"].append(i)
+                cat = "HOVER"
 
             elif "important-click" in i:
-                try:
-                    mani["IMPORTANT_CLICK"]
+                cat = "IMPORTANT_CLICK"
 
-                except:
-                    mani["IMPORTANT_CLICK"] = []
+            elif "level-upgrade" in i:
+                cat = "LEVEL_UPGRADE"
 
-                mani["IMPORTANT_CLICK"].append(i)
+            elif "limiter-off" in i:
+                cat = "LIMITER_OFF"
+
+            elif "limiter-on" in i:
+                cat = "LIMITER_ON"
+
+            elif "switch" in i:
+                cat = "SWITCH_TOGGLE"
+
+            elif "close-tab" in i:
+                cat = "TAB_CLOSE"
+
+            elif "new-tab" in i:
+                cat = "TAB_INSERT"
+
+            elif "tab-slash" in i:
+                cat = "TAB_SLASH"
+
+            try:
+                mani[cat]
+
+            except:
+                mani[cat] = []
+
+            mani[cat].append(i)
+
+        try:
+            mani["HOVER_UP"] = mani["HOVER"]
+        except:
+            pass
+
+    elif category == "keyboard":
+
+        for i in lst:
+
+            cat = ""
+
+            if "backspace" in i:
+                cat = "TYPING_BACKSPACE"
+
+            elif "enter" in i:
+                cat = "TYPING_ENTER"
+
+            elif "letter" in i:
+                cat = "TYPING_LETTER"
+
+            elif "space" in i:
+                cat = "TYPING_SPACE"
+
+            try:
+                mani[cat]
+
+            except:
+                mani[cat] = []
+
+            mani[cat].append(i)
+
+    elif category == "wallpaper":
+
+        mani["light"] = {}
+        mani["dark"] = {}
+        for i in lst:
+
+            cat = ""
+            subcat = ""
+
+            if "light-image" in i:
+                cat = "light"
+                subcat = "image"
+
+            elif "dark-image" in i:
+                cat = "dark"
+                subcat = "image"
+
+            elif "light-video" in i:
+                cat = "light"
+                subcat = "first_frame"
+
+            elif "dark-video" in i:
+                cat = "dark"
+                subcat = "first_frame"
+
+            try:
+                mani[cat]
+
+            except:
+                mani[cat] = {}
+
+            mani[cat][subcat] = i
+
+        mani["dark"]["text_color"] = "#FFFFFF"
+        mani["dark"]["text_shadow"] = "#757575"
+        mani["light"]["text_color"] = "#FFFFFF"
+        mani["light"]["text_shadow"] = "#0B000E"
+        
+
+    return mani
 
 
-        mani["HOVER_UP"] = mani["HOVER"]
+def createZip(filenames: list, mName: str, path):
+    if len(filenames) > 0:
+
+        zip_filename = f'{mName.replace(" ", "-")}-mod.zip'
+        print(zip_filename)
+
+        with zipfile.ZipFile(f"{path}/{zip_filename}", 'w') as zip_file:
+
+            for filename in filenames:
+
+                if filename.endswith('.wav'):
+                    file_folder = 'keyboard'
+                    print("keyboard file:", filename)
+
+                elif filename.endswith('.mp3'):
+
+                    if "song" in filename:
+                        file_folder = 'music'
+                        print("music file:", filename)
+                    else:
+                        file_folder = 'sound'
+                        print("sound file:", filename)
+
+                elif filename.endswith('.png') or filename.endswith('.webm'):
+
+                    if "icon" in filename:
+                        print("icon file:", filename)
+                        file_folder = ''
+
+                    else:
+                        print("wallpaper file:", filename)
+                        file_folder = 'wallpaper'
+
+                elif filename.endswith('.txt'):
+                    print("license file:", filename)
+                    file_folder = ''
+
+                else:
+                    print("deleting file:", filename, "at", os.path.join(path, filename))
+                    os.remove(os.path.join(path, filename))
+
+                print("adding to zip file at:", os.path.join(path, file_folder, os.path.basename(filename)))
+
+                zip_file.write(os.path.join(path, file_folder, os.path.basename(filename)), filename)
+
+
+def combineLists(*args):
+    """
+    Combine any number of lists into one list by merging their contents.
+
+    :param args: Variable number of list arguments
+    :return: A single list containing all elements from the input lists
+    """
+    combined_list = []
+    for lst in args:
+        # Ensure the argument is a list before extending
+        if isinstance(lst, list):
+            combined_list.extend(lst)
+        else:
+            print(f"Warning: Non-list argument encountered: {lst}")
+    return combined_list
 
 
 def list_dir(directory, category) -> list:
@@ -84,10 +219,18 @@ def list_dir(directory, category) -> list:
     try:
         # List all entries in the directory
         entries = os.listdir(directory)
+
+        files = []
         
         # Filter out the directories, keeping only files
-        files = [os.path.join(category, entry) for entry in entries if os.path.isfile(os.path.join(directory, entry))]
+        for entry in entries:
+
+            obj = os.path.join(directory, entry)
+
+            if os.path.isfile(obj):
+                files.append(f"{category}/{entry}")
         
+        print(files)
         return files
     except FileNotFoundError:
         print(f"Directory not found: {directory}")
@@ -133,6 +276,32 @@ def createManifest(form: dict):
         "developer":
         {
           "name": str(auth)
+        },
+        "mod": 
+        {
+            "payload":
+            {
+                "browser_sounds":{},
+                "keyboard_sounds":{},
+                "theme":
+                {
+                    "dark":
+                    {
+                        "gx_accent":{},
+                        "gx_secondary_base":{}
+                    },
+                    "light":
+                    {
+                        "gx_accent":{},
+                        "gx_secondary_base":{}
+                    }
+                },
+                "wallpaper":
+                {
+                    "dark":{},
+                    "light":{}
+                },
+            }
         },
         "icons":
         {

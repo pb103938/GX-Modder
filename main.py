@@ -5,7 +5,8 @@ from randString import gen_rand_str as randStr
 import os
 import zipfile
 import json
-from functions import getFolder, createManifest, list_dir, config_list
+from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip
+from time import sleep as wait
 
 app = Flask(__name__)
 
@@ -277,12 +278,7 @@ def upload_file():
     else:
       return render_template('index.html')
 
-
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route(f'/<modID>/submit-files', methods=['POST'])
+@app.route('/<modID>/submit-files', methods=['POST'])
 def handle_form_submission(modID):
 
     # Process files
@@ -295,50 +291,56 @@ def handle_form_submission(modID):
         folder = getFolder(fileCat)
 
         file.save(f'mods/{modID}{folder}/{file.filename}')
+        print(f'file uploaded: mods/{modID}{folder}/{file.filename}')
 
-    return
+    return jsonify(success=True)
 
 @app.route('/new', methods=['GET', 'POST'])
 def upload_new_file():
-  
     if request.method == 'POST':
+        wait(0.2)
         print("form:", request.form)
+
+        global mName
+        mName = request.form.get('mod name')
 
         mani = createManifest(request.form)
 
-        music = list_dir(f"mods/{downLink}/music", "music/")
-        sound = config_list(list_dir(f"mods/{downLink}/sound", "sound/"), "sound")
-        keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard/")
-        wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper/")
+        # Fetch file lists from directories
+        music = list_dir(f"mods/{downLink}/music", "music")
+        sound = list_dir(f"mods/{downLink}/sound", "sound")
+        keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
+        wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
 
-        if len(music) == 0:
-           pass
+        filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt"])
+        print(filenames)
 
-        else:
+        # Update manifest with file data
+        if music:
             mani["mod"]["payload"]["background_music"] = music
 
-        if len(music) == 0:
-           pass
+        if sound:
+            mani["mod"]["payload"]["browser_sounds"] = config_list(sound, "sound")
 
-        else:
-            mani["mod"]["payload"]["browser_sounds"] = sound
+        if keyboard:
+            mani["mod"]["payload"]["keyboard_sounds"] = config_list(keyboard, "keyboard")
 
-        if len(music) == 0:
-           pass
+        if wallpaper:
+            mani["mod"]["payload"]["wallpaper"] = config_list(wallpaper, "wallpaper")
 
-        else:
-            mani["mod"]["payload"]["keyboard_sounds"] = keyboard
+        # Write the manifest to a file
+        with open(f"mods/{downLink}/manifest.json", "w") as m:
+            m.write(str(mani).replace("'", "\""))
+            m.flush()  # Ensure data is written to disk
+        # The file is automatically closed at the end of the 'with' block
 
-        if len(music) == 0:
-           pass
+        # Create the zip file after all operations are completed
+        createZip(filenames, mName, f"mods/{downLink}")
 
-        else:
-            mani["mod"]["payload"]["wallpaper"] = wallpaper
-
-        return render_template("exampleDownload.html")
-   
+        return redirect(f"/download-mod/{downLink}")
+    
     else:
-      return render_template('UpdatedIndex.html', modID=downLink)
+        return render_template('UpdatedIndex.html', modID=downLink)
 
 
 @app.route("/terms")
@@ -348,7 +350,7 @@ def terms():
 @app.route(f"/download-mod/{downLink}", methods=['GET', 'POST'])
 def downloadFile():
   if request.method == "POST":
-    zip_filename = f'{mName.replace(" ", "-")}-mod.zip'
+    zip_filename = f'mods/{downLink}/{mName.replace(" ", "-")}-mod.zip'
       
     # Return the zip file for download
     response = send_file(zip_filename, as_attachment=True)
@@ -356,7 +358,7 @@ def downloadFile():
     return response
 
   else:
-    return render_template(f"{downLink}.html")
+    return render_template(f"exampleDownload.html")
 
 @app.route(f"/test-mod/{downLink}", methods=['GET', 'POST'])
 def testMod():
@@ -374,7 +376,7 @@ def testOtherMod(mod):
 
   else:
 
-    return render_template(f"{mod}-test.html", key=mod)
+    return render_template(f"exampleTest.html", key=mod)
 
 @app.route('/close_tab', methods=['POST'])
 def close_tab():

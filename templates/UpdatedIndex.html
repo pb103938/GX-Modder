@@ -317,12 +317,12 @@
           .then(response => response.json())
           .then(data => {
               console.log('Success:', data);
+              event.target.submit();
           })
           .catch(error => {
               console.error('Error:', error);
           });
 
-          event.target.submit();
       }
   
       function displayBox(category, element) {
