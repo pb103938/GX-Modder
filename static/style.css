@@ -35,30 +35,6 @@ body {
   font-weight: 700;
 }
 
-/*Begin ModInfo File Upload Classes*/
-.infoUploadContainer {
-  display: flex;
-  align-items: center;
-}
-
-.infoUploadLabel {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.infoUploadLabel:disabled {
-  background-color: #999;
-  cursor: not-allowed;
-}
-
-.infoUploadInput {
-  display: none;
-}
-
 /*Begin Popup Classes*/
 
 .modal-overlay {
@@ -172,6 +148,19 @@ body {
 }
 
 /*Begin Updated Index Classes*/
+
+.colorSchemeContainer {
+  display: block;
+  margin: 7%;
+}
+
+.modInfoInputs input {
+  background: linear-gradient(to right, #1b2127, #1b2127, #ff0000);
+}
+
+.modInfoInputs textarea {
+  background: linear-gradient(to right, #2c363f, #ff0000);
+}
 
 .catContainer {
   font-family: 'Audiowide';

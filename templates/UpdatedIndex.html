@@ -124,12 +124,13 @@
     </script>
     <div id="pageHeader"></div>
     <div style="position:  relative; margin-top: 82px;"></div>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="post" id="submitForm" enctype="multipart/form-data" action="/new" onsubmit="handleSubmit(event)">
         <div class="catContainer">
             <div class="catList">
                 <ul>
                     <li>
                         <div style="margin: 5%;"><br></div>
+                        <input type="hidden" name="categoryFilesData" id="categoryFilesData" />
                         <div id="catName" style="color: rgb(0, 89, 255); font-size: 20px;">Categories</div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('KeyboardSounds', this)">
@@ -141,7 +142,7 @@
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('BrowserSounds', this)">
-                            <div class="textBox">Browser Sounds <div id="BrowserSoundsCount" class="numBox" maxCt="12">0/12</div></div>
+                            <div class="textBox">Browser Sounds <div id="BrowserSoundsCount" class="numBox" maxCt="15">0/15</div></div>
                         </div>
                         <div style="margin: 5%;"><br></div>
                         <div class="category" onclick="displayBox('Wallpapers', this)">
@@ -265,8 +266,8 @@
           ],
           Wallpapers: [
               { value: 'png', name: 'light-image', label: 'Static Light Wallpaper', desc: "This is the wallpaper image that will show in light mode."},
-              { value: 'png', name: 'light-video', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
-              { value: 'webm', name: 'dark-image', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
+              { value: 'png', name: 'dark-image', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
+              { value: 'webm', name: 'light-video', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
               { value: 'webm', name: 'dark-video', label: 'Dynamic Dark Wallpaper', desc: "This is the wallpaper video that will show in dark mode."}
           ],
           ModInfo: [
@@ -275,6 +276,54 @@
           ]
       };
       
+
+      // Add this function to serialize the categoryFiles dictionary
+      function serializeCategories() {
+          const formData = {};
+          
+          for (let category in categoryFiles) {
+              formData[category] = categoryFiles[category].map(file => ({
+                  name: file.name,
+                  type: file.type,
+                  size: file.size,
+                  lastModified: file.lastModified
+              }));
+          }
+
+          return JSON.stringify(formData);
+      }
+
+      // Modify the form submission event to include serialized data
+      function handleSubmit(event) {
+          event.preventDefault();
+
+          // Serialize metadata
+          const serializedMetadata = serializeCategories();
+          const formData = new FormData();
+          formData.append('metadata', serializedMetadata);
+
+          // Append actual files to FormData
+          for (let category in categoryFiles) {
+              categoryFiles[category].forEach((file, index) => {
+                  formData.append(`${category}_${index}`, file);
+              });
+          }
+
+          // Send the form data to the server using fetch
+          fetch('/{{ modID }}/submit-files', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Success:', data);
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+
+          event.target.submit();
+      }
   
       function displayBox(category, element) {
           // Prevent changing categories when modal is open
@@ -380,7 +429,7 @@
             fileDiv.innerHTML += fileContent;
             uploadsDiv.appendChild(fileDiv);
         });
-        if (num > 11) {
+        if (num > 14) {
           col = 4;
         }
         else if (num < 15 && num > 9) {

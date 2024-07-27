@@ -36,13 +36,64 @@
 <div id="ModInfo">
     <div class="dispBox">
         <br>
-        <div class="uploadContent" id="ModInfoUploads1"></div>
-        <div style="display: none;" id="ModInfoUploads2"></div>
-        <div class="modInfoInputs" id="modInfoInputs1">
-            
+        <div class="container">
+            <div class="uploadContent left-content" style="width: 540px;" id="ModInfoUploads1"></div>
+            <div style="display: none;" id="ModInfoUploads2"></div>
+            <div class="modInfoInputs" id="modInfoInputs1">
+                <p class="text__main-input-names">Mod Name:
+                <br>
+                <input class="input__main-mod-info" type="text" name="mod name" placeholder="ex. My cool Opera GX mod">
+                <br>
+                <p class="text__main-input-names">Mod Author:
+                <br>
+                <input class="input__main-mod-info" type="text" name="mod author" placeholder="ex. A Real Cool Coder">
+                <br>
+                <p class="text__main-input-names">Mod Description:
+                <br>
+                <textarea class="input__main-mod-desc" rows="10" cols="50" name="mod description" placeholder="ex. A cool mod which makes Opera GX cooler."></textarea>
+                <br>
+                <p class="text__main-input-names">Mod Version:
+                <br>
+                <input class="input__main-mod-info" type="number" name="mod version" step="0.01" min="0.00" max="999.99" placeholder="ex. 1.0">
+                <br>
+            </div>
         </div>
-        <div class="modInfoInputs" id="modInfoInputs2">
-            
+        <div class="modInfoInputs container" id="modInfoInputs2">
+            <div class="colorSchemeContainer">
+                <div class="text__main-input-names">Light Primary Color:</div>
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="lph" id="lph" min="0" max="999" placeholder="ex. 352">
+                <br>
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="lps" id="lps" min="0" max="100" placeholder="ex. 90">
+                <br>
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="lpl" id="lpl" min="0" max="100" placeholder="ex. 54">
+                <br>
+            </div>
+            <div class="colorSchemeContainer">
+                <div class="text__main-input-names">Light Accent Color:</div>
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="lah" id="lah" min="0" max="999" placeholder="ex. 254">
+                <br>
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="las" id="las" min="0" max="100" placeholder="ex. 35">
+                <br>
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="lal" id="lal" min="0" max="100" placeholder="ex. 12">
+                <br>
+            </div>
+            <div class="colorSchemeContainer">
+                <div class="text__main-input-names">Dark Primary Color:</div>
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="dph" id="dph" min="0" max="999" placeholder="ex. 352">
+                <br>
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="dps" id="dps" min="0" max="100" placeholder="ex. 90">
+                <br>
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="dpl" id="dpl" min="0" max="100" placeholder="ex. 54">
+                <br>
+            </div>
+            <div class="colorSchemeContainer">
+                <div class="text__main-input-names">Dark Accent Color:</div>
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="dah" id="dah" min="0" max="999" placeholder="ex. 254">
+                <br>
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="das" id="das" min="0" max="100" placeholder="ex. 35">
+                <br>
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="dal" id="dal" min="0" max="100" placeholder="ex. 12">
+            </div>     
         </div>
     </div>
 </div>
