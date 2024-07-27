@@ -213,6 +213,10 @@
           Wallpapers: [],
           ModInfo: []
       };
+      let modInfoFiles = {
+        license: false,
+        icon: false
+      };
       let categoryCount = {
         KeyboardSounds: 0,
         BackgroundMusic: 0,
@@ -270,6 +274,7 @@
               { value: 'png', name: 'icon', label: 'Icon (512x512)', desc: "This is the mod's icon."}
           ]
       };
+      
   
       function displayBox(category, element) {
           // Prevent changing categories when modal is open
@@ -387,6 +392,9 @@
         else if (num < 10 && num > 3 && category === 'Wallpapers') {
           col = 2;
         }
+        else if (num < 10 && num > 1 && category === 'ModInfo') {
+          col = 2;
+        }
         else {
           col = 1;
         }
@@ -396,21 +404,32 @@
   
       function addFileInput(category) {
           currentCategory = category;
+
+          if (category === 'ModInfo') {
+              if (modInfoFiles.license && modInfoFiles.icon) {
+                  alert("Both license and icon files are already uploaded.");
+                  return;
+              }
+          }
+
           modal.style.display = "block";
           modalOverlay.style.display = "block";
-  
-          // Update the dropdown options based on the category
+
           const select = document.getElementById('fileTypeSelect');
           select.innerHTML = '<option value="">Select...</option>';
           categoryFileTypeOptions[category].forEach(option => {
-              select.innerHTML += `<option name="${option.name}" desc="${option.desc}" value="${option.value}">${option.label}</option>`;
+              let disabled = '';
+              if (category === 'ModInfo' && ((option.value === 'txt' && modInfoFiles.license) || (option.value === 'png' && modInfoFiles.icon))) {
+                  disabled = 'disabled';
+              }
+              select.innerHTML += `<option ${disabled} name="${option.name}" desc="${option.desc}" value="${option.value}">${option.label}</option>`;
           });
-  
-          // Reset file input and upload button
+
           fileInput.value = '';
           fileInput.disabled = true;
           uploadBtn.disabled = true;
       }
+
   
       function handleFileTypeChange() {
         const select = document.getElementById('fileTypeSelect');
@@ -432,20 +451,31 @@
 
   
       function uploadFile() {
-        const file = fileInput.files[0];
-        const select = document.getElementById('fileTypeSelect');
-        if (file) {
-            const newFileName = getFileInfo(select, file.name); // Generate the new file name
-            const newFile = new File([file], newFileName, { type: file.type });
+          const file = fileInput.files[0];
+          const select = document.getElementById('fileTypeSelect');
+          if (file) {
+              const newFileName = getFileInfo(select, file.name);
+              const newFile = new File([file], newFileName, { type: file.type });
 
-            categoryFiles[currentCategory].push(newFile);
-            displayUploadedFiles(currentCategory);
-            closeModal();
-            categoryCount[currentCategory] += 1;
-            const ct = document.getElementById(`${currentCategory}Count`);
-            ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
-        }
+              if (currentCategory === 'ModInfo') {
+                  const fileType = select.value;
+                  if (fileType === 'txt') {
+                      modInfoFiles.license = true;
+                  } else if (fileType === 'png') {
+                      modInfoFiles.icon = true;
+                  }
+              }
+
+              categoryFiles[currentCategory].push(newFile);
+              displayUploadedFiles(currentCategory);
+              closeModal();
+              categoryCount[currentCategory] += 1;
+              const ct = document.getElementById(`${currentCategory}Count`);
+              ct.innerHTML = `${categoryCount[currentCategory]}/${ct.getAttribute('maxCt')}`;
+          }
       }
+
+
 
       function getFileInfo(select, originalName) {
         const choice = select.options[select.selectedIndex].getAttribute('name');
@@ -465,12 +495,24 @@
       }
   
       function removeFile(category, index) {
-          categoryFiles[category].splice(index, 1);
-          categoryCount[category] -= 1;
-          displayUploadedFiles(category);
-          const ct = document.getElementById(`${category}Count`);
-          ct.innerHTML = `${categoryCount[category]}/${ct.getAttribute('maxCt')}`;
+        const file = categoryFiles[category][index];
+
+        // Special handling for ModInfo files
+        if (category === 'ModInfo') {
+            if (file.type === 'text/plain') {
+                modInfoFiles.license = null;
+            } else if (file.type === 'image/png') {
+                modInfoFiles.icon = null;
+            }
+        }
+
+        categoryFiles[category].splice(index, 1);
+        categoryCount[category] -= 1;
+        displayUploadedFiles(category);
+        const ct = document.getElementById(`${category}Count`);
+        ct.innerHTML = `${categoryCount[category]}/${ct.getAttribute('maxCt')}`;
       }
+
   
       function closeModal() {
           modal.style.display = "none";

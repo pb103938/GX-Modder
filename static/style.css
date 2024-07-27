@@ -35,6 +35,30 @@ body {
   font-weight: 700;
 }
 
+/*Begin ModInfo File Upload Classes*/
+.infoUploadContainer {
+  display: flex;
+  align-items: center;
+}
+
+.infoUploadLabel {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.infoUploadLabel:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.infoUploadInput {
+  display: none;
+}
+
 /*Begin Popup Classes*/
 
 .modal-overlay {
@@ -112,7 +136,7 @@ body {
   color: #ffffff;
 }
 .modal-buttons {
-  margin-top: 25%;
+  margin-top: 8%;
   margin-left: 70%;
   display: flex;
 }
@@ -213,9 +237,17 @@ body {
   font-weight: bold;
 }
 
+#ModInfoUploads1 .addButton {
+  background-color: red;
+}
+
 .addButton:hover {
   transition: all 0.3s;
   background-color: #0051ff;
+}
+
+#ModInfoUploads1 .addButton:hover {
+  background-color: #ff4343;
 }
 
 .uploadContent {
@@ -239,6 +271,10 @@ body {
   font-family: 'Montserrat Bold';
   font-weight: bold;
   border-radius: 15px;
+}
+
+#ModInfoUploads1 .fileContainer {
+  background-image: url('images/files/fileBackgroundRed.svg');
 }
 
 .fileContainer button {
