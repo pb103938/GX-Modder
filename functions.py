@@ -179,7 +179,7 @@ def createZip(filenames: list, mName: str, path):
                         print("wallpaper file:", filename)
                         file_folder = 'wallpaper'
 
-                elif filename.endswith('.txt'):
+                elif filename.endswith('.txt') or filename.endswith('.json'):
                     print("license file:", filename)
                     file_folder = ''
 

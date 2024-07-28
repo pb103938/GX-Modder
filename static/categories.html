@@ -40,59 +40,63 @@
             <div class="uploadContent left-content" style="width: 540px;" id="ModInfoUploads1"></div>
             <div style="display: none;" id="ModInfoUploads2"></div>
             <div class="modInfoInputs" id="modInfoInputs1">
-                <p class="text__main-input-names">Mod Name:
+                <div class="text__main-input-names">Mod Name:
                 <br>
-                <input class="input__main-mod-info" type="text" name="mod name" placeholder="ex. My cool Opera GX mod">
+                <input class="input__main-mod-info" type="text" id="modName" name="mod name" placeholder="ex. My cool Opera GX mod" oninput="handleInput('mod name', event)" required>
+                </div>
                 <br>
-                <p class="text__main-input-names">Mod Author:
+                <div class="text__main-input-names">Mod Author:
                 <br>
-                <input class="input__main-mod-info" type="text" name="mod author" placeholder="ex. A Real Cool Coder">
+                <input class="input__main-mod-info" type="text" id="modAuth" name="mod author" placeholder="ex. A Real Cool Coder" oninput="handleInput('mod author', event)" required>
+                </div>
                 <br>
-                <p class="text__main-input-names">Mod Description:
+                <div class="text__main-input-names">Mod Description:
                 <br>
-                <textarea class="input__main-mod-desc" rows="10" cols="50" name="mod description" placeholder="ex. A cool mod which makes Opera GX cooler."></textarea>
+                <textarea class="input__main-mod-desc" rows="10" id="modDesc" cols="50" name="mod description" placeholder="ex. A cool mod which makes Opera GX cooler." oninput="handleInput('mod description', event)" required></textarea>
+                </div>
                 <br>
-                <p class="text__main-input-names">Mod Version:
+                <div class="text__main-input-names">Mod Version:
                 <br>
-                <input class="input__main-mod-info" type="number" name="mod version" step="0.01" min="0.00" max="999.99" placeholder="ex. 1.0">
+                <input class="input__main-mod-info" type="number" id="modVer" name="mod version" step="0.01" min="0.00" max="999.99" placeholder="ex. 1.0" oninput="handleInput('mod version', event)" required>
+                </div>
                 <br>
             </div>
         </div>
         <div class="modInfoInputs container" id="modInfoInputs2">
             <div class="colorSchemeContainer">
                 <div class="text__main-input-names">Light Primary Color:</div>
-                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="lph" id="lph" min="0" max="999" placeholder="ex. 352">
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="lph" id="lph" min="0" max="360" placeholder="ex. 352" oninput="handleInput('lph', event)" required>
                 <br>
-                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="lps" id="lps" min="0" max="100" placeholder="ex. 90">
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="lps" id="lps" min="0" max="100" placeholder="ex. 90" oninput="handleInput('lps', event)" required>
                 <br>
-                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="lpl" id="lpl" min="0" max="100" placeholder="ex. 54">
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="lpl" id="lpl" min="0" max="100" placeholder="ex. 54" oninput="handleInput('lpl', event)" required>
                 <br>
             </div>
             <div class="colorSchemeContainer">
                 <div class="text__main-input-names">Light Accent Color:</div>
-                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="lah" id="lah" min="0" max="999" placeholder="ex. 254">
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="lah" id="lah" min="0" max="360" placeholder="ex. 254" oninput="handleInput('lah', event)" required>
                 <br>
-                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="las" id="las" min="0" max="100" placeholder="ex. 35">
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="las" id="las" min="0" max="100" placeholder="ex. 35" oninput="handleInput('las', event)" required>
                 <br>
-                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="lal" id="lal" min="0" max="100" placeholder="ex. 12">
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="lal" id="lal" min="0" max="100" placeholder="ex. 12" oninput="handleInput('lal', event)" required>
                 <br>
             </div>
             <div class="colorSchemeContainer">
                 <div class="text__main-input-names">Dark Primary Color:</div>
-                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="dph" id="dph" min="0" max="999" placeholder="ex. 352">
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="dph" id="dph" min="0" max="360" placeholder="ex. 352" oninput="handleInput('dph', event)" required>
                 <br>
-                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="dps" id="dps" min="0" max="100" placeholder="ex. 90">
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="dps" id="dps" min="0" max="100" placeholder="ex. 90" oninput="handleInput('dps', event)" required>
                 <br>
-                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="dpl" id="dpl" min="0" max="100" placeholder="ex. 54">
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="dpl" id="dpl" min="0" max="100" placeholder="ex. 54" oninput="handleInput('dpl', event)" required>
                 <br>
             </div>
             <div class="colorSchemeContainer">
                 <div class="text__main-input-names">Dark Accent Color:</div>
-                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="dah" id="dah" min="0" max="999" placeholder="ex. 254">
+                <p style="font-family: Arial">h: <input class="input__main-mod-info" style="width: 80px; margin-left: 1px;" type="number" name="dah" id="dah" min="0" max="360" placeholder="ex. 254" oninput="handleInput('dah', event)" required>
                 <br>
-                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="das" id="das" min="0" max="100" placeholder="ex. 35">
+                <p style="font-family: Arial">s: <input class="input__main-mod-info" style="width: 80px; margin-left: 2px;" type="number" name="das" id="das" min="0" max="100" placeholder="ex. 35" oninput="handleInput('das', event)" required>
                 <br>
-                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="dal" id="dal" min="0" max="100" placeholder="ex. 12">
+                <p style="font-family: Arial">l: <input class="input__main-mod-info" style="width: 80px; margin-left: 7px;" type="number" name="dal" id="dal" min="0" max="100" placeholder="ex. 12" oninput="handleInput('dal', event)" required>
             </div>     
         </div>
     </div>

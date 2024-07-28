@@ -1,0 +1,11 @@
+if 'testButton' in request.form:
+            if not os.path.exists(f"templates/{downLink}-test"):
+              exdown = open("templates/exampleTest.html", "r")
+              with open(f"templates/{downLink}-test.html", "w") as downpage:
+                downpage.write(str(exdown.read()))
+                exdown.close()
+                downpage.close()
+              return redirect(f"{mURL}/test-mod/{downLink}")
+            else:
+              return redirect(f"{mURL}/test-mod/{downLink}")
+           

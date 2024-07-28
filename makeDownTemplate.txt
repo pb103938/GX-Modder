@@ -1,9 +1,0 @@
-if not os.path.exists(f"templates/{downLink}"):
-            exdown = open("templates/exampleDownload.html", "r")
-            with open(f"templates/{downLink}.html", "w") as downpage:
-              downpage.write(str(exdown.read()))
-              exdown.close()
-              downpage.close()
-            return redirect(f"{mURL}/download-mod/{downLink}")
-          else:
-            return redirect(f"{mURL}/download-mod/{downLink}")
