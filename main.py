@@ -74,6 +74,9 @@ def upload_file():
             m.flush()  # Ensure data is written to disk
         # The file is automatically closed at the end of the 'with' block
 
+        if request.form.get('action') == "Test Mod":
+           return redirect(f"/test-mod/{downLink}")
+
         # Create the zip file after all operations are completed
         createZip(filenames, mName, f"mods/{downLink}")
 
@@ -103,11 +106,21 @@ def downloadFile():
 @app.route(f"/test-mod/{downLink}", methods=['GET', 'POST'])
 def testMod():
   if request.method == "POST":
-    pass
+
+    music = list_dir(f"mods/{downLink}/music", "music")
+    sound = list_dir(f"mods/{downLink}/sound", "sound")
+    keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
+    wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
+
+    filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
+
+    createZip(filenames, mName, f"mods/{downLink}")
+
+    return redirect(f"/download-mod/{downLink}")
 
   else:
 
-    return render_template(f"{downLink}-test.html", key=downLink)
+    return render_template("exampleTest.html", key=downLink)
   
 @app.route(f"/test-mod/<mod>", methods=['GET', 'POST'])
 def testOtherMod(mod):

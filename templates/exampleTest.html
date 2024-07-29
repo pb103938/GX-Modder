@@ -8,7 +8,7 @@
       var urlParts = currentURL.split('/');
 
       // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
-      var key = urlParts[urlParts.length - 1];
+      var key = "{{ key }}";
       
       document.addEventListener("keydown", function(event) {
         if (event.code === "Space") {
@@ -41,7 +41,7 @@
       var urlParts = currentURL.split('/');
 
       // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
-      var key = urlParts[urlParts.length - 1];
+      var key = "{{ key }}";
       
       fetch(`/mods/${key}/manifest.json`)
         .then(response => response.json())
@@ -76,7 +76,7 @@
             // Perform actions specific to the clicked button
             button.style.setProperty('--hover-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l - 30}%)`);
 
-            var a = new Audio('/static/mods/xAfhgW14Gd/sound/new_tab.mp3');
+            var a = new Audio('/mods/{{ key }}/sound/new-tab.mp3');
             a.play();
 
             setTimeout(() => {
@@ -92,7 +92,7 @@
           if (event.target.matches(`.close-button`)) {
             // Button from the class was clicked
             const clickedButton = event.target;
-            var a = new Audio(`/mods/${key}/sound/close_tab.mp3`);
+            var a = new Audio(`/mods/${key}/sound/close-tab.mp3`);
             a.play();
           }
         })
@@ -146,32 +146,32 @@
       <div class="left-content">
         <p class="text__main-input-types">backspace.wav</p>
         <audio controls class="audio__keysound-gui-info">
-          <source src="/static/mods/xAfhgW14Gd/keyboard/backspace.wav" type="audio/wav">
+          <source src="/mods/{{ key }}/keyboard/backspace.wav" type="audio/wav">
       Your browser does not support the audio element.
         </audio>
         <p class="text__main-input-types">space.wav</p>
         <audio controls class="audio__keysound-gui-info">
-          <source src="/static/mods/xAfhgW14Gd/keyboard/space.wav" type="audio/wav">
+          <source src="/mods/{{ key }}/keyboard/space.wav" type="audio/wav">
       Your browser does not support the audio element.
         </audio>
         <p class="text__main-input-types">enter.wav</p>
         <audio controls class="audio__keysound-gui-info">
-          <source src="/static/mods/xAfhgW14Gd/keyboard/enter.wav" type="audio/wav">
+          <source src="/mods/{{ key }}/keyboard/enter.wav" type="audio/wav">
       Your browser does not support the audio element.
         </audio>
         <p class="text__main-input-types">letter_1.wav</p>
         <audio controls class="audio__keysound-gui-info">
-          <source src="/static/mods/xAfhgW14Gd/keyboard/letter_1.wav" type="audio/wav">
+          <source src="/mods/{{ key }}/keyboard/letter_1.wav" type="audio/wav">
       Your browser does not support the audio element.
         </audio>
         <p class="text__main-input-types">letter_2.wav</p>
         <audio controls class="audio__keysound-gui-info">
-          <source src="/static/mods/xAfhgW14Gd/keyboard/letter_2.wav" type="audio/wav">
+          <source src="/mods/{{ key }}/keyboard/letter_2.wav" type="audio/wav">
       Your browser does not support the audio element.
         </audio>
         <p class="text__main-input-types">letter_3.wav</p>
         <audio controls class="audio__keysound-gui-info">
-          <source src="/static/mods/xAfhgW14Gd/keyboard/letter_3.wav" type="audio/wav">
+          <source src="/mods/{{ key }}/keyboard/letter_3.wav" type="audio/wav">
       Your browser does not support the audio element.
         </audio>
       </div>
@@ -297,7 +297,7 @@
       const p1 = document.getElementById('par1');
       p1.style.borderColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
       const f1 = document.getElementById('frame_1');
-      f1.src = `/mods/${key}/wallpaper/dark.png`;
+      f1.src = `/mods/${key}/wallpaper/dark-image.png`;
       const nt = document.getElementById('new_cut');
       nt.style.backgroundColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${16}%)`;
       const sld = document.getElementById('sldr');

@@ -338,9 +338,21 @@
 
           if (modInfoFiles['license'] && modInfoFiles['icon'] && verifiles) {
 
-            if (currentCategory != "ModInfo") {
+            const clickedButton = event.submitter;
+            const action = document.createElement('input');
+            action.type = 'hidden';
+            action.name = 'action';
+            action.value = clickedButton.value;
+            console.log(clickedButton.value);
 
-              const form = document.getElementById('submitForm');
+            const form = document.getElementById('submitForm');
+            form.appendChild(action);
+
+            if (clickedButton.value === "Test Mod") {
+              form.target = "_blank";
+            }
+
+            if (currentCategory != "ModInfo") {
 
               for (const [key, value] of Object.entries(modInfoData)) {
                 // Create a new hidden input element
