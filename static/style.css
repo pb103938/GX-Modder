@@ -94,12 +94,14 @@ body {
   border-radius: 5px;
   margin-top: 10px;
   display: block;
+  cursor: pointer;
 }
 .modal-content select {
   margin-top: 10px;
   display: block;
   font-family: 'Montserrat Bold';
   color: white;
+  cursor: pointer;
   background-color: #333;
   border-radius: 5px;
 }
@@ -220,6 +222,7 @@ body {
   max-width: 300px;
   color: white;
   border: none;
+  cursor: pointer;
   border-radius: 15px;
   background-color: #0077ff;
   font-family: 'Montserrat Bold';
