@@ -73,6 +73,7 @@
     <div id="pageHeader"></div>
     <div style="position:  relative; margin-top: 82px;"></div>
     <form method="post" id="submitForm" enctype="multipart/form-data" action="/" onsubmit="handleSubmit(event)">
+      <input type="hidden" id="action" name="action" value="Download Mod">
         <div class="catContainer">
             <div class="catList">
                 <ul>
@@ -339,17 +340,18 @@
           if (modInfoFiles['license'] && modInfoFiles['icon'] && verifiles) {
 
             const clickedButton = event.submitter;
-            const action = document.createElement('input');
-            action.type = 'hidden';
-            action.name = 'action';
+            const action = document.getElementById('action');
             action.value = clickedButton.value;
             console.log(clickedButton.value);
 
             const form = document.getElementById('submitForm');
-            form.appendChild(action);
 
             if (clickedButton.value === "Test Mod") {
               form.target = "_blank";
+            }
+
+            else {
+              form.target = "";
             }
 
             if (currentCategory != "ModInfo") {
