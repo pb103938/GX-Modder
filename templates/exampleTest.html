@@ -198,7 +198,7 @@
             <div class="square" id="longrect" style="height: 60px; width: 772px; border: solid 1px; border-bottom: none; border-right: none; border-left: none;"></div>
           </div>
           <div class="container__example-tab">
-            <img id="frame_1" style="height: 563px; width: 1000px;">
+            <img id="frame_1" src="/mods/{{ key }}/wallpaper/dark-image.png" alt="background image" onerror="this.src='/static/defaultMod/'; this.alt='Alternate image description';" style="height: 563px; width: 1000px;">
             <div class="overlay__example-tab">
               <div class="book_icon" style="cursor: pointer; background-color: #131B23; left: 250px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
                 <img style="height: 100%; width: 100%;" src="/static/title/Website Banner.png" type="image/png">
@@ -296,8 +296,6 @@
       }
       const p1 = document.getElementById('par1');
       p1.style.borderColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-      const f1 = document.getElementById('frame_1');
-      f1.src = `/mods/${key}/wallpaper/dark-image.png`;
       const nt = document.getElementById('new_cut');
       nt.style.backgroundColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${16}%)`;
       const sld = document.getElementById('sldr');
