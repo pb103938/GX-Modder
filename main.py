@@ -105,12 +105,13 @@ def downloadFile():
 
 @app.route(f"/test-mod/{downLink}", methods=['GET', 'POST'])
 def testMod():
-  if request.method == "POST":
 
-    music = list_dir(f"mods/{downLink}/music", "music")
-    sound = list_dir(f"mods/{downLink}/sound", "sound")
-    keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
-    wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
+  music = list_dir(f"mods/{downLink}/music", "music")
+  sound = list_dir(f"mods/{downLink}/sound", "sound")
+  keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
+  wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
+
+  if request.method == "POST":
 
     filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
 
@@ -120,7 +121,14 @@ def testMod():
 
   else:
 
-    return render_template("exampleTest.html", key=downLink)
+    letters = []
+    print("keyboard:", keyboard)
+
+    for i in keyboard:
+       if "letter" in i:
+          letters.append(i)
+
+    return render_template("exampleTest.html", key=downLink, items=letters, keybs=keyboard)
   
 @app.route(f"/test-mod/<mod>", methods=['GET', 'POST'])
 def testOtherMod(mod):

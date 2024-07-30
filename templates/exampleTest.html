@@ -9,6 +9,14 @@
 
       // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
       var key = "{{ key }}";
+      var items = {{ items|tojson }};
+      console.log(items)
+        
+        // Function to select a random item
+        function getRandomItem() {
+            var randomIndex = Math.floor(Math.random() * items.length);
+            return items[randomIndex];
+        }
       
       document.addEventListener("keydown", function(event) {
         if (event.code === "Space") {
@@ -24,7 +32,7 @@
           audio.play();
         }
         else {
-          var audio = new Audio(`/mods/${key}/keyboard/letter_1.wav`);
+          var audio = new Audio(`/mods/${key}/${getRandomItem()}`);
           audio.play();
         }
       });
@@ -93,6 +101,12 @@
             // Button from the class was clicked
             const clickedButton = event.target;
             var a = new Audio(`/mods/${key}/sound/close-tab.mp3`);
+
+            a.onerror = function() {
+              a.src = `/static/defaultMod/sound/close-tab.mp3`;
+              a.load();
+            }
+
             a.play();
           }
         })
@@ -135,7 +149,7 @@
     <header id="header" class="hf-hf__header">
       <div class="header" role="navigation">
         <div class="header__wrapper container-fluid wrapper">
-          <a class="header___brand" href="https://gx-modder.pb103938.repl.co">
+          <a class="header___brand" href="opera.makeamod.com">
             <img src="/static/title/title.png" width="304" height="38" alt="GX Modder" class="hidden--from-xl">
           </a>
         </div>
@@ -144,36 +158,13 @@
     <br><br><br><br><br><br>
     <div class="container">
       <div class="left-content">
-        <p class="text__main-input-types">backspace.wav</p>
-        <audio controls class="audio__keysound-gui-info">
-          <source src="/mods/{{ key }}/keyboard/backspace.wav" type="audio/wav">
-      Your browser does not support the audio element.
-        </audio>
-        <p class="text__main-input-types">space.wav</p>
-        <audio controls class="audio__keysound-gui-info">
-          <source src="/mods/{{ key }}/keyboard/space.wav" type="audio/wav">
-      Your browser does not support the audio element.
-        </audio>
-        <p class="text__main-input-types">enter.wav</p>
-        <audio controls class="audio__keysound-gui-info">
-          <source src="/mods/{{ key }}/keyboard/enter.wav" type="audio/wav">
-      Your browser does not support the audio element.
-        </audio>
-        <p class="text__main-input-types">letter_1.wav</p>
-        <audio controls class="audio__keysound-gui-info">
-          <source src="/mods/{{ key }}/keyboard/letter_1.wav" type="audio/wav">
-      Your browser does not support the audio element.
-        </audio>
-        <p class="text__main-input-types">letter_2.wav</p>
-        <audio controls class="audio__keysound-gui-info">
-          <source src="/mods/{{ key }}/keyboard/letter_2.wav" type="audio/wav">
-      Your browser does not support the audio element.
-        </audio>
-        <p class="text__main-input-types">letter_3.wav</p>
-        <audio controls class="audio__keysound-gui-info">
-          <source src="/mods/{{ key }}/keyboard/letter_3.wav" type="audio/wav">
-      Your browser does not support the audio element.
-        </audio>
+        {% for i in keybs %}
+          <p class="text__main-input-types">{{ i.split("/")[1] }}</p>
+          <audio controls class="audio__keysound-gui-info">
+            <source src="/mods/{{ key }}/{{ i }}" type="audio/wav">
+            Your browser does not support the audio element.
+          </audio>
+        {% endfor %}
       </div>
       <div class="right-content">
         <br>
@@ -198,7 +189,7 @@
             <div class="square" id="longrect" style="height: 60px; width: 772px; border: solid 1px; border-bottom: none; border-right: none; border-left: none;"></div>
           </div>
           <div class="container__example-tab">
-            <img id="frame_1" src="/mods/{{ key }}/wallpaper/dark-image.png" alt="background image" onerror="this.src='/static/defaultMod/'; this.alt='Alternate image description';" style="height: 563px; width: 1000px;">
+            <img id="frame_1" src="/mods/{{ key }}/wallpaper/dark-image.png" alt="background image" onerror="this.src='/static/defaultMod/wallpaper/dark-image.png'; this.alt='Alternate image description';" style="height: 563px; width: 1000px;">
             <div class="overlay__example-tab">
               <div class="book_icon" style="cursor: pointer; background-color: #131B23; left: 250px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
                 <img style="height: 100%; width: 100%;" src="/static/title/Website Banner.png" type="image/png">
