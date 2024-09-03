@@ -44,5 +44,5 @@ rsa==4.9
 soupsieve==2.5
 uritemplate==4.1.1
 urllib3==2.0.6
-Werkzeug==3.0.1
+Werkzeug==2.2.3
 Whoosh==2.7.4
