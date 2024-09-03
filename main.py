@@ -181,4 +181,4 @@ if __name__ == '__main__':
         folder_path = os.path.join(TEST_FOLDER, folder)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8080, debug=False)
