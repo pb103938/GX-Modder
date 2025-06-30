@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template_string, send_file, render_template, redirect
-import requests
+#import requests
 from werkzeug.utils import secure_filename
 from randString import gen_rand_str as randStr
 import os
