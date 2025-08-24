@@ -15,6 +15,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
   <body style="background: rgb(28, 29, 36);">
+    <!--Check session expiration-->
+    <script>
+    // Set session lifetime in milliseconds (same as Flask)
+    const sessionLifetime = 30 * 60 * 1000; // 30 minutes
+
+    // How long before expiry to show warning (e.g., 2 minutes)
+    const warningBefore = 2 * 60 * 1000;
+
+    // Track last activity timestamp
+    let lastActivity = Date.now();
+
+    let lastPing = 0;
+
+    const pingInterval = 60 * 1000;
+
+    // Update lastActivity on user actions
+    const activityEvents = ['mousemove', 'keydown', 'scroll', 'click'];
+    activityEvents.forEach(event => {
+        document.addEventListener(event, () => {
+            lastActivity = Date.now();
+            // Optionally, ping server to keep session alive
+            const now = Date.now();
+            if (now - lastPing > pingInterval) {
+              fetch("/renew-session", { method: "POST" });
+              lastPing = now;
+            }
+        });
+    });
+
+    // Check periodically if we need to show the warning
+    setInterval(() => {
+        const timeInactive = Date.now() - lastActivity;
+        const timeToExpiry = sessionLifetime - timeInactive;
+
+        if (timeToExpiry <= warningBefore && !window.sessionWarningShown) {
+            window.sessionWarningShown = true;
+            if (confirm("Your session will expire soon. Click OK to continue.")) {
+                fetch("/renew-session", { method: "POST" })
+                    .then(() => {
+                        lastActivity = Date.now();      // reset timer
+                        window.sessionWarningShown = false; // allow future warnings
+                    });
+            }
+        }
+    }, 5000); // check every 5 seconds
+</script>
+    <!--Load header/footer-->
     <script>
     function headers() {
     fetch('/static/header-footer.html') // Replace 'path/to/other/file.html' with the actual path to your other HTML file.
@@ -392,12 +439,13 @@
             })
             .catch(error => {
                 console.error('Error:', error);
+                alert("alert")
             });
 
           }
 
           else {
-            alert('There is missing info in the Mod Info section! Please fix this and try again.');
+            alert('There is missing info in the Mod Info section! Please ensure everything necessary is uploaded/filled out and all the file types are correct.');
           }
 
       }

@@ -1,22 +1,43 @@
-from flask import Flask, request, jsonify, render_template_string, send_file, render_template, redirect
+from flask import Flask, request, jsonify, render_template_string, send_file, render_template, redirect, session
 #import requests
 from werkzeug.utils import secure_filename
 from randString import gen_rand_str as randStr
 import os
 import zipfile
 import json
-from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip
+from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip, checkFile
 from time import sleep as wait
+from datetime import timedelta
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024 #sets the max file size
 
+#temporary uploads folder - currently unused
 UPLOAD_FOLDER = 'uploads'
 
+#generates a random token for the session
 downLink = str(randStr(10))
 
+#defines a session
+app.secret_key = downLink
+app.permanent_session_lifetime = timedelta(minutes=30)
+
+#permanent uploads folder - currently in use
 TEST_FOLDER = f'mods/{downLink}'
 
+#Main URL for website
 mURL = "127.0.0.1:8080"
+
+#confirms the session
+@app.before_request
+def make_session_permanent():
+   session.permanent = True
+
+#allows for session renewal
+@app.route("/renew-session", methods=['POST'])
+def renew_session():
+   session.modified = True
+   return jsonify(success=True)
 
 @app.route('/<modID>/submit-files', methods=['POST'])
 def handle_form_submission(modID):
@@ -27,11 +48,20 @@ def handle_form_submission(modID):
 
         file = uploaded_files[key]
 
-        fileCat = file.name.split('_')[0]    
+        fileCat = file.name.split('_')[0]
+
+        if not checkFile(file, fileCat):
+          return jsonify(success=False, error="Invalid file type"), 400
+        
+        filename = secure_filename(file.filename)
+
         folder = getFolder(fileCat)
 
-        file.save(f'mods/{modID}{folder}/{file.filename}')
-        print(f'file uploaded: mods/{modID}{folder}/{file.filename}')
+        session.setdefault("uploads", [])
+
+        file.save(f'mods/{modID}{folder}/{filename}')
+        session["uploads"].append(f"mods/{modID}{folder}/{filename}")
+        print(f'file uploaded: mods/{modID}{folder}/{filename}')
 
     return jsonify(success=True)
 
@@ -45,6 +75,12 @@ def upload_file():
         mName = request.form.get('mod name')
 
         mani = createManifest(request.form)
+
+        if mani == "int-failed":
+          return jsonify(success=False, error="Non-integer values entered for HSL values."), 400
+        
+        if mani == "info-failed":
+           return jsonify(success=False, error="Info was malformatted in either the mod name, description, author, or version."), 400
 
         # Fetch file lists from directories
         music = list_dir(f"mods/{downLink}/music", "music")

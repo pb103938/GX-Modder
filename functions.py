@@ -243,32 +243,38 @@ def list_dir(directory, category) -> list:
 def createManifest(form: dict):
 
     #data
-    name = form.get('mod name')
-    auth = form.get('mod author')
-    desc = form.get('mod author')
-    version = float(form.get('mod version'))
+    try:
+        name = str(form.get('mod name'))
+        auth = str(form.get('mod author'))
+        desc = str(form.get('mod author'))
+        version = float(form.get('mod version'))
+    except:
+        return "info-failed"
 
     #color schemes
+    try:
+        #light primary
+        lph = min(int(form.get('lph')), 360)
+        lps = min(int(form.get('lps')), 100)
+        lpl = min(int(form.get('lpl')), 100)
 
-    #light primary
-    lph = form.get('lph')
-    lps = form.get('lps')
-    lpl = form.get('lpl')
+        #light accent
+        lah = min(int(form.get('lah')), 360)
+        las = min(int(form.get('las')), 100)
+        lal = min(int(form.get('lal')), 100)
 
-    #light accent
-    lah = form.get('lah')
-    las = form.get('las')
-    lal = form.get('lal')
+        #dark primary
+        dph = min(int(form.get('dph')), 360)
+        dps = min(int(form.get('dps')), 100)
+        dpl = min(int(form.get('dpl')), 100)
 
-    #dark primary
-    dph = form.get('dph')
-    dps = form.get('dps')
-    dpl = form.get('dpl')
+        #dark accent
+        dah = min(int(form.get('dah')), 360)
+        das = min(int(form.get('das')), 100)
+        dal = min(int(form.get('dal')), 100)
 
-    #dark accent
-    dah = form.get('dah')
-    das = form.get('das')
-    dal = form.get('dal')
+    except:
+        return "int-failed"
 
     mani = {
         "name": str(name),
@@ -342,3 +348,34 @@ def createManifest(form: dict):
     mani["version"] = str(version)
 
     return mani
+
+
+#Used by checkFile function
+ALLOWED_EXTENSIONS = {
+    "KeyboardSounds":["wav"],
+    "BackgroundMusic":["mp3"],
+    "BrowserSounds":["mp3"],
+    "Wallpapers":["png", "webm"],
+    "ModInfo":["txt", "png"]
+}
+
+ALLOWED_MIME_TYPES = {
+    "KeyboardSounds":["audio/wav"],
+    "BackgroundMusic":["audio/mpeg"],
+    "BrowserSounds":["audio/mpeg"],
+    "Wallpapers":["image/png", "video/webm"],
+    "ModInfo":["text/plain", "image/png"]
+}
+
+
+def checkFile(file, category):
+
+    """Checks the file against its category to verify it's allowed."""
+
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    return (
+        '.' in file.filename and
+        ext in ALLOWED_EXTENSIONS[category] and
+        file.mimetype in ALLOWED_MIME_TYPES[category]
+    )
+    
