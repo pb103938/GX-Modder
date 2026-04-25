@@ -49,11 +49,11 @@ def cleanFiles(zipFile, modID):
     try: os.rmdir(f"mods/{modID}/wallpaper") 
     except: pass
 
-    try: os.rmdir(f"mods/{modID}") 
-    except: pass
-
     if os.path.exists(zipFile):
         os.remove(zipFile)
+
+    try: os.rmdir(f"mods/{modID}") 
+    except: pass
 
 
 
@@ -207,7 +207,7 @@ def createZip(filenames: list, mName: str, path):
                         file_folder = 'sound'
                         print("sound file:", filename)
 
-                elif any(filename.endswith(fType) for fType in WALLPAPER_FILE_TYPES):
+                elif any(filename.lower().endswith(fType) for fType in WALLPAPER_FILE_TYPES):
 
                     if "icon" in filename:
                         print("icon file:", filename)
