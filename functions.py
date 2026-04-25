@@ -224,6 +224,7 @@ def createZip(filenames: list, mName: str, path):
                 else:
                     print("deleting file:", filename, "at", os.path.join(path, filename))
                     os.remove(os.path.join(path, filename))
+                    continue
 
                 print("adding to zip file at:", os.path.join(path, file_folder, os.path.basename(filename)))
 
