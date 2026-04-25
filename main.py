@@ -187,11 +187,13 @@ def downloadFileOther(mod):
 
     zip_filename = f'mods/{mod}/{name.replace(" ", "-")}-mod.zip'
       
-    # Return the zip file for download
-    response = send_file(zip_filename, as_attachment=True)
+    @after_this_request
+    def cleanup(response):
+        cleanFiles(zip_filename, downLink)
+        return response
     
     try:
-        return response
+        return send_file(zip_filename, as_attachment=True)
     except:
         return page_not_found(""), 404
 
@@ -209,7 +211,7 @@ def testMod():
   keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
   wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
 
-  if request.method == "POST" and request.form('action') == "Download Mod":
+  if request.method == "POST" and request.form.get('action') == "Download Mod":
 
     filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
 

@@ -207,7 +207,7 @@ def createZip(filenames: list, mName: str, path):
                         file_folder = 'sound'
                         print("sound file:", filename)
 
-                elif any(filename.endswith(fType) for fType in WALLPAPER_FILE_TYPES):
+                elif any(filename.lower().endswith(fType) for fType in WALLPAPER_FILE_TYPES):
 
                     if "icon" in filename:
                         print("icon file:", filename)

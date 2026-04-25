@@ -1,8 +1,6 @@
 Need Added:
 
-finish ensuring files are properly deleted on mod download (rmdir should work) - do during download mod ping
-
-Add front-end wallpaper limiter
+look into 2x license upload on Mozilla
 
 change categories to use flex-wrap instead of custom method
 
@@ -24,4 +22,5 @@ Create Discord for the site
 ToS:
 - Add line about it being the user's responsibility to ensure personal information is not included
 
-Privacy Policy
+Privacy Policy:
+- Line about us not wanting their data
