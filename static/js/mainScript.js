@@ -259,7 +259,7 @@
           currentCategory = category;
   
           if (activeCategory === element) {
-              content.innerHTML = '<div class="message" style="color: white; font-size: 50px;">Select a category to start modding!</div>';
+              content.innerHTML = '<div class="message" style="font-size: 50px;">Select a category to start modding!</div>';
               catName.innerHTML = 'Categories';
               element.classList.remove('active');
               activeCategory = null;
@@ -305,27 +305,16 @@
       }
   
       function displayUploadedFiles(category) {
+
         var num = 0;
-        var col = 1;
+
         var uploadsDiv;
-        for (let i = 0; i < categoryContainer[category]; i++) {
-          uploadsDiv = document.getElementById(`${category}Uploads${i + 1}`);
-          console.log(`${category}Uploads${i + 1}`);
-          uploadsDiv.innerHTML = '';
-        }
+        uploadsDiv = document.getElementById(`${category}Uploads1`);
+        uploadsDiv.innerHTML = '';
 
         categoryFiles[category].forEach((file, index) => {
             num += 1;
-            if (num < 16 && num > 10) {
-              col = 3;
-            }
-            else if (num < 11 && num > 5) {
-              col = 2;
-            }
-            else {
-              col = 1;
-            }
-            uploadsDiv = document.getElementById(`${category}Uploads${col}`);
+            uploadsDiv = document.getElementById(`${category}Uploads1`);
             const fileDiv = document.createElement('div');
             fileDiv.classList.add('fileContainer');
             
@@ -367,25 +356,14 @@
             fileDiv.innerHTML += fileContent;
             uploadsDiv.appendChild(fileDiv);
         });
-        if (num > 14) {
-          col = 4;
-        }
-        else if (num < 15 && num > 9) {
-          col = 3;
-        }
-        else if (num < 10 && num > 4) {
-          col = 2;
-        }
-        else if (num < 10 && num > 3 && category === 'Wallpapers') {
-          col = 2;
-        }
-        else if (num < 10 && num > 1 && category === 'ModInfo') {
-          col = 2;
-        }
+        if (num >= 15 && category === 'BrowserSounds') {}
+        else if (num >= 10 && category === 'KeyboardSounds') {}
+        else if (num >= 5 && category === 'BackgroundMusic') {}
+        else if (num >= 4 && category === 'Wallpapers') {}
+        else if (num >= 2 && category === 'ModInfo') {}
         else {
-          col = 1;
+          document.getElementById(`${category}Uploads1`).innerHTML += `<button type="button" class="addButton" onclick="addFileInput('${category}')">+ <br> Add File</button>`;
         }
-        document.getElementById(`${category}Uploads${col}`).innerHTML += `<button type="button" class="addButton" onclick="addFileInput('${category}')">+ <br> Add File</button>`;
       }
 
   
@@ -399,6 +377,23 @@
               }
           }
 
+          if (category === 'KeyboardSounds' && categoryFiles[category].length >= 10) {
+            alert("You have already uploaded 10 files! You have reached your file upload limit.");
+            return;
+          }
+          if (category === 'BackgroundMusic' && categoryFiles[category].length >= 5) {
+            alert("You have already uploaded 5 files! You have reached your file upload limit.");
+            return;
+          }
+          if (category === 'BrowserSounds' && categoryFiles[category].length >= 15) {
+            alert("You have already uploaded 15 files! You have reached your file upload limit.");
+            return;
+          }
+          if (category === 'Wallpapers' && categoryFiles[category].length >= 4) {
+            alert("You have already uploaded 4 files! You have reached your file upload limit.");
+            return;
+          }
+
           modal.style.display = "block";
           modalOverlay.style.display = "block";
 
@@ -406,13 +401,19 @@
           select.innerHTML = '<option value="">Select...</option>';
           categoryFileTypeOptions[category].forEach(option => {
               let disabled = '';
-              if (category === 'ModInfo' && ((option.value === 'txt' && modInfoFiles.license) || (option.value === 'png' && modInfoFiles.icon))) {
+              if (category === 'ModInfo' && ((option.value === '.txt' && modInfoFiles.license) || (option.value === '.png' && modInfoFiles.icon))) {
                   disabled = 'disabled';
               }
               if (category === 'Wallpapers' && (categoryFiles.Wallpapers.some(item => item.name.includes("dark-image"))) && option.name === 'dark-image') {
                 disabled = 'disabled';
               }
+              if (category === 'Wallpapers' && (categoryFiles.Wallpapers.some(item => item.name.includes("dark-video"))) && option.name === 'dark-video') {
+                disabled = 'disabled';
+              }
               if (category === 'Wallpapers' && (categoryFiles.Wallpapers.some(item => item.name.includes("light-image"))) && option.name === 'light-image') {
+                disabled = 'disabled';
+              }
+              if (category === 'Wallpapers' && (categoryFiles.Wallpapers.some(item => item.name.includes("light-video"))) && option.name === 'light-video') {
                 disabled = 'disabled';
               }
               select.innerHTML += `<option ${disabled} name="${option.name}" desc="${option.desc}" value="${option.value}">${option.label}</option>`;
@@ -452,9 +453,9 @@
 
               if (currentCategory === 'ModInfo') {
                   const fileType = select.value;
-                  if (fileType === 'txt') {
+                  if (fileType === '.txt') {
                       modInfoFiles.license = true;
-                  } else if (fileType === 'png') {
+                  } else if (fileType === '.png') {
                       modInfoFiles.icon = true;
                   }
               }

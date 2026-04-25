@@ -1,9 +1,5 @@
 Need Added:
 
-look into 2x license upload on Mozilla
-
-change categories to use flex-wrap instead of custom method
-
 terms of service (also rename terms and conditions)
 privacy policy
 Security
@@ -16,6 +12,10 @@ guide to using mod test page
 add Discord link to footer
 remove email in footer
 update header-footer links
+
+Make it all mobile friendly (PAIN)
+
+PAY ALL THE LEGAL FEES AHHHH WHYYYY
 
 Create Discord for the site
 
