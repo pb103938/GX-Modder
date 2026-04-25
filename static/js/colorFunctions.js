@@ -1,33 +1,33 @@
 function hexToRgb(hex) {
-  hex = hex.replace("#", "");
 
-  if (hex.length === 3) {
-    hex = hex.split("").map(x => x + x).join("");
-  }
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
 
-  const num = parseInt(hex, 16);
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
-  return {
-    r: (num >> 16) & 255,
-    g: (num >> 8) & 255,
-    b: num & 255
-  };
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+  
 }
+
 
 function rgbToHsl(r, g, b) {
   r /= 255;
   g /= 255;
   b /= 255;
 
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h, s, l = (max + min) / 2;
 
-  let h = 0, s = 0;
-  let l = (max + min) / 2;
-
-  const d = max - min;
-
-  if (d !== 0) {
+  if (max == min) {
+    h = s = 0; // achromatic
+  } else {
+    var d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
     switch (max) {
@@ -36,11 +36,11 @@ function rgbToHsl(r, g, b) {
       case b: h = (r - g) / d + 4; break;
     }
 
-    h *= 60;
+    h /= 6;
   }
 
   return {
-    h: Math.round(h),
+    h: Math.round(h * 360),
     s: Math.round(s * 100),
     l: Math.round(l * 100)
   };

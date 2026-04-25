@@ -100,8 +100,8 @@
                 },
                 "light":
                 {
-                    "gx_accent": "#1BB64C",
-                    "gx_secondary_base": "#1BB64C"
+                    "gx_accent": "#6BADFF",
+                    "gx_secondary_base": "#726BFF"
                 }
             },
             "wallpaper":
@@ -115,7 +115,7 @@
                 },
                 "light":
                 {
-                    "image": "wallpaper/video.webm",
+                    "image": "wallpaper/light-image.png",
                     "first_frame": "wallpaper/first_frame.jpeg",
                     "text_color": "#FFFFFF",
                     "text_shadow": "#0B000E"

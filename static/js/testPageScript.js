@@ -1,38 +1,3 @@
-      var currentURL = window.location.href;
-
-      // Split the URL by '/'
-      var urlParts = currentURL.split('/');
-
-      // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
-      var key = document.querySelector('meta[name="mod_id"]').content;
-
-      function getRandomItem(options) {
-        var randomIndex = Math.floor(Math.random() * options.length);
-        return options[randomIndex];
-      }
-      
-      fetch(`/mods/${key}/manifest.json`)
-        .then(response => response.json())
-        .then(data => {
-
-          // Theme Packs
-          const dTHEME = data.mod.payload.theme.dark;
-          const lTHEME = data.mod.payload.theme.light;
-          var tNAME = "dark";
-
-          // Browser Sounds
-          const sounds = data.mod.payload.browser_sounds;
-
-          // Changing Theme Colors
-          var gxAccent = hexToHsl(dTHEME.gx_accent);
-          var gxSecondayBase = hexToHsl(dTHEME.gx_secondary_base);
-
-          // Constant Theme Colors
-          const dGxAccent = hexToHsl(dTHEME.gx_accent);
-          const dGxSecondaryBase = hexToHsl(dTHEME.gx_secondary_base);
-          const lGxAccent = hexToHsl(lTHEME.gx_accent);
-          const lGxSecondaryBase = hexToHsl(lTHEME.gx_secondary_base);
-
           // Elements
 
           // Tab Top elements
@@ -64,25 +29,68 @@
           const mpAuth = document.getElementById('modProfileAuthor'); // Mod Profile Author element
           const mpVers = document.getElementById('modVersion'); // Mod Profile Version element
           const mpDesc = document.getElementById('modProfileDesc'); // Mod Profile Description element
+      
+      var currentURL = window.location.href;
 
-          // Apply the general color to the Browser element
-          document.documentElement.style.setProperty('--test-main-background-color', `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`);
-          document.documentElement.style.setProperty('--test-main-border-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`);
-          document.documentElement.style.setProperty('--test-all-secondary-base', `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${gxSecondayBase.l}%)`);
-          
-          // Browser element background
-          document.getElementById("frame_1").src = `/mods/${key}/${data.mod.payload.wallpaper[tNAME].image}`;
-          
-          P1.style.setProperty('--test-new-tab-hover-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l - 20}%)`);
+      // Split the URL by '/'
+      var urlParts = currentURL.split('/');
 
-          nt.style.backgroundColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${16}%)`;
+      // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
+      var key = document.querySelector('meta[name="mod_id"]').content;
 
-          // Switch variable definitions
-          document.documentElement.style.setProperty('--test-switch-color', `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${80}%)`);
-          document.documentElement.style.setProperty('--test-switch-background-off', `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`);
-          document.documentElement.style.setProperty('--test-switch-background-on', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${20}%)`);
-          document.documentElement.style.setProperty('--test-switch-border-off', `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${gxSecondayBase.l}%)`);
-          document.documentElement.style.setProperty('--test-switch-border-on', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`);
+      function getRandomItem(options) {
+        var randomIndex = Math.floor(Math.random() * options.length);
+        return options[randomIndex];
+      }
+      
+      fetch(`/mods/${key}/manifest.json`)
+        .then(response => response.json())
+        .then(data => {
+
+          // Theme Packs
+          const dTHEME = data.mod.payload.theme.dark;
+          const lTHEME = data.mod.payload.theme.light;
+          var tNAME = "dark";
+
+          // Browser Sounds
+          const sounds = data.mod.payload.browser_sounds;
+
+          // Changing Theme Colors
+          var gxAccent = hexToHsl(dTHEME.gx_accent);
+          var gxSecondayBase = hexToHsl(dTHEME.gx_secondary_base);
+
+          var gxAccentrgb = hexToRgb(dTHEME.gx_accent);
+          var gxSecondayBasergb = hexToRgb(dTHEME.gx_secondary_base);
+
+          // Constant Theme Colors
+          const dGxAccent = hexToHsl(dTHEME.gx_accent);
+          const dGxSecondaryBase = hexToHsl(dTHEME.gx_secondary_base);
+          const lGxAccent = hexToHsl(lTHEME.gx_accent);
+          const lGxSecondaryBase = hexToHsl(lTHEME.gx_secondary_base);
+
+          function themeColors() {
+
+            // Browser element background
+            document.getElementById("frame_1").src = `/mods/${key}/${data.mod.payload.wallpaper[tNAME].image}`;
+
+            // nt.style.backgroundColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${l2}%)`;
+
+            // Accent Definitions
+            document.documentElement.style.setProperty('--gx-accent-h', gxAccent.h);
+            document.documentElement.style.setProperty('--gx-accent-s', gxAccent.s);
+            document.documentElement.style.setProperty('--gx-accent-r', gxAccentrgb.r);
+            document.documentElement.style.setProperty('--gx-accent-g', gxAccentrgb.g);
+            document.documentElement.style.setProperty('--gx-accent-b', gxAccentrgb.b);
+            
+            // Secondary Base Definitions
+            document.documentElement.style.setProperty('--gx-secondary-h', gxSecondayBase.h);
+            document.documentElement.style.setProperty('--gx-secondary-s', gxSecondayBase.s);
+            document.documentElement.style.setProperty('--gx-secondary-r', gxSecondayBasergb.r);
+            document.documentElement.style.setProperty('--gx-secondary-g', gxSecondayBasergb.g);
+            document.documentElement.style.setProperty('--gx-secondary-b', gxSecondayBasergb.b);
+          }
+
+          themeColors();
 
           // Dark Theme color examples
           a1.style.backgroundColor = `hsl(${dGxAccent.h}, ${dGxAccent.s}%, ${dGxAccent.l}%)`;
@@ -98,6 +106,28 @@
           mpAuth.textContent = data.developer.name;
           mpVers.textContent = `v${data.version}`;
           mpDesc.textContent = data.description;
+
+          // check for Light Mode
+          document.addEventListener("click", (e) => {
+            if (e.target.id === "light-dark-switch") {
+              if (e.target.checked) {
+
+                gxAccent = hexToHsl(lTHEME.gx_accent);
+                gxSecondayBase = hexToHsl(lTHEME.gx_secondary_base);
+                tNAME = "light";
+                themeColors();
+
+              }
+              else {
+
+                gxAccent = hexToHsl(dTHEME.gx_accent);
+                gxSecondayBase = hexToHsl(dTHEME.gx_secondary_base);
+                tNAME = "dark";
+                themeColors();
+
+              }
+            }
+          });
 
           // Bookmark Click Listener
           bookContainer.addEventListener('click', (event) => {
@@ -122,9 +152,9 @@
               a.play();
             } catch (error) {}
 
-            mprt.style.color = "white";
+            mprt.style.color = "var(--imprt-button-click-color)";
             setTimeout(() => {
-              mprt.style.color = "lightgray";
+              mprt.style.color = "";
             }, 150);
 
           });
@@ -136,9 +166,9 @@
               a.play();
             } catch (error) {}
 
-            lvlup.style.color = "white";
+            lvlup.style.color = "var(--imprt-button-click-color)";
             setTimeout(() => {
-              lvlup.style.color = "lightgray";
+              lvlup.style.color = "";
             }, 150);
 
           });
@@ -266,6 +296,29 @@
 
           action.value = downMod.value;
           event.target.submit();
+
+        }
+
+      }
+
+      function maxSat(sat) {
+
+        if (sat > 100) {
+          return 100;
+        }
+
+        if (sat < 0) {
+          return 0;
+        }
+
+        return sat;
+      }
+
+      function satCurve(num, mode) {
+
+        if (mode === "dark") {
+
+          return maxSat((-0.036 * num * num) + (3.98 * num) - 48.5)
 
         }
 

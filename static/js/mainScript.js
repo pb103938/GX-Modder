@@ -36,37 +36,37 @@
       // Define category-specific file type options
       const categoryFileTypeOptions = {
           KeyboardSounds: [
-              { value: 'wav', name: 'backspace', label: 'Backspace Key', desc: 'This sound will play whenever you press Backspace.'},
-              { value: 'wav', name: 'enter', label: 'Enter (Return) Key', desc: 'This sound will play whenever you press Enter (Return).'},
-              { value: 'wav', name: 'space', label: 'Space Key', desc: 'This sound will play whenever you press Space.'},
-              { value: 'wav', name: 'letter', label: 'Other Key', desc: 'This sound will play whenever you press any key other than Backspace, Space, or Enter (Return).'}
+              { value: '.wav', name: 'backspace', label: 'Backspace Key', desc: 'This sound will play whenever you press Backspace.'},
+              { value: '.wav', name: 'enter', label: 'Enter (Return) Key', desc: 'This sound will play whenever you press Enter (Return).'},
+              { value: '.wav', name: 'space', label: 'Space Key', desc: 'This sound will play whenever you press Space.'},
+              { value: '.wav', name: 'letter', label: 'Other Key', desc: 'This sound will play whenever you press any key other than Backspace, Space, or Enter (Return).'}
           ],
           BackgroundMusic: [
-              { value: 'mp3', name: 'song', label: 'Background Song', desc: 'This song will play in the background as you browse.'}
+              { value: '.mp3', name: 'song', label: 'Background Song', desc: 'This song will play in the background as you browse.'}
           ],
           BrowserSounds: [
-              { value: 'mp3', name: 'click', label: 'Click', desc: "This sound wll play whenever you click on something."},
-              { value: 'mp3', name: 'close-tab', label: 'Close Tab', desc: "This sound will play whenever you close a tab."},
-              { value: 'mp3', name: 'feature-switch-off', label: 'Feature Switch Off', desc: "This sound will play whenever you turn off a feature switch. This feature is currently not used by Opera GX and may be added in the future."},
-              { value: 'mp3', name: 'feature-switch-on', label: 'Feature Switch On', desc: "This sound will play whenever you turn on a feature switch. This feature is currently not used by Opera GX and may be added in the future."},
-              { value: 'mp3', name: 'hover', label: 'Hover', desc: "This sound will play whenever you hover over a shortcut on the Speed Dial."},
-              { value: 'mp3', name: 'important-click', label: 'Important Click', desc: "This sound will play whenever you do an important click. This feature is currently not used by Opera GX and may be added in the future."},
-              { value: 'mp3', name: 'level-upgrade', label: 'Level Upgrade', desc: "This sound will play whenever a level upgrades. This feature is currently not used by Opera GX and may be added in the future."},
-              { value: 'mp3', name: 'limiter-off', label: 'Limiter Off', desc: "This sound will play whenever you turn off a limiter (ex. CPU Usage Limiter)."},
-              { value: 'mp3', name: 'limiter-on', label: 'Limiter On', desc: "This sound will play whenever you turn on a limiter (ex. RAM Usage Limiter)."},
-              { value: 'mp3', name: 'new-tab', label: 'New Tab', desc: "This sound will play whenever you open a new tab."},
-              { value: 'mp3', name: 'switch', label: 'Switch', desc: "This sound will play whenever you enable or disable a switch."},
-              { value: 'mp3', name: 'tab-slash', label: 'Tab Slash', desc: "This sound will play whenever you slash a tab."}
+              { value: '.mp3', name: 'click', label: 'Click', desc: "This sound wll play whenever you click on something."},
+              { value: '.mp3', name: 'close-tab', label: 'Close Tab', desc: "This sound will play whenever you close a tab."},
+              { value: '.mp3', name: 'feature-switch-off', label: 'Feature Switch Off', desc: "This sound will play whenever you turn off a feature switch. This feature is currently not used by Opera GX and may be added in the future."},
+              { value: '.mp3', name: 'feature-switch-on', label: 'Feature Switch On', desc: "This sound will play whenever you turn on a feature switch. This feature is currently not used by Opera GX and may be added in the future."},
+              { value: '.mp3', name: 'hover', label: 'Hover', desc: "This sound will play whenever you hover over a shortcut on the Speed Dial."},
+              { value: '.mp3', name: 'important-click', label: 'Important Click', desc: "This sound will play whenever you do an important click. This feature is currently not used by Opera GX and may be added in the future."},
+              { value: '.mp3', name: 'level-upgrade', label: 'Level Upgrade', desc: "This sound will play whenever a level upgrades. This feature is currently not used by Opera GX and may be added in the future."},
+              { value: '.mp3', name: 'limiter-off', label: 'Limiter Off', desc: "This sound will play whenever you turn off a limiter (ex. CPU Usage Limiter)."},
+              { value: '.mp3', name: 'limiter-on', label: 'Limiter On', desc: "This sound will play whenever you turn on a limiter (ex. RAM Usage Limiter)."},
+              { value: '.mp3', name: 'new-tab', label: 'New Tab', desc: "This sound will play whenever you open a new tab."},
+              { value: '.mp3', name: 'switch', label: 'Switch', desc: "This sound will play whenever you enable or disable a switch."},
+              { value: '.mp3', name: 'tab-slash', label: 'Tab Slash', desc: "This sound will play whenever you slash a tab."}
           ],
           Wallpapers: [
-              { value: 'png', name: 'light-image', label: 'Static Light Wallpaper', desc: "This is the wallpaper image that will show in light mode."},
-              { value: 'png', name: 'dark-image', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
-              { value: 'webm', name: 'light-video', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
-              { value: 'webm', name: 'dark-video', label: 'Dynamic Dark Wallpaper', desc: "This is the wallpaper video that will show in dark mode."}
+              { value: '.png, .jpg, .jpeg, .webp', name: 'light-image', label: 'Static Light Wallpaper', desc: "This is the wallpaper image that will show in light mode."},
+              { value: '.png, .jpg, .jpeg, .webp', name: 'dark-image', label: 'Static Dark Wallpaper', desc: "This is the wallpaper video that will show in light mode."},
+              { value: '.webm, .apng', name: 'light-video', label: 'Dynamic Light Wallpaper', desc: "This is the wallpaper image that will show in dark mode."},
+              { value: '.webm, .apng', name: 'dark-video', label: 'Dynamic Dark Wallpaper', desc: "This is the wallpaper video that will show in dark mode."}
           ],
           ModInfo: [
-              { value: 'txt', name: 'license', label: 'License', desc: "This is the license which verifies you are allowed to use the content in this mod."},
-              { value: 'png', name: 'icon', label: 'Icon (512x512)', desc: "This is the mod's icon."}
+              { value: '.txt', name: 'license', label: 'License', desc: "This is the license which verifies you are allowed to use the content in this mod."},
+              { value: '.png', name: 'icon', label: 'Icon (512x512)', desc: "This is the mod's icon."}
           ]
       };
       
@@ -438,7 +438,7 @@
             fileInput.disabled = false;
             uploadBtn.disabled = false;
             fileDesc.innerHTML = fDesc;
-            fileInput.accept = '.' + fileType;
+            fileInput.accept = fileType;
         }
       }
 

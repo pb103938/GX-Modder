@@ -44,6 +44,7 @@
     <title>Test mod</title>
     <link rel="icon" href="/static/icon.png" type="image/png">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styleDark.css" id="colorStyle">
     <meta name="mod_id" content="{{ key }}"> <!--CHANGE ME TO {{ modID }}-->
   </head>
   <body>
@@ -52,7 +53,7 @@
     <br><br><br><br><br><br>
     <div style="font-family: 'Montserrat'; margin-left: 50px;">
           <p style="color: red;">*NOTE:</p>
-          This testing page is not 100% accurate. Appearances and layouts shown here may differ from those when of Opera GX. This is simply a way to get a general idea of how your mod will work before downloading it.
+          This testing page is not 100% accurate. Appearances and layouts shown here may differ from those of Opera GX. This is simply a way to get a general idea of how your mod will look before you download it.
         </div>
         <br><br>
     <div class="container">
@@ -123,9 +124,10 @@
                   <div class="book_text" style="font-size: 15px; left: 250px; top: 195px; width: 135px;">Opera GX Modder</div>
                 </div>
                 <div class="overlay__example-tab">
-                  <div class="square noBord" id="new_cut" style="cursor: pointer; font-family: Arial; font-size: 12px; text-align: center; align-items: center; justify-content: center; opacity: 0.7; left: 390px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
-                    <br><br>
-                    + Add a site
+                  <div class="square noBord" id="new_cut">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; text-align: center; align-content: center; height: -webkit-fill-available;">
+                      +
+                    </div>
                   </div>
               </div>
             </div>

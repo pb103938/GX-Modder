@@ -5,6 +5,8 @@ import re
 HEX_COLOR = re.compile(r"^#?[0-9a-fA-F]{6}$")
 NUMBER_REGEX = re.compile(r"^\d{1,5}(\.\d{1,5}){1,4}$")
 
+WALLPAPER_FILE_TYPES = [".png", ".jpg", ".jpeg", ".webp", ".webm", ".apng"]
+
 def getFolder(category):
 
     if category == "KeyboardSounds":
@@ -22,6 +24,38 @@ def getFolder(category):
     else:
         return ""
     
+def cleanFiles(zipFile, modID):
+
+    music = list_dir(f"mods/{modID}/music", "music")
+    sound = list_dir(f"mods/{modID}/sound", "sound")
+    keyboard = list_dir(f"mods/{modID}/keyboard", "keyboard")
+    wallpaper = list_dir(f"mods/{modID}/wallpaper", "wallpaper")
+
+    files = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
+
+    for file in files:
+        if os.path.exists(f"mods/{modID}/{file}"):
+            os.remove(f"mods/{modID}/{file}")
+
+    try: os.rmdir(f"mods/{modID}/music") 
+    except: pass
+
+    try: os.rmdir(f"mods/{modID}/sound") 
+    except: pass
+
+    try: os.rmdir(f"mods/{modID}/keyboard") 
+    except: pass
+
+    try: os.rmdir(f"mods/{modID}/wallpaper") 
+    except: pass
+
+    try: os.rmdir(f"mods/{modID}") 
+    except: pass
+
+    if os.path.exists(zipFile):
+        os.remove(zipFile)
+
+
 
 def config_list(lst: list, category: str) -> dict:
 
@@ -150,7 +184,7 @@ def config_list(lst: list, category: str) -> dict:
     return mani
 
 
-def createZip(filenames: list, mName: str, path):
+def createZip(filenames: list, mName: str, path):   
     if len(filenames) > 0:
 
         zip_filename = f'{mName.replace(" ", "-")}-mod.zip'
@@ -173,7 +207,7 @@ def createZip(filenames: list, mName: str, path):
                         file_folder = 'sound'
                         print("sound file:", filename)
 
-                elif filename.endswith('.png') or filename.endswith('.webm') or filename.endswith('.jpg') or filename.endswith('jpeg') or filename.endswith('webp'):
+                elif any(filename.endswith(fType) for fType in WALLPAPER_FILE_TYPES):
 
                     if "icon" in filename:
                         print("icon file:", filename)

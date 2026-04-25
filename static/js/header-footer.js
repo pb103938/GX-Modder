@@ -50,3 +50,24 @@
 
     headers();
     footers();
+
+    function LightDarkMode() {
+
+      const chgBtn = document.getElementById("light-dark-switch"); // Switch which controls light/dark mode
+      const stlsheet = document.getElementById("colorStyle"); // Stylesheet which controls light/dark mode
+
+      const headTitle = document.getElementById("headerTitle"); // Header Title element
+      const footTitle = document.getElementById("footerTitle"); // Footer Title element
+
+      if (chgBtn.checked) {
+        stlsheet.href = "/static/styleLight.css";
+        headTitle.src = "/static/title/titleLight.webp";
+        footTitle.src = "/static/title/titleLight.webp";
+      }
+
+      else {
+        stlsheet.href = "/static/styleDark.css";
+        headTitle.src = "/static/title/title.webp";
+        footTitle.src = "/static/title/title.webp";
+      }      
+    }

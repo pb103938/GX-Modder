@@ -9,114 +9,31 @@
 </head>
 <body>
     <header id="header" class="main__header" style="top: -8px; right: 8px;">
-
       <nav class="main__header-navigation">
         <ul style="display: flex;" class="main__header-ul">
           <div class="logo">
             <a href="https://home.makeamod.com/" id="logo-link">
-              <img style="height: 31px; width: 192px;" src="/static/title/title.webp" alt="MAKEaMOD">
+              <img id="headerTitle" style="height: 31px; width: 192px;" src="/static/title/title.webp" alt="MAKEaMOD">
             </a>
           </div>
-          <!--
-          <div class="dropdowns">
-            <li class="dropdown" style="left: 3%; width: 200px; text-align: center;"><a class="dropdown-title">Supported Applications</a>
-            <div class="dropdown-menu" style="left: -1px; --invisible-width: 200px; text-align: left;">
-              <ul>
-                <br>
-                <li>
-                  <div class="dropdown-subtitle">
-                    <div class="sub-spacer">
-                      <a style="cursor: pointer;">Games ></a>
-                    </div>
-                    <div class="dropdown-submenu">
-                      <ul>
-                        <br><br>
-                        <a style="cursor: pointer;" href="https://minecraft.makeamod.com">
-                          Minecraft
-                        </a>
-                        <br><br>
-                        <a style="cursor: pointer;" href="https://rl.makeamod.com">
-                          Rocket League
-                        </a>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="dropdown-subtitle">
-                    <div class="sub-spacer">
-                      <a style="cursor: pointer;">Applications ></a>
-                    </div>
-                    <div class="dropdown-submenu">
-                      <ul>
-                        <br><br>
-                        <a style="cursor: pointer;" href="https://opera.makeamod.com">
-                          Opera GX
-                        </a>
-                        <br><br>
-                        <a style="cursor: pointer;" href="https://signal.makeamod.com">SignalRGB</a>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <!--
-                <li>
-                  <div class="dropdown-subtitle">
-                    <div class="sub-spacer">
-                      <a style="cursor: pointer;">Other ></a>
-                    </div>
-                    <div class="dropdown-submenu">
-                      <ul>
-                      </ul>
-                    </div>
-                  </div>
-                </li>-->
-                <!-- Add more submenu items as needed
-              </ul>
-            </div>
-          </li>
-          <li id="other" class="dropdown" style="left: 12%; width: 200px; text-align: center;">
-            <a class="dropdown-title">Info</a>
-            <div id="othermenu" class="dropdown-menu" style=" left: -1px; --invisible-width: 200px; text-align: left;">
-              <!--
-              <ul>
-                <br>
-                <li>
-                  <div class="dropdown-subtitle">
-                    <a style="cursor: pointer;">Pet Care ></a>
-                    <div class="dropdown-submenu">
-                      <ul>
-                        <br><br>
-                        <br><br>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <br>
-                <li>
-                  <div class="dropdown-subtitle">
-                    <a style="cursor: pointer;">Lawn Services ></a>
-                    <div class="dropdown-submenu">
-                      <ul>
-                        <br><br>
-                        <br><br>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <!-- Add more submenu items as needed
-              </ul>
-            </div>
-          </li>
-          </div>-->
           <div class="modButtonContainer">
+            <div style="margin-right: 30px; display: flex; align-items: center;">
+
+              <!--Switch - Change between dark/light mode-->
+              <label class="switch" title="Switch between light mode and dark mode">
+                <input type="checkbox" id="light-dark-switch" onclick="LightDarkMode()">
+                <span class="slider" id="ldMode"></span>
+
+
+              </label>
+            </div>
             <div class="modButton">
-            <div style="margin-top: 3px;">
-              <div>
-                <a href="create" style="color: white;">Start Modding</a>
+              <div style="margin-top: 3px;">
+                <div>
+                  <a href="create" style="color: white;">Start Modding</a>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </ul>
       </nav>
@@ -128,9 +45,6 @@
           <div class="footer__sections">
               <strong style="margin-left: 30px; font-size: 14px;">SERVICES</strong>
               <br><br>
-              <!--<a class="footer___links" style="margin-left: 30px; font-size: 12px; margin-bottom: 20px;" href="/lawn-care">Lawn Care</a>
-              <br>
-              <a class="footer___links" style="margin-left: 30px; font-size: 12px; margin-bottom: 20px;" href="/pet-info">Pet Care</a>-->
             </div>
             <div class="footer__sections">
               <strong style="margin-left: 30px; font-size: 14px;">LEGAL</strong>
@@ -148,13 +62,10 @@
             <div class="footer__sections">
               <strong style="margin-left: 30px; font-size: 14px;">COMPANY</strong>
               <br><br>
-              <!--<a class="footer___links" style="margin-left: 30px; font-size: 12px; margin-bottom: 20px;" href="/about-us">About us</a>
-              <br>
-              <a class="footer___links" style="margin-left: 30px; font-size: 12px; margin-bottom: 20px;" href="/prices">Pricing</a>-->
             </div>
             <div class="header__wrapper container-fluid wrapper" style="width: 25%; margin-top: 30px;">
               <a class="header___brand" href="/">
-                <img src="/static/title/title.webp" width="192" height="31" alt="MakeaMod.com" class="hidden--from-xl">
+                <img id="footerTitle" src="/static/title/title.webp" width="192" height="31" alt="MakeaMod.com" class="hidden--from-xl">
               </a>
               <p style="font-size: 12px; font-family: 'Montserrat Bold'; color: #A157D6; opacity: 1;">Making modding a breeze!</p>
               <p style="font-size: 12px; font-family: 'Montserrat Bold'; color: #A157D6; opacity: 1;">© 2025 MakeaMod. All rights reserved.</p>

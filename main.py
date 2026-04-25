@@ -1,12 +1,12 @@
 # Imports
-from flask import Flask, request, jsonify, render_template_string, send_file, render_template, redirect
+from flask import Flask, request, jsonify, render_template_string, send_file, render_template, redirect, after_this_request
 #import requests
 from werkzeug.utils import secure_filename
 from randString import gen_rand_str as randStr
 import os
 import zipfile
 import json
-from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip
+from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip, cleanFiles
 from time import sleep as wait
 from datetime import timedelta
 
@@ -22,7 +22,7 @@ app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024 # 25 MB
 UPLOAD_FOLDER = 'uploads'
 
 # Allowed file types
-ALLOWED_EXTENSIONS = ["png", "jpg", "mp3", "wav", "txt", "webm"]
+ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "mp3", "wav", "txt", "webm", "apng"]
 
 # Allowed categories
 ALLOWED_CATEGORIES = ['keyboard', 'music', 'sound', 'wallpaper']
@@ -49,15 +49,30 @@ def handle_form_submission(modID):
         # gets the file's corresponding category
         fileCat = key.split("_")[0]
         if not fileCat or fileCat not in ["KeyboardSounds", "BackgroundMusic", "BrowserSounds", "Wallpapers", "ModInfo"]:
-           return jsonify(success=False), 400
+           continue
 
         folder = getFolder(fileCat)
         filename = secure_filename(file.filename)
 
+        lenFiles = len(list_dir(f"mods/{downLink}/{folder}", folder))
+
+        if lenFiles >= 10 and folder == "keyboard":
+           continue
+        
+        elif lenFiles >= 5 and folder == "music":
+           continue
+        
+        elif lenFiles >= 15 and folder == "sound":
+           continue
+        
+        elif lenFiles >= 4 and folder == "wallpaper":
+           continue
+           
+
         # ensures proper file type
         ext = filename.rsplit(".", 1)[-1].lower()
         if ext not in ALLOWED_EXTENSIONS:
-           return jsonify(success=False), 400
+           continue
         
         # saves file
         save_path = os.path.join("mods", str(modID), folder, filename)
@@ -119,26 +134,42 @@ def upload_file():
         return redirect(f"/download-mod/{downLink}")
     
     else:
-        return render_template('index.html', modID=downLink)
+
+        try:
+            return render_template('index.html', modID=downLink)
+        except:
+            return page_not_found(""), 404
 
 
 @app.route("/terms")
 def terms():
-  return render_template('terms.html')
+  try:
+    return render_template('terms.html')
+  except:
+    return page_not_found(""), 404
 
 @app.route(f"/download-mod/{downLink}", methods=['GET', 'POST'])
 def downloadFile():
   if request.method == "POST":
     
     zip_filename = f'mods/{downLink}/{mName.replace(" ", "-")}-mod.zip'
-      
-    # Return the zip file for download
-    response = send_file(zip_filename, as_attachment=True)
+
+    @after_this_request
+    def cleanup(response):
+        cleanFiles(zip_filename, downLink)
+        return response
     
-    return response
+    try:
+        return send_file(zip_filename, as_attachment=True)
+    
+    except:
+        return page_not_found(""), 404
 
   else:
-    return render_template(f"exampleDownload.html")
+    try:
+        return render_template(f"exampleDownload.html")
+    except:
+        return page_not_found(""), 404
   
 @app.route(f"/download-mod/<mod>", methods=['GET', 'POST'])
 def downloadFileOther(mod):
@@ -159,10 +190,16 @@ def downloadFileOther(mod):
     # Return the zip file for download
     response = send_file(zip_filename, as_attachment=True)
     
-    return response
+    try:
+        return response
+    except:
+        return page_not_found(""), 404
 
   else:
-    return render_template(f"exampleDownload.html")
+    try:
+        return render_template(f"exampleDownload.html")
+    except:
+      return page_not_found(""), 404
 
 @app.route(f"/test-mod/{downLink}", methods=['GET', 'POST'])
 def testMod():
@@ -187,8 +224,10 @@ def testMod():
     for i in keyboard:
        if "letter" in i:
           letters.append(i)
-
-    return render_template("exampleTest.html", key=downLink, items=letters, keybs=keyboard, music=music, sounds=sound)
+    try:
+        return render_template("exampleTest.html", key=downLink, items=letters, keybs=keyboard, music=music, sounds=sound)
+    except:
+      return page_not_found(""), 404
   
 @app.route(f"/test-mod/<mod>", methods=['GET', 'POST'])
 def testOtherMod(mod):
@@ -232,12 +271,29 @@ def testOtherMod(mod):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404.html'), 404
+
+    try:
+        return render_template('404.html'), 404
+    except:
+       return "404 - I guess our 404 page broke", 404
+
+@app.errorhandler(400)
+def access_denied(error):
+   
+   try:
+    return render_template('400.html'), 400
+   except:
+      return "400 - I guess our 400 page broke", 400
 
 @app.route('/privacy', methods=['GET', 'POST'])
 def privacy_tab():
   if request.method == 'GET':
-    return render_template("privacyPolicy.html")
+
+    try:
+        return render_template("privacyPolicy.html")
+    
+    except:
+        return render_template('404.html'), 404
 
 @app.route('/create', methods=["GET"])
 def createPage():
@@ -245,11 +301,30 @@ def createPage():
 
 @app.route('/mods/<modID>/manifest.json', methods=["GET"])
 def getManifest(modID):
-   return send_file(f"mods/{modID}/manifest.json")
+   
+   try:
+        return send_file(f"mods/{modID}/manifest.json")
+   except:
+        return render_template('404.html'), 404
 
 @app.route('/mods/<modID>/icon.<fileType>', methods=["GET"])
 def getIcon(modID, fileType):
-   return send_file(f"mods/{modID}/icon.{fileType}")
+   
+   try:
+    return send_file(f"mods/{modID}/icon.{fileType}")
+   
+   except:
+    return render_template('404.html'), 404
+
+@app.route('/mods/<modID>/license.txt', methods=["GET"])
+def getLicense(modID):
+   
+   try:
+    return send_file(f"mods/{modID}/license.txt")
+   
+   except:
+    return render_template('404.html'), 404
+
 
 @app.route('/mods/<modID>/<folder>/<file>', methods=["GET"])
 def getFiles(modID, folder, file):
@@ -265,8 +340,8 @@ if __name__ == '__main__':
         os.makedirs(UPLOAD_FOLDER)
     if not os.path.exists(TEST_FOLDER):
         os.makedirs(TEST_FOLDER)
-    if not os.path.exists(f"{TEST_FOLDER}/manifest.json"):
-        secure_filename(f"{TEST_FOLDER}/manifest.json")
+    if not os.path.exists("mods"):
+       os.makedirs("mods")
     for folder in ALLOWED_CATEGORIES:
         folder_path = os.path.join(TEST_FOLDER, folder)
         if not os.path.exists(folder_path):

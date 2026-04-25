@@ -6,7 +6,10 @@
     <link rel="icon" href="static/icon.png" type="image/png">
     <title>New Main Page</title>
     <meta name="description" content="Make Opera GX mods with ease!">
+
     <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="/static/styleDark.css" id="colorStyle">
+
     <meta property="og:title" content="New Main Page">
     <meta property="og:description" content="Make Opera GX mods with ease!">
     <meta property="og:image" content="/static/embed/Website Banner.png">
@@ -16,7 +19,7 @@
     <meta name="mod_id" content="{{ modID }}">
 </head>
   <body>
-    <script src="/static/js/header-footer.js"></script>
+    <script src="/static/js/header-footer.js" defer></script>
     <div id="pageHeader"></div>
     <div style="position:  relative; margin-top: 82px;"></div>
     <form method="post" id="submitForm" enctype="multipart/form-data" action="/" onsubmit="handleSubmit(event)">
@@ -49,7 +52,7 @@
                             <div class="textBox"><div style="display: flex;">Mod Info <div style="color: red; margin-left: 8px;">(REQUIRED)</div></div><div id="ModInfoCount" class="numBox" maxCt="2">0/2</div></div>
                         </div>
                         <div style="margin-top: 20%;"><br></div>
-                        <input class="downlink__button" style="margin-right: 20px;" type="submit" value="Download Mod" name="generateMod"> <button class="downlink__button" style="background: #F3B8FF; color: #3C0047;" type="submit" value="Test Mod" name="testButton">Test Mod</button>
+                        <input class="downlink__button" style="margin-right: 20px;" type="submit" value="Download Mod" name="generateMod"> <button class="downlink__button" style="background: var(--main-test-mod-button-background-color); color: var(--main-test-mod-button-color);" type="submit" value="Test Mod" name="testButton">Test Mod</button>
                         <div style="margin-top: 30%;"><br></div>
                         <br>
                         <br>
@@ -58,7 +61,7 @@
             </div>
             <div class="modBoxDef" id="modBox">
               <div class="uploadContent" id="UploadContent"></div>
-              <div style="color: white; font-size: 50px;">Select a category to start modding!</div>
+              <div style="font-size: 50px;">Select a category to start modding!</div>
             </div>
         </div>
     </form>
