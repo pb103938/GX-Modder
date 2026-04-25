@@ -1,6 +1,6 @@
 Need Added:
 
-ensure files are properly deleted on mod download (rmdir should work) - do during download mod ping
+finish ensuring files are properly deleted on mod download (rmdir should work) - do during download mod ping
 
 Add front-end wallpaper limiter
 

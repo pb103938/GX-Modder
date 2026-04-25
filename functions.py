@@ -49,11 +49,11 @@ def cleanFiles(zipFile, modID):
     try: os.rmdir(f"mods/{modID}/wallpaper") 
     except: pass
 
-    try: os.rmdir(f"mods/{modID}") 
-    except: pass
-
     if os.path.exists(zipFile):
         os.remove(zipFile)
+
+    try: os.rmdir(f"mods/{modID}") 
+    except: pass
 
 
 
