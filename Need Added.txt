@@ -1,0 +1,20 @@
+Need Added:
+
+add light mode switch
+- make it so when enabled it changes test page theme to light mode
+
+update 404 page with reason and header-footer and stuff
+update header-footer links
+
+file type acceptance for jpg and jpeg
+switch download request to get as opposed to post
+ensure files are properly deleted on mod download (rmdir should work)
+
+terms of service (also rename terms and conditions)
+privacy policy
+Security
+- Remove EULAu
+- Remove cookies policy
+
+guide to creating mods
+guide to using mod test page

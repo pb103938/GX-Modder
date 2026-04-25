@@ -1,19 +1,23 @@
 import os
 import zipfile
+import re
+
+HEX_COLOR = re.compile(r"^#?[0-9a-fA-F]{6}$")
+NUMBER_REGEX = re.compile(r"^\d{1,5}(\.\d{1,5}){1,4}$")
 
 def getFolder(category):
 
     if category == "KeyboardSounds":
-        return "/keyboard"
+        return "keyboard"
     
     elif category == "BackgroundMusic":
-        return "/music"
+        return "music"
     
     elif category == "BrowserSounds":
-        return "/sound"
+        return "sound"
     
     elif category == "Wallpapers":
-        return "/wallpaper"
+        return "wallpaper"
     
     else:
         return ""
@@ -169,7 +173,7 @@ def createZip(filenames: list, mName: str, path):
                         file_folder = 'sound'
                         print("sound file:", filename)
 
-                elif filename.endswith('.png') or filename.endswith('.webm'):
+                elif filename.endswith('.png') or filename.endswith('.webm') or filename.endswith('.jpg') or filename.endswith('jpeg') or filename.endswith('webp'):
 
                     if "icon" in filename:
                         print("icon file:", filename)
@@ -180,7 +184,7 @@ def createZip(filenames: list, mName: str, path):
                         file_folder = 'wallpaper'
 
                 elif filename.endswith('.txt') or filename.endswith('.json'):
-                    print("license file:", filename)
+                    print("license or manifest file:", filename)
                     file_folder = ''
 
                 else:
@@ -239,36 +243,51 @@ def list_dir(directory, category) -> list:
         print(f"Permission denied: {directory}")
         return []
 
+def checkColor(color: str):
+    if color and HEX_COLOR.match(color):
+        return color if color.startswith("#") else f"#{color}"
+    else:
+        return False
+    
+def checkVersion(ver):
+
+    if not ver or not NUMBER_REGEX.match(ver):
+        return False
+
+    parts = ver.split('.')
+    if any(int(p) > 60000 for p in parts):
+        return False
+    
+    return ver
+
 
 def createManifest(form: dict):
 
     #data
     name = form.get('mod name')
     auth = form.get('mod author')
-    desc = form.get('mod author')
-    version = float(form.get('mod version'))
+    desc = form.get('mod description')
+    version = checkVersion(form.get('mod version'))
+
+    if not name or not auth or not version or name.lower() == "none":
+        return None
 
     #color schemes
 
     #light primary
-    lph = form.get('lph')
-    lps = form.get('lps')
-    lpl = form.get('lpl')
+    lp = checkColor(form.get('lp'))
 
     #light accent
-    lah = form.get('lah')
-    las = form.get('las')
-    lal = form.get('lal')
+    la = checkColor(form.get('la'))
 
     #dark primary
-    dph = form.get('dph')
-    dps = form.get('dps')
-    dpl = form.get('dpl')
+    dp = checkColor(form.get('dp'))
 
     #dark accent
-    dah = form.get('dah')
-    das = form.get('das')
-    dal = form.get('dal')
+    da = checkColor(form.get('da'))
+
+    if not lp and la and dp and da:
+        return None
 
     mani = {
         "name": str(name),
@@ -318,24 +337,16 @@ def createManifest(form: dict):
     #color scheme
 
     #dark primary
-    mani["mod"]["payload"]["theme"]["dark"]["gx_accent"]["h"] = int(dph)
-    mani["mod"]["payload"]["theme"]["dark"]["gx_accent"]["s"] = int(dps)
-    mani["mod"]["payload"]["theme"]["dark"]["gx_accent"]["l"] = int(dpl)
+    mani["mod"]["payload"]["theme"]["dark"]["gx_accent"] = str(dp)
 
     #dark accent
-    mani["mod"]["payload"]["theme"]["dark"]["gx_secondary_base"]["h"] = int(dah)
-    mani["mod"]["payload"]["theme"]["dark"]["gx_secondary_base"]["s"] = int(das)
-    mani["mod"]["payload"]["theme"]["dark"]["gx_secondary_base"]["l"] = int(dal)
+    mani["mod"]["payload"]["theme"]["dark"]["gx_secondary_base"] = str(da)
 
     #light primary
-    mani["mod"]["payload"]["theme"]["light"]["gx_accent"]["h"] = int(lph)
-    mani["mod"]["payload"]["theme"]["light"]["gx_accent"]["l"] = int(lpl)
-    mani["mod"]["payload"]["theme"]["light"]["gx_accent"]["s"] = int(lps)
+    mani["mod"]["payload"]["theme"]["light"]["gx_accent"] = str(lp)
 
     #light accent
-    mani["mod"]["payload"]["theme"]["light"]["gx_secondary_base"]["h"] = int(lah)
-    mani["mod"]["payload"]["theme"]["light"]["gx_secondary_base"]["s"] = int(las)
-    mani["mod"]["payload"]["theme"]["light"]["gx_secondary_base"]["l"] = int(lal)
+    mani["mod"]["payload"]["theme"]["light"]["gx_secondary_base"] = str(la)
 
     mani["mod"]["schema_version"] = 1
 

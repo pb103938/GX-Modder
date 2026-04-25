@@ -1,0 +1,6 @@
+{
+    "python-envs.workspaceSearchPaths": [
+        "./**/.venv",
+        "/home/pb10/Documents/MakeaMod"
+    ]
+}

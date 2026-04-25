@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <!--Needs to stay here-->
     <script>
       var currentURL = window.location.href;
 
@@ -13,9 +14,9 @@
       console.log(items)
         
         // Function to select a random item
-        function getRandomItem() {
-            var randomIndex = Math.floor(Math.random() * items.length);
-            return items[randomIndex];
+        function getRandomItem(options) {
+            var randomIndex = Math.floor(Math.random() * options.length);
+            return options[randomIndex];
         }
       
       document.addEventListener("keydown", function(event) {
@@ -32,132 +33,33 @@
           audio.play();
         }
         else {
-          var audio = new Audio(`/mods/${key}/${getRandomItem()}`);
+          var audio = new Audio(`/mods/${key}/${getRandomItem(items)}`);
           audio.play();
         }
       });
     </script>
+    <!--END Needs to stay here-->
+    <script src="/static/js/colorFunctions.js" defer></script>
+    <script src="/static/js/testPageScript.js" defer></script>
     <title>Test mod</title>
     <link rel="icon" href="/static/icon.png" type="image/png">
     <link rel="stylesheet" href="/static/style.css">
+    <meta name="mod_id" content="{{ key }}"> <!--CHANGE ME TO {{ modID }}-->
   </head>
-  <body>    
-    <script>
-      var currentURL = window.location.href;
-
-      // Split the URL by '/'
-      var urlParts = currentURL.split('/');
-
-      // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
-      var key = "{{ key }}";
-      
-      fetch(`/mods/${key}/manifest.json`)
-        .then(response => response.json())
-        .then(data => {
-          const darkTheme = data.mod.payload.theme.dark;
-          const gxAccent = darkTheme.gx_accent;
-          const gxSecondayBase = darkTheme.gx_secondary_base;
-
-          // Apply the color to the border of the custom element
-          const E1 = document.getElementById('Db1');
-          E1.style.borderColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-          E1.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`;
-          const E2 = document.getElementById('Db2');
-          E2.style.borderColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-          E2.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`;
-          const E3 = document.getElementById('Db3');
-          E3.style.borderColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-          E3.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`;
-          const P1 = document.getElementById('P1');
-          P1.style.color = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-
-          const button = document.querySelector('.new_tab');
-          button.style.setProperty('--hover-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l - 20}%)`);
-        // Select the parent element that contains the buttons
-        const parentElement = document.querySelector('.new_tab');
-        // Add an event listener to the parent element
-        parentElement.addEventListener('click', (event) => {
-          // Check if the clicked element is a button within the desired class
-          if (event.target.matches(`.new_tab`)) {
-            // Button from the class was clicked
-            const clickedButton = event.target;
-            // Perform actions specific to the clicked button
-            button.style.setProperty('--hover-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l - 30}%)`);
-
-            var a = new Audio('/mods/{{ key }}/sound/new-tab.mp3');
-            a.play();
-
-            setTimeout(() => {
-              button.style.setProperty('--hover-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l - 20}%)`);;
-            }, 100);
-          }
-        })
-        const parentEl = document.querySelector('.close-button');
-
-        // Add an event listener to the parent element
-        parentEl.addEventListener('click', (event) => {
-          // Check if the clicked element is a button within the desired class
-          if (event.target.matches(`.close-button`)) {
-            // Button from the class was clicked
-            const clickedButton = event.target;
-            var a = new Audio(`/mods/${key}/sound/close-tab.mp3`);
-
-            a.onerror = function() {
-              a.src = `/static/defaultMod/sound/close-tab.mp3`;
-              a.load();
-            }
-
-            a.play();
-          }
-        })
-        const bookContainer = document.querySelector('.book_icon');
-
-        bookContainer.addEventListener('click', (event) => {
-          const clickedElement = event.target;
-          var a = new Audio(`/mods/${key}/sound/click.mp3`);
-          a.play();
-        });
-        bookContainer.addEventListener('mouseenter', (event) => {
-          // Code to execute when the mouse enters the element
-          var a = new Audio(`/mods/${key}/sound/hover.mp3`);
-          a.play();
-        });
-        const additem = document.getElementById('new_cut');
-
-        additem.addEventListener('click', (event) => {
-          const clickedElement = event.target;
-          var a = new Audio(`/mods/${key}/sound/click.mp3`);
-          a.play();
-        });
-        additem.addEventListener('mouseenter', (event) => {
-          // Code to execute when the mouse enters the element
-          var a = new Audio(`/mods/${key}/sound/hover.mp3`);
-          a.play();
-        });
-        const slder = document.getElementById('sldr');
-
-        slder.addEventListener('click', (event) => {
-          const clickedElement = event.target;
-          var a = new Audio(`/mods/${key}/sound/switch.mp3`);
-          a.play();
-        });
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    </script>
-    <header id="header" class="hf-hf__header">
-      <div class="header" role="navigation">
-        <div class="header__wrapper container-fluid wrapper">
-          <a class="header___brand" href="opera.makeamod.com">
-            <img src="/static/title/title.png" width="304" height="38" alt="GX Modder" class="hidden--from-xl">
-          </a>
-        </div>
-      </div>
-    </header>
+  <body>
+    <script src="/static/js/header-footer.js" defer></script>
+    <div id="pageHeader"></div>
     <br><br><br><br><br><br>
+    <div style="font-family: 'Montserrat'; margin-left: 50px;">
+          <p style="color: red;">*NOTE:</p>
+          This testing page is not 100% accurate. Appearances and layouts shown here may differ from those when of Opera GX. This is simply a way to get a general idea of how your mod will work before downloading it.
+        </div>
+        <br><br>
     <div class="container">
       <div class="left-content">
+        <div>
+          <p class="text__main-input-types" style="font-size: 20px;">Keyboard Sounds</p>
+        </div>
         {% for i in keybs %}
           <p class="text__main-input-types">{{ i.split("/")[1] }}</p>
           <audio controls class="audio__keysound-gui-info">
@@ -165,156 +67,185 @@
             Your browser does not support the audio element.
           </audio>
         {% endfor %}
+        <div>
+          <p class="text__main-input-types" style="font-size: 20px;">Backgound Music</p>
+        </div>
+        {% for i in music %}
+          <p class="text__main-input-types">{{ i.split("/")[1] }}</p>
+          <audio controls class="audio__keysound-gui-info">
+            <source src="/mods/{{ key }}/{{ i }}" type="audio/wav">
+            Your browser does not support the audio element.
+          </audio>
+        {% endfor %}
+        <div>
+        <p class="text__main-input-types" style="font-size: 20px;">Browser Sounds</p>
+        </div>
+        {% for i in sounds %}
+          <p class="text__main-input-types">{{ i.split("/")[1] }}</p>
+          <audio controls class="audio__keysound-gui-info">
+            <source src="/mods/{{ key }}/{{ i }}" type="audio/wav">
+            Your browser does not support the audio element.
+          </audio>
+        {% endfor %}
+        <br><br><br><br>
       </div>
       <div class="right-content">
         <br>
-        <div class="tab-tester">
-          <div class="square" style="width: 28px; height: 22px;"></div>
-          <div class="square" id="Db1" style="width: 22px; height: 22px;  border: 1px solid; border-bottom: none; border-right: none;">
-            <img style="height: 20px; width: 20px;" src="/static/icon.png" type="image/png">
-          </div>
-          <div class="square" id="Db2" style="width: 156px; height: 22px; text-align: left; font-size: 15px; font-family: 'Segoe UI'; cursor: default; border: solid 1px; border-left: none; border-bottom: none; border-right: none;" title="Example Tab">Example Tab</div>
-          <div class="square" id="Db3" style="height: 22px; width: 22px; margin-right: 10px; border: solid 1px; border-left: none; border-bottom: none;">
-            <button class="close-button" title="Test 'close_tab.mp3'">
-            </button>
-          </div>
-          <button id="P1" class="new_tab" style="font-size: 20px; color: green;" title="Test 'new_tab.mp3'">
-          +
-          </button>
-        </div>
-        <div class="square" id="ExampleTemplate" style="height: 623px; width: 1000px; border: solid 1px; border-bottom: none; border-right: none; border-top: none;">
-          <div class="tab-tester">
-            <div class="square" id="par1" style="height: 60px; width: 28px; border: solid 1px; border-bottom: none; border-right: none; border-left: none; "></div>
-            <div class="square" id="middleman" style="height: 60px; width: 200px;"></div>
-            <div class="square" id="longrect" style="height: 60px; width: 772px; border: solid 1px; border-bottom: none; border-right: none; border-left: none;"></div>
-          </div>
-          <div class="container__example-tab">
-            <img id="frame_1" src="/mods/{{ key }}/wallpaper/dark-image.png" alt="background image" onerror="this.src='/static/defaultMod/wallpaper/dark-image.png'; this.alt='Alternate image description';" style="height: 563px; width: 1000px;">
-            <div class="overlay__example-tab">
-              <div class="book_icon" style="cursor: pointer; background-color: #131B23; left: 250px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
-                <img style="height: 100%; width: 100%;" src="/static/title/Website Banner.png" type="image/png">
+        
+        <div class="container">
+          <div>
+            <div class="tab-tester">
+              <div class="square noBord" style="width: 28px; height: 22px; background: none;"></div>
+              <div class="square" id="Db1" style="width: 22px; height: 22px; border-bottom: none; border-right: none;">
+                <img style="height: 20px; width: 20px;" src="/static/icon.png" type="image/png">
               </div>
-              <div class="book_text" style="font-size: 15px; left: 250px; top: 195px; width: 135px;">Opera GX Modder</div>
+              <div class="square" id="Db2" style="width: 156px; height: 22px; text-align: left; font-size: 15px; font-family: Arial; cursor: default; border-left: none; border-bottom: none; border-right: none;" title="Example Tab">Example Tab</div>
+              <div class="square" id="Db3" style="height: 22px; width: 22px; margin-right: 10px; border-left: none; border-bottom: none;">
+                <button class="close-button" title="Test 'close_tab.mp3'">
+                </button>
+              </div>
+              <button id="P1" class="new_tab" style="font-size: 20px;" title="Test 'new_tab.mp3'">
+              +
+              </button>
             </div>
-            <div class="overlay__example-tab">
-              <div class="square" id="new_cut" style="cursor: pointer; font-family: Arial; font-size: 12px; text-align: center; align-items: center; justify-content: center; opacity: 0.7; left: 390px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
-                <br><br>
-                + Add a site
+            <div class="square" id="ExampleTemplate">
+              <div class="tab-tester">
+                <div class="square" id="par1" style="height: 60px; width: 28px; border-bottom: none; border-right: none; border-left: none; "></div>
+                <div class="square noBord" id="middleman" style="height: 60px; width: 200px;"></div>
+                <div class="square" id="longrect"></div>
               </div>
+              <div class="container__example-tab">
+                <img id="frame_1"  alt="background image" onerror="this.src='/static/defaultMod/wallpaper/dark-image.png'; this.alt='Alternate image description';" style="height: 563px; width: 1000px;">
+                <div class="overlay__example-tab">
+                  <div class="book_icon" style="cursor: pointer; background-color: #131B23; left: 250px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
+                    <img style="height: 100%; width: 100%;" src="/static/title/Website Banner.png" type="image/png">
+                  </div>
+                  <div class="book_text" style="font-size: 15px; left: 250px; top: 195px; width: 135px;">Opera GX Modder</div>
+                </div>
+                <div class="overlay__example-tab">
+                  <div class="square noBord" id="new_cut" style="cursor: pointer; font-family: Arial; font-size: 12px; text-align: center; align-items: center; justify-content: center; opacity: 0.7; left: 390px; top: 130px; width: 125px; height: 70px; clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);">
+                    <br><br>
+                    + Add a site
+                  </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div style="margin-left: 50px; margin-top: 23px;">
+            <div class="modProfileContainer">
+              <div class="modProfileSplit">
+                <div class="modProfileIcon">
+                  <img id="modProfileIcon" onerror="this.src='/static/defaultMod/icon.png'; this.alt='Mod Icon';">
+                  <div class="modProfileVersion">
+                    <div id="modVersion">
+                      v0.0
+                    </div>
+                  </div>
+                </div>
+                <div class="modProfileInfo">
+                  <div class="modProfileTitle">
+                    Name:
+                    <div class="modProfileText" id="modProfileName"></div>
+                  </div>
+                  <br>
+                  <div class="modProfileTitle">
+                    Author:
+                    <div class="modProfileText" id="modProfileAuthor"></div>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+              <div class="modProfileDesc">
+                <div class="modProfileTitle">
+                    Description:
+                    <div class="modProfileText" id="modProfileDesc"></div>
+                  </div>
+              </div>
+            </div>
+            <div style="margin-top: 60px; display: flex; justify-content: center;">
+              <form method="post" id="submitForm" enctype="multipart/form-data" onsubmit="modSubmit(event)">
+                <input class="downlink__button" style="margin-right: 20px;" type="submit" value="Download Mod" id="downMod" name="generateMod">
+                <input type="hidden" id="action" name="action" value="Download Mod">
+              </form>
+            </div>
+          </div>
+        </div>
+      <br><br>
+      <div class="test__miscElements">
+        <p class="text__main-input-types" style="font-size: 20px;">Test Elements</p>
+        <br>
+        <div class="test__miscElementContainer"> <!--Contains all misc elements-->
+          
+          <div class="test__miscElementContainerRow" style="gap: 178px;"> <!--Contains switch, limiter switch, and feature switch -->
+            <!--Switch - normal-->
+            <label class="switch" id="swtch" title="Test 'switch.mp3'">
+              <input type="checkbox">
+              <span class="slider" id="sldr"></span>
+            </label>
+
+            <!--Switch - Limiter on/off-->
+            <label class="switch" id="lmtr" title="Test 'limiter-on.mp3'">
+              <input type="checkbox" id="lmtswtch">
+              <span class="slider"></span>
+            </label>
+
+            <!--Switch - Feature on/off-->
+            <label class="switch" id="ftre" title="Test 'feature-switch-on.mp3'">
+              <input type="checkbox" id="ftrswtch">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="test__miscElementContainerRow"> <!--Contains important click, level upgrade, and tab slash-->
+
+            <!--important click button-->
+            <div class="importantContainer" id="importantClick" title="Test 'important-click.mp3'">
+              IMPORTANT CLICK
+            </div>
+
+            <!--level upgrade button-->
+            <div class="importantContainer" style="width: 60px; font-size: 80px;" id="levelup" title="Test 'level-upgrade.mp3'">
+              <div style="position: relative; top: -6px; left: 6px;"><div>↑</div></div>
+            </div>
+
+            <!--tab slash test-->
+            <div class="tabKillLargeContainer">
+              HOT TABS KILLER
+              <br><br>
+              <div class="tabKillContainer" id="killTabContainer">
+                <div class="killTab" id="kt1"><img src="https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico">google.com <button id="ktb1" title="Test 'tab-slash.mp3'">X</button></div>
+                <div class="killTab" id="kt2"><img src="https://www.youtube.com/s/desktop/2c918e63/img/favicon_32x32.png">youtube.com <button id="ktb2" title="Test 'tab-slash.mp3'">X</button></div>
+                <div class="killTab" id="kt3"><img src="https://www.redditstatic.com/shreddit/assets/favicon/64x64.png">reddit.com <button id="ktb3" title="Test 'tab-slash.mp3'">X</button></div>
+                <div class="killTab" id="kt4"><img src="https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/62fddf0fde45a8baedcc7ee5_847541504914fd33810e70a0ea73177e%20(2)-1.png">discord.com <button id="ktb4" title="Test 'tab-slash.mp3'">X</button></div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
-      <br><br><br><br><br>
-      <label class="switch" id="swtch">
-        <input type="checkbox">
-        <span class="slider" id="sldr"></span>
-      </label>
       <br><br>
-      <p class="text__main-input-types">Colors:</p>
-      <div>
-        <p class="text__main-input-types" style="margin-left: 20px;">GX Accent:</p>
-        <div class="square" id="Accent" style="height: 30px; width: 80px; margin-left: 30px;"></div>
-        <p class="text__main-input-types" style="margin-left: 20px;">GX Secondary Base:</p>
-        <div class="square" id="Secondary" style="height: 30px; width: 80px; margin-left: 30px;"></div>
+      <p class="text__main-input-types" style="font-size: 20px;">Colors</p>
+      <div style="display: flex; width: 100vh;">
+        <div class="test__colorContainer">
+          <p class="text__main-input-types" style="font-size: 16px;">Dark Mode</p>
+          <p class="text__main-input-types" style="margin-left: 20px;">GX Accent:</p>
+          <div class="square noBord" id="dAccent" style="height: 30px; width: 80px; margin-left: 30px;"></div>
+          <p class="text__main-input-types" style="margin-left: 20px;">GX Secondary Base:</p>
+          <div class="square noBord" id="dSecondary" style="height: 30px; width: 80px; margin-left: 30px;"></div>
+        </div>
+        <div style="display: flex; justify-content: right; width: 50vh;">
+          <div class="test__colorContainer">
+            <p class="text__main-input-types" style="font-size: 16px;">Light Mode</p>
+            <p class="text__main-input-types" style="margin-left: 20px;">GX Accent:</p>
+            <div class="square noBord" id="lAccent" style="height: 30px; width: 80px; margin-left: 30px;"></div>
+            <p class="text__main-input-types" style="margin-left: 20px;">GX Secondary Base:</p>
+            <div class="square noBord" id="lSecondary" style="height: 30px; width: 80px; margin-left: 30px;"></div>
+          </div>
+        </div>
       </div>
       <br><br>
     </div>
   </div>
-    <div class="square" id="footer__container" style="height: 300px; width: 200%; background-color: #292F35;">
-      <footer id="footer" class="hf-hf__footer">
-        <div class="header" role="navigation">
-          <div class="container" style="font-family: 'Bruce Forever';">
-            <div style="width: 15%; margin-top: 30px;">
-                <strong style="margin-left: 30px; font-size: 14px;">Services</strong>
-                <p></p>
-              </div>
-              <div style="width: 15%; margin-top: 30px;">
-                <strong style="margin-left: 30px; font-size: 14px;">Help</strong>
-              </div>
-              <div style="width: 15%; margin-top: 30px;">
-                <strong style="margin-left: 30px; font-size: 14px;">Legal</strong>
-                <br><br>
-                <a class="footer___links" style="margin-left: 30px; font-size: 12px; color: #A349A4; margin-bottom: 20px;" href="https://gx-modder.pb103938.repl.co/security">Security</a>
-                <br>
-                <a class="footer___links" style="margin-left: 30px; font-size: 12px; color: #A349A4; margin-bottom: 20px;" href="https://gx-modder.pb103938.repl.co/privacy">Privacy Policy</a>
-                <br>
-                <a class="footer___links" style="margin-left: 30px; font-size: 12px; color: #A349A4; margin-bottom: 20px;" href="https://gx-modder.pb103938.repl.co/EULA">EULA</a>
-                <br>
-                <a class="footer___links" style="margin-left: 30px; font-size: 12px; color: #A349A4;" href="https://gx-modder.pb103938.repl.co/terms">Terms of Service</a>
-              </div>
-              <div style="width: 15%; margin-top: 30px;">
-                <strong style="margin-left: 30px; font-size: 14px;">Company</strong>
-              </div>
-            <div class="header__wrapper container-fluid wrapper" style="width: 40%; margin-top: 30px;">
-              <a class="header___brand" href="https://gx-modder.pb103938.repl.co">
-                <img src="/static/title/title.png" width="304" height="38" alt="GX Modder" class="hidden--from-xl">
-              </a>
-              <p style="font-size: 12px; opacity: 0.7;">Make Opera GX mods with ease!</p>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-    <script>
-      var currentURL = window.location.href;
-
-      // Split the URL by '/'
-      var urlParts = currentURL.split('/');
-
-      // Find the part of the URL you want to use as 'key' (in this example, it's the second-to-last part)
-      var key = urlParts[urlParts.length - 1];
-      
-    document.addEventListener("DOMContentLoaded", function() {
-      fetch(`/mods/${key}/manifest.json`)
-        .then(response => response.json())
-        .then(data => {
-          const darkTheme = data.mod.payload.theme.dark;
-          const gxAccent = darkTheme.gx_accent;
-          const gxSecondayBase = darkTheme.gx_secondary_base;
-      const eT = document.getElementById('ExampleTemplate');
-      if (eT) {
-        eT.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`;
-        eT.style.borderImage = `linear-gradient(to bottom, hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%), hsl(210, 46%, 11%)) 2`;
-      } else {
-        console.error("Element with ID 'ExampleTemplate' not found.");
-      }
-      const e2 = document.getElementById('longrect');
-      if (e2) {
-        e2.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${10}%)`;
-        e2.style.borderImage = `linear-gradient(to right, hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%), #131B23, #131B23) 2`;
-      } else {
-        console.error("Element with ID 'ExampleTemplate' not found.");
-      }
-      const p1 = document.getElementById('par1');
-      p1.style.borderColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-      const nt = document.getElementById('new_cut');
-      nt.style.backgroundColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${16}%)`;
-      const sld = document.getElementById('sldr');
-      sld.style.setProperty('--swtch-color', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${80}%)`);
-      sld.style.setProperty('--background-off', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${10}%)`);
-      sld.style.setProperty('--background-on', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${20}%)`);
-      sld.style.setProperty('--border-off', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`);
-      sld.style.setProperty('--border-on', `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`);
-      const a1 = document.getElementById('Accent');
-      a1.style.backgroundColor = `hsl(${gxAccent.h}, ${gxAccent.s}%, ${gxAccent.l}%)`;
-      const s1 = document.getElementById('Secondary');
-      s1.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${gxSecondayBase.l}%)`;
-    var ftr = document.getElementById('footer__container');
-    function resizeShape() {
-      var windowWidth = window.innerWidth;
-      ftr.style.width = windowWidth + 'px';
-      ftr.style.backgroundColor = `hsl(${gxSecondayBase.h}, ${gxSecondayBase.s}%, ${gxSecondayBase.l}%)`;
-    }
-    if (ftr) {
-      resizeShape()
-      console.log("Success!")
-    } 
-    else {
-      console.log('Shape does not exist');
-    }
-    window.addEventListener('resize', resizeShape)
-    })
-    });
-  </script>
+  <div id="pageFooter"></div>
   </body>
 </html>

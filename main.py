@@ -1,3 +1,4 @@
+# Imports
 from flask import Flask, request, jsonify, render_template_string, send_file, render_template, redirect
 #import requests
 from werkzeug.utils import secure_filename
@@ -7,31 +8,63 @@ import zipfile
 import json
 from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip
 from time import sleep as wait
+from datetime import timedelta
 
+
+# Webapp
 app = Flask(__name__)
 
+# App config
+app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024 # 25 MB
+
+# Primary folder all files end up in
+# Organizational structure: uploads/<ModID>/<files>
 UPLOAD_FOLDER = 'uploads'
 
+# Allowed file types
+ALLOWED_EXTENSIONS = ["png", "jpg", "mp3", "wav", "txt", "webm"]
+
+# Allowed categories
+ALLOWED_CATEGORIES = ['keyboard', 'music', 'sound', 'wallpaper']
+
+# The ModID and link for all mods
 downLink = str(randStr(10))
 
+# Folder containing all mod files
 TEST_FOLDER = f'mods/{downLink}'
 
-mURL = "127.0.0.1:8080"
-
+# Handles submitted files
 @app.route('/<modID>/submit-files', methods=['POST'])
 def handle_form_submission(modID):
+
+    # get metadata
+    metadata = json.loads(request.form.get("metadata", "{}"))
 
     # Process files
     uploaded_files = request.files
     for key in uploaded_files:
 
-        file = uploaded_files[key]
+        file = uploaded_files[key] #gets a file
 
-        fileCat = file.name.split('_')[0]    
+        # gets the file's corresponding category
+        fileCat = key.split("_")[0]
+        if not fileCat or fileCat not in ["KeyboardSounds", "BackgroundMusic", "BrowserSounds", "Wallpapers", "ModInfo"]:
+           return jsonify(success=False), 400
+
         folder = getFolder(fileCat)
+        filename = secure_filename(file.filename)
 
-        file.save(f'mods/{modID}{folder}/{file.filename}')
-        print(f'file uploaded: mods/{modID}{folder}/{file.filename}')
+        # ensures proper file type
+        ext = filename.rsplit(".", 1)[-1].lower()
+        if ext not in ALLOWED_EXTENSIONS:
+           return jsonify(success=False), 400
+        
+        # saves file
+        save_path = os.path.join("mods", str(modID), folder, filename)
+        print(f"\n\n save path: {str(save_path)} \n\n")
+        file.save(save_path)
+
+        print(f'file uploaded: mods/{modID}{folder}/{filename}')
 
     return jsonify(success=True)
 
@@ -45,6 +78,9 @@ def upload_file():
         mName = request.form.get('mod name')
 
         mani = createManifest(request.form)
+
+        if mani == None:
+           return 400
 
         # Fetch file lists from directories
         music = list_dir(f"mods/{downLink}/music", "music")
@@ -93,7 +129,32 @@ def terms():
 @app.route(f"/download-mod/{downLink}", methods=['GET', 'POST'])
 def downloadFile():
   if request.method == "POST":
+    
     zip_filename = f'mods/{downLink}/{mName.replace(" ", "-")}-mod.zip'
+      
+    # Return the zip file for download
+    response = send_file(zip_filename, as_attachment=True)
+    
+    return response
+
+  else:
+    return render_template(f"exampleDownload.html")
+  
+@app.route(f"/download-mod/<mod>", methods=['GET', 'POST'])
+def downloadFileOther(mod):
+  if request.method == "POST":
+
+    try:
+
+        with open(f"mods/{mod}/manifest.json", "r") as file:
+            data = json.load(file)
+
+        name = data["name"]
+
+    except:
+       return page_not_found("")
+
+    zip_filename = f'mods/{mod}/{name.replace(" ", "-")}-mod.zip'
       
     # Return the zip file for download
     response = send_file(zip_filename, as_attachment=True)
@@ -111,7 +172,7 @@ def testMod():
   keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
   wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
 
-  if request.method == "POST":
+  if request.method == "POST" and request.form('action') == "Download Mod":
 
     filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
 
@@ -122,32 +183,52 @@ def testMod():
   else:
 
     letters = []
-    print("keyboard:", keyboard)
 
     for i in keyboard:
        if "letter" in i:
           letters.append(i)
 
-    return render_template("exampleTest.html", key=downLink, items=letters, keybs=keyboard)
+    return render_template("exampleTest.html", key=downLink, items=letters, keybs=keyboard, music=music, sounds=sound)
   
 @app.route(f"/test-mod/<mod>", methods=['GET', 'POST'])
 def testOtherMod(mod):
+  
+  music = list_dir(f"mods/{mod}/music", "music")
+  sound = list_dir(f"mods/{mod}/sound", "sound")
+  keyboard = list_dir(f"mods/{mod}/keyboard", "keyboard")
+  wallpaper = list_dir(f"mods/{mod}/wallpaper", "wallpaper")
+
   if request.method == "POST":
-    pass
+    
+    filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
+
+    try:
+
+        with open(f"mods/{mod}/manifest.json", "r") as file:
+            data = json.load(file)
+
+        name = data["name"]
+
+    except:
+       return page_not_found("")
+
+    createZip(filenames, name, f"mods/{mod}")
+
+    return redirect(f"/download-mod/{mod}")
 
   else:
 
-    return render_template(f"exampleTest.html", key=mod)
+    letters = []
 
-@app.route('/close_tab', methods=['POST'])
-def close_tab():
-  if request.method == "POST":
-    if request.headers.get("Referer") is None:
-      zip_filename = f'{mName.replace(" ", "-")}-mod.zip'
-      os.remove(zip_filename)
-      os.remove(f"templates/{downLink}.html")
-    print("Tab closed successfully!")
-    return 'OK'
+    for i in keyboard:
+       if "letter" in i:
+          letters.append(i)
+
+    try: 
+        return render_template(f"exampleTest.html", key=mod, items=letters, keybs=keyboard, music=music, sounds=sound)
+    
+    except:
+       return page_not_found("")
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -166,9 +247,18 @@ def createPage():
 def getManifest(modID):
    return send_file(f"mods/{modID}/manifest.json")
 
+@app.route('/mods/<modID>/icon.<fileType>', methods=["GET"])
+def getIcon(modID, fileType):
+   return send_file(f"mods/{modID}/icon.{fileType}")
+
 @app.route('/mods/<modID>/<folder>/<file>', methods=["GET"])
 def getFiles(modID, folder, file):
-   return send_file(f"mods/{modID}/{folder}/{file}")
+   
+   try:
+      return send_file(f"mods/{modID}/{folder}/{file}")
+   
+   except:
+      return render_template('404.html'), 404
   
 if __name__ == '__main__':
     if not os.path.exists(UPLOAD_FOLDER):
@@ -177,8 +267,8 @@ if __name__ == '__main__':
         os.makedirs(TEST_FOLDER)
     if not os.path.exists(f"{TEST_FOLDER}/manifest.json"):
         secure_filename(f"{TEST_FOLDER}/manifest.json")
-    for folder in ['keyboard', 'music', 'sound', 'wallpaper']:
+    for folder in ALLOWED_CATEGORIES:
         folder_path = os.path.join(TEST_FOLDER, folder)
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    app.run(host='0.0.0.0', port=8080, debug=True)
