@@ -1,10 +1,9 @@
 Need Added:
 
-terms of service (also rename terms and conditions)
-privacy policy
-Security
-- EULA
-- Remove cookies policy
+fix reload page bug so it ensures downLink folder exists (put in main route function)
+default black values for color selection
+fix test mod borders
+
 
 guide to creating mods
 guide to using mod test page
@@ -14,6 +13,12 @@ remove email in footer
 update header-footer links
 
 Make it all mobile friendly (PAIN)
+
+terms of service (also rename terms and conditions)
+privacy policy
+Security
+- EULA
+- Remove cookies policy
 
 PAY ALL THE LEGAL FEES AHHHH WHYYYY
 
