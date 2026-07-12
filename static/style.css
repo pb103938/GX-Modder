@@ -652,7 +652,9 @@ input[type="file"] {
 
 .footer___links {
   text-decoration: none;
-  font-family: 'Montserrat'
+  font-family: 'Montserrat';
+  margin-left: 30px; 
+  font-size: 12px;
 }
 
 .footer__sections {

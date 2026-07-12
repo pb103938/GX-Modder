@@ -6,8 +6,8 @@ from randString import gen_rand_str as randStr
 import os
 import zipfile
 import json
-from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip, cleanFiles
-from time import sleep as wait
+from functions import getFolder, createManifest, list_dir, config_list, combineLists, createZip, cleanFiles, checkFolders
+from time import sleep
 from datetime import timedelta
 
 
@@ -16,10 +16,6 @@ app = Flask(__name__)
 
 # App config
 app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024 # 25 MB
-
-# Primary folder all files end up in
-# Organizational structure: uploads/<ModID>/<files>
-UPLOAD_FOLDER = 'uploads'
 
 # Allowed file types
 ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "mp3", "wav", "txt", "webm", "apng"]
@@ -31,11 +27,13 @@ ALLOWED_CATEGORIES = ['keyboard', 'music', 'sound', 'wallpaper']
 downLink = str(randStr(10))
 
 # Folder containing all mod files
-TEST_FOLDER = f'mods/{downLink}'
+MOD_FOLDER = f'mods/{downLink}'
 
 # Handles submitted files
 @app.route('/<modID>/submit-files', methods=['POST'])
 def handle_form_submission(modID):
+
+    checkFolders(MOD_FOLDER, ALLOWED_CATEGORIES)
 
     # get metadata
     metadata = json.loads(request.form.get("metadata", "{}"))
@@ -85,12 +83,16 @@ def handle_form_submission(modID):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+
+    checkFolders(MOD_FOLDER, ALLOWED_CATEGORIES)
+
     if request.method == 'POST':
-        wait(0.2)
+
         print("form:", request.form)
 
-        global mName
         mName = request.form.get('mod name')
+
+        print("\n\n\n\n     form is:", request.form, "\n\n\n\n")
 
         mani = createManifest(request.form)
 
@@ -138,7 +140,7 @@ def upload_file():
         try:
             return render_template('index.html', modID=downLink)
         except:
-            return page_not_found(""), 404
+            return page_not_found("")
 
 
 @app.route("/terms")
@@ -147,30 +149,7 @@ def terms():
     return render_template('terms.html')
   except:
     return page_not_found(""), 404
-
-@app.route(f"/download-mod/{downLink}", methods=['GET', 'POST'])
-def downloadFile():
-  if request.method == "POST":
-    
-    zip_filename = f'mods/{downLink}/{mName.replace(" ", "-")}-mod.zip'
-
-    @after_this_request
-    def cleanup(response):
-        cleanFiles(zip_filename, downLink)
-        return response
-    
-    try:
-        return send_file(zip_filename, as_attachment=True)
-    
-    except:
-        return page_not_found(""), 404
-
-  else:
-    try:
-        return render_template(f"exampleDownload.html")
-    except:
-        return page_not_found(""), 404
-  
+ 
 @app.route(f"/download-mod/<mod>", methods=['GET', 'POST'])
 def downloadFileOther(mod):
   if request.method == "POST":
@@ -180,7 +159,7 @@ def downloadFileOther(mod):
         with open(f"mods/{mod}/manifest.json", "r") as file:
             data = json.load(file)
 
-        name = data["name"]
+        name = str(data["name"])
 
     except:
        return page_not_found("")
@@ -195,42 +174,15 @@ def downloadFileOther(mod):
     try:
         return send_file(zip_filename, as_attachment=True)
     except:
-        return page_not_found(""), 404
+        return page_not_found("")
 
   else:
     try:
         return render_template(f"exampleDownload.html")
     except:
-      return page_not_found(""), 404
+      return page_not_found("")
 
-@app.route(f"/test-mod/{downLink}", methods=['GET', 'POST'])
-def testMod():
-
-  music = list_dir(f"mods/{downLink}/music", "music")
-  sound = list_dir(f"mods/{downLink}/sound", "sound")
-  keyboard = list_dir(f"mods/{downLink}/keyboard", "keyboard")
-  wallpaper = list_dir(f"mods/{downLink}/wallpaper", "wallpaper")
-
-  if request.method == "POST" and request.form.get('action') == "Download Mod":
-
-    filenames = combineLists(music, sound, keyboard, wallpaper, ["icon.png", "license.txt", "manifest.json"])
-
-    createZip(filenames, mName, f"mods/{downLink}")
-
-    return redirect(f"/download-mod/{downLink}")
-
-  else:
-
-    letters = []
-
-    for i in keyboard:
-       if "letter" in i:
-          letters.append(i)
-    try:
-        return render_template("exampleTest.html", key=downLink, items=letters, keybs=keyboard, music=music, sounds=sound)
-    except:
-      return page_not_found(""), 404
-  
+ 
 @app.route(f"/test-mod/<mod>", methods=['GET', 'POST'])
 def testOtherMod(mod):
   
@@ -329,23 +281,26 @@ def getLicense(modID):
 
 
 @app.route('/mods/<modID>/<folder>/<file>', methods=["GET"])
-def getFiles(modID, folder, file):
+def getFiles(modID, folder, file: str):
    
-   try:
-      return send_file(f"mods/{modID}/{folder}/{file}")
+    ext = file.split('.')
+
+    print(ext)
+
+    if len(ext) < 2:
+        return render_template('404.html'), 404
    
-   except:
-      return render_template('404.html'), 404
+    if not str(ext[1]) in ALLOWED_EXTENSIONS:
+        return render_template('400.html'), 400
+   
+    try:
+        return send_file(f"mods/{modID}/{folder}/{file}")
+   
+    except:
+        return render_template('404.html'), 404
   
 if __name__ == '__main__':
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
-    if not os.path.exists(TEST_FOLDER):
-        os.makedirs(TEST_FOLDER)
     if not os.path.exists("mods"):
        os.makedirs("mods")
-    for folder in ALLOWED_CATEGORIES:
-        folder_path = os.path.join(TEST_FOLDER, folder)
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+    checkFolders(MOD_FOLDER, ALLOWED_CATEGORIES)
     app.run(host='0.0.0.0', port=8080, debug=True)

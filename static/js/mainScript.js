@@ -19,13 +19,6 @@
         Wallpapers: 0,
         ModInfo: 0
       }
-      let categoryContainer = {
-        KeyboardSounds: 2,
-        BackgroundMusic: 1,
-        BrowserSounds: 3,
-        Wallpapers: 1,
-        ModInfo: 1
-      }
       let currentCategory = '';
       let modal = document.getElementById("myModal");
       let modalOverlay = document.getElementById("modalOverlay");
@@ -169,7 +162,8 @@
       function handleSubmit(event) {
           event.preventDefault();
 
-          console.log(categoryFiles)
+          console.log("categoryFiles:");
+          console.log(categoryFiles);
 
           var verifiles = validateModInfo();
 
@@ -221,6 +215,8 @@
             // Send the form data to the server using fetch
 
             const modID = document.querySelector('meta[name="mod_id"]').content;
+
+            console.log(formData);
 
             fetch(`/${modID}/submit-files`, {
                 method: 'POST',

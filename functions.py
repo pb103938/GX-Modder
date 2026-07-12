@@ -55,7 +55,14 @@ def cleanFiles(zipFile, modID):
     try: os.rmdir(f"mods/{modID}") 
     except: pass
 
+def checkFolders(mFolder, cats):
 
+    if not os.path.exists(mFolder):
+        os.makedirs(mFolder)
+    for folder in cats:
+        folder_path = os.path.join(mFolder, folder)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
 def config_list(lst: list, category: str) -> dict:
 

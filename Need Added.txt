@@ -1,12 +1,8 @@
 Need Added:
 
-fix reload page bug so it ensures downLink folder exists (put in main route function)
-default black values for color selection
-fix test mod borders
-
-
 guide to creating mods
 guide to using mod test page
+about page
 
 add Discord link to footer
 remove email in footer
@@ -14,18 +10,19 @@ update header-footer links
 
 Make it all mobile friendly (PAIN)
 
-terms of service (also rename terms and conditions)
+terms of service
 privacy policy
 Security
 - EULA
 - Remove cookies policy
 
-PAY ALL THE LEGAL FEES AHHHH WHYYYY
-
 Create Discord for the site
+
+Make a Ko-Fi page
 
 ToS:
 - Add line about it being the user's responsibility to ensure personal information is not included
 
 Privacy Policy:
 - Line about us not wanting their data
+- Data deletion after 30 days
