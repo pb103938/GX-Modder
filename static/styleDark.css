@@ -44,10 +44,20 @@
   --main-primary-accent-95: hsl(var(--gx-accent-h), calc(var(--gx-accent-s)* 1%), 95%);
   --main-primary-accent-100: hsl(var(--gx-accent-h), calc(var(--gx-accent-s)* 1%), 100%);
 
+
+
+
+
+  /* Reused Colors */
+
+  --main-background-color: #16151b;
+  --main-border-color: #8C32CD;
+  --main-selected-color: #382644;
+
 }
 
 body {
-  background: #16151b;
+  background: var(--main-background-color);
   color: white;
 }
 
@@ -57,7 +67,7 @@ body {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .modal-content {
-  background-color: #2a2d3b;
+  background-color: var(--main-background-color);
   border: 1px solid #000000;
 }
 .close {
@@ -111,7 +121,7 @@ body {
 }
 
 .catList {
-  border-right: 2px solid #8C32CD;
+  border-right: 2px solid var(--main-border-color);
 }
 
 .addButton {
@@ -177,7 +187,7 @@ body {
 /*Categories*/
 
 .category {
-  background: #16151B;
+  background: var(--main-background-color);
 }
 
 .category::after {
@@ -185,7 +195,7 @@ body {
 }
 
 .category.active {
-  background: #382644;
+  background: var(--main-selected-color);
 }
 
 .category.active .numBox {
@@ -229,12 +239,12 @@ body {
   color: #131B23;
 }
 .input__main-mod-info {
-  border: 2px solid #8C32CD;
+  border: 2px solid var(--main-border-color);
   color: #d0cdcd;
 }
 .input__main-mod-desc {
   background: linear-gradient(to right, #2c363f, #0000ad);
-  border: 2px solid #8C32CD;
+  border: 2px solid var(--main-border-color);
   color: #d0cdcd;
 }
 .downlink__title {
@@ -258,8 +268,8 @@ body {
 /*Header info*/
 
 .main__header {
-  background-color: #16151B;
-  border-bottom: 2px solid #8C32CD;
+  background-color: var(--main-background-color);
+  border-bottom: 2px solid var(--main-border-color);
 }
 .modButton {
   background-color: #8a00a5;
@@ -278,8 +288,8 @@ body {
   background: #828282;
 }
 .dropdown:hover .dropdown-menu {
-  background-color: #16151B;
-  border: 2px solid #8C32CD;
+  background-color: var(--main-background-color);
+  border: 2px solid var(--main-border-color);
 }
 .dropdown-subtitle:hover {
   background-color: #212029;
@@ -287,8 +297,8 @@ body {
 .dropdown-subtitle:hover .dropdown-submenu {
   color: #d0cdcd;
   background-color: #212029;
-  border: solid 2px #8C32CD;
-  border-left: #16151B;
+  border: solid 2px var(--main-border-color);
+  border-left: var(--main-background-color);
 }
 .dropdown-menu::before {
   border-top: 1px solid #242D37;
@@ -297,8 +307,8 @@ body {
 /*Footer info*/
 .main__footer {
   background-image: url("images/footer-image.webp");
-  background-color: #16151b;
-  border-top: 2px solid #8C32CD;
+  background-color: var(--main-background-color);
+  border-top: 2px solid var(--main-border-color);
 }
 
 .footer___links {
@@ -316,11 +326,11 @@ body {
 /*Custom Browser Elements*/
 
 #ExampleTemplate {
-  border-image: linear-gradient(to bottom, var(--main-primary-accent-40), #16151b) 2;
+  border-image: linear-gradient(to bottom, var(--main-primary-accent-40), var(--main-background-color)) 2;
 }
 
 #longrect {
-  border-image: linear-gradient(to right, var(--main-primary-accent-40), #16151b, #16151b) 2;
+  border-image: linear-gradient(to right, var(--main-primary-accent-40), var(--main-background-color), var(--main-background-color)) 2;
 }
 
 #new_cut {
@@ -345,7 +355,7 @@ input:checked + .slider::before {
 /*Header Switch*/
 .modButtonContainer .slider {
   background-color: #382644;
-  border: 1px solid #8C32CD;
+  border: 1px solid var(--main-border-color);
 }
 .modButtonContainer .slider::before {
   background: white;
@@ -406,4 +416,41 @@ input:checked + .slider::before {
 }
 .modProfileText {
   color: lightgray;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  width: var(--sidebar-width);
+  border-right: 2px solid var(--main-border-color);
+}
+
+.nav-group-label {
+  color: inherit;
+}
+        
+.nav-group-label:hover { background: rgba(255,255,255,0.04); }
+      
+.nav-list a:hover {
+  background: rgba(255,255,255,0.04);
+}
+        
+.nav-list a.active {
+  color: var(--main-border-color);
+  background: var(--main-selected-color);
+  border-left-color: var(--main-border-color);
+}
+        
+/* ---- Mobile ---- */
+.menu-toggle {
+  color: white;
+}
+
+.guideLi a {
+  color: #A157D6;
+}
+        
+@media (max-width: 768px) {
+  .sidebar {
+    box-shadow: 2px 0 12px rgba(255,255,255,0.1);
+  }
 }

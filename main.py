@@ -298,6 +298,14 @@ def getFiles(modID, folder, file: str):
    
     except:
         return render_template('404.html'), 404
+#     
+# @app.route("/how-to")
+# def howToMain():
+#     try:
+#         return render_template("howTo.html")
+#     
+#     except:
+#         return render_template('404.html'), 404
   
 if __name__ == '__main__':
     if not os.path.exists("mods"):

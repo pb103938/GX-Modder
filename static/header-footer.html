@@ -43,11 +43,15 @@
         <div class="container" style="font-family: 'Montserrat';">
           <div style="width: 10%;"></div>
           <div class="footer__sections">
+              <!--
               <strong style="margin-left: 30px; font-size: 14px;">Guides</strong>
               <br><br>
+              <a class="footer___links" href="/how-to">All Guides</a>
+              <br>
               <a class="footer___links" href="/how-to/mod">How to Create Mods</a>
               <br>
               <a class="footer___links" href="/how-to/test">How to Test Mods</a>
+              -->
             </div>
             <div class="footer__sections">
               <strong style="margin-left: 30px; font-size: 14px;">LEGAL</strong>
@@ -81,5 +85,39 @@
         </div>
       </div>
     </footer>
+    <nav class="sidebar" id="fullNav">
+            <p class="sidebar-title">Guides</p>
+        
+            <div class="nav-group">
+            <button class="nav-group-label" onclick="this.parentElement.classList.toggle('collapsed')">
+                Getting Started <span class="chevron">▾</span>
+            </button>
+            <ul class="nav-list">
+                <li><a href="/how-to" class="active">Introduction</a></li>
+                <li><a href="/how-to/what-are-mods">What are Opera GX Mods?</a></li>
+            </ul>
+            </div>
+        
+            <div class="nav-group">
+            <button class="nav-group-label" onclick="this.parentElement.classList.toggle('collapsed')">
+                Creating a Mod <span class="chevron">▾</span>
+            </button>
+            <ul class="nav-list">
+                <li><a href="https://github.com/opera-gaming/gxmods" target="_blank">Official Documentation</a></li>
+                <li><a href="/how-to/mod">Unofficial Documentation</a></li>
+                <li><a href="/how-to/use-makeamod">Using MakeaMod</a></li>
+            </ul>
+            </div>
+        
+            <div class="nav-group">
+            <button class="nav-group-label" onclick="this.parentElement.classList.toggle('collapsed')">
+                Testing a Mod <span class="chevron">▾</span>
+            </button>
+            <ul class="nav-list">
+                <li><a href="/how-to/test-ogx">Using Opera GX</a></li>
+                <li><a href="/how-to/test">Using MakeaMod</a></li>
+            </ul>
+            </div>
+  </nav>
 </body>
 </html>
