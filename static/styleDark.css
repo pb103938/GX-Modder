@@ -315,6 +315,10 @@ body {
   color: #b693ff;
 }
 
+.contactLink a {
+  color: #F4EAFA;
+}
+
 /*Socials*/
 .fa-facebook {
   background: #3B5998;

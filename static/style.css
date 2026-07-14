@@ -662,6 +662,17 @@ input[type="file"] {
   font-size: 12px;
 }
 
+.contactLink {
+  margin-top: 6px;
+}
+
+.contactLink a {
+  font-family: 'Montserrat Bold'; 
+  text-decoration: none;
+  font-size: 15px; 
+  opacity: 0.7;
+}
+
 .footer__sections {
   width: 20%; 
   margin-top: 30px;
